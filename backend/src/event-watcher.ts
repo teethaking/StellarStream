@@ -22,7 +22,6 @@ import {
 import { WebhookService } from "./services/webhook.service";
 import * as Sentry from "@sentry/node";
 
-
 const prisma = new PrismaClient();
 
 export class EventWatcher {
@@ -54,7 +53,7 @@ export class EventWatcher {
     this.streamLifecycleService = new StreamLifecycleService();
     this.verificationService = new LedgerVerificationService(
       this.horizonServer,
-      prisma
+      prisma,
     );
     this.auditLogService = new AuditLogService();
     this.webhookService = new WebhookService();
@@ -141,7 +140,6 @@ export class EventWatcher {
         // Wait before next poll
         await this.sleep(this.config.pollIntervalMs);
       } catch (error) {
-
         Sentry.withScope((scope) => {
           scope.setTag("failure_type", "indexer_failure");
           scope.setContext("indexer", {
@@ -151,7 +149,8 @@ export class EventWatcher {
           Sentry.captureException(error);
         });
         this.state.errorCount++;
-        this.state.lastError = error instanceof Error ? error : new Error(String(error));
+        this.state.lastError =
+          error instanceof Error ? error : new Error(String(error));
 
         logger.error("Error in poll loop", error, {
           errorCount: this.state.errorCount,
@@ -161,7 +160,7 @@ export class EventWatcher {
         // Exponential backoff on errors
         const backoffDelay = Math.min(
           this.config.retryDelayMs * Math.pow(2, this.state.errorCount - 1),
-          30000 // Max 30 seconds
+          30000, // Max 30 seconds
         );
 
         logger.info(`Retrying in ${backoffDelay}ms...`);
@@ -177,12 +176,27 @@ export class EventWatcher {
   }
 
   /**
-   * Fetch events from Stellar RPC and process them
+   * Fetch events from Stellar RPC and process them.
+   * Only processes ledgers that have achieved "closed" status to guard
+   * against ledger re-organisations (forks).
    */
   private async fetchAndProcessEvents(): Promise<void> {
     const startLedger = this.state.lastProcessedLedger + 1;
 
     logger.debug("Fetching events", { startLedger });
+
+    // ── Finality check ────────────────────────────────────────────────────────
+    // Only process ledgers that have reached "closed" status with a confirmed
+    // consensus hash. Ledgers still in "open" or "pending" state may be
+    // re-organised away, leading to duplicate or phantom events.
+    const latestLedger = await this.server.getLatestLedger();
+    if (latestLedger.sequence < startLedger) {
+      logger.debug("No new closed ledgers to process", {
+        latestLedger: latestLedger.sequence,
+        startLedger,
+      });
+      return;
+    }
 
     const response = await this.server.getEvents({
       startLedger,
@@ -198,8 +212,7 @@ export class EventWatcher {
     if (response.events === undefined || response.events.length === 0) {
       logger.debug("No new events found");
 
-      // Update cursor to latest ledger even if no events
-      const latestLedger = await this.server.getLatestLedger();
+      // Update cursor to latest closed ledger
       const previousLedger = this.state.lastProcessedLedger;
       this.state.lastProcessedLedger = latestLedger.sequence;
 
@@ -241,7 +254,9 @@ export class EventWatcher {
   /**
    * Process a single event
    */
-  private async processEvent(event: SorobanRpc.Api.EventResponse): Promise<void> {
+  private async processEvent(
+    event: SorobanRpc.Api.EventResponse,
+  ): Promise<void> {
     const parsed = parseContractEvent(event);
 
     if (!parsed) {
@@ -275,14 +290,17 @@ export class EventWatcher {
   private async handleEventByType(
     eventType: string,
     event: ParsedContractEvent,
-    rawEvent: SorobanRpc.Api.EventResponse
+    rawEvent: SorobanRpc.Api.EventResponse,
   ): Promise<void> {
     const eventData = toObjectOrNull(event.value);
     if (!eventData) {
-      logger.debug("Event payload is not an object; skipping lifecycle indexing", {
-        eventType,
-        txHash: event.txHash,
-      });
+      logger.debug(
+        "Event payload is not an object; skipping lifecycle indexing",
+        {
+          eventType,
+          txHash: event.txHash,
+        },
+      );
       return;
     }
 
@@ -334,10 +352,14 @@ export class EventWatcher {
           } else if (typeof data === "object" && data !== null) {
             const dataObj = data as Record<string, string | number>;
             // Assume named fields struct
-            receiver = dataObj.receiver !== undefined ? String(dataObj.receiver) : "";
-            amount = dataObj.amount !== undefined ? String(dataObj.amount) : "0";
-            duration = dataObj.duration !== undefined ? Number(dataObj.duration) : 0;
-            streamId = dataObj.stream_id !== undefined ? String(dataObj.stream_id) : "";
+            receiver =
+              dataObj.receiver !== undefined ? String(dataObj.receiver) : "";
+            amount =
+              dataObj.amount !== undefined ? String(dataObj.amount) : "0";
+            duration =
+              dataObj.duration !== undefined ? Number(dataObj.duration) : 0;
+            streamId =
+              dataObj.stream_id !== undefined ? String(dataObj.stream_id) : "";
             if (sender === "" && dataObj.sender !== undefined) {
               sender = String(dataObj.sender);
             }
@@ -368,7 +390,9 @@ export class EventWatcher {
               duration,
             },
           });
-          logger.info("Stream successfully saved to Prisma DB", { txHash: event.txHash });
+          logger.info("Stream successfully saved to Prisma DB", {
+            txHash: event.txHash,
+          });
 
           // Webhook triggering for large streams (> 10,000 XLM) after both indexers save
           const XLM_THRESHOLD = 10000_0000000n;
@@ -406,14 +430,21 @@ export class EventWatcher {
           const data = event.value;
           if (data !== undefined && typeof data === "object" && data !== null) {
             const dataObj = data as Record<string, string | number>;
-            const withdrawStreamId = dataObj.stream_id !== undefined ? String(dataObj.stream_id) : "";
-            const amountWithdrawn = dataObj.amount !== undefined ? String(dataObj.amount) : "0";
+            const withdrawStreamId =
+              dataObj.stream_id !== undefined ? String(dataObj.stream_id) : "";
+            const amountWithdrawn =
+              dataObj.amount !== undefined ? String(dataObj.amount) : "0";
 
             if (withdrawStreamId !== "") {
               const stream = await (
                 prisma as unknown as {
                   stream: {
-                    findUnique: (arg: { where: { streamId: string } }) => Promise<{ id: string; withdrawn: string | null } | null>;
+                    findUnique: (arg: {
+                      where: { streamId: string };
+                    }) => Promise<{
+                      id: string;
+                      withdrawn: string | null;
+                    } | null>;
                   };
                 }
               ).stream.findUnique({
@@ -423,7 +454,9 @@ export class EventWatcher {
               if (stream) {
                 const currentWithdrawn = BigInt(stream.withdrawn || "0");
                 const newWithdrawn = BigInt(amountWithdrawn);
-                const totalWithdrawn = (currentWithdrawn + newWithdrawn).toString();
+                const totalWithdrawn = (
+                  currentWithdrawn + newWithdrawn
+                ).toString();
 
                 await (
                   prisma as unknown as {
@@ -445,10 +478,14 @@ export class EventWatcher {
                   txHash: event.txHash,
                 });
               } else {
-                logger.warn("Stream not found for withdrawal", { streamId: withdrawStreamId });
+                logger.warn("Stream not found for withdrawal", {
+                  streamId: withdrawStreamId,
+                });
               }
             } else {
-              logger.warn("Withdrawal event missing stream_id", { eventId: event.id });
+              logger.warn("Withdrawal event missing stream_id", {
+                eventId: event.id,
+              });
             }
           }
         } catch (error) {
@@ -467,26 +504,32 @@ export class EventWatcher {
         break;
 
       default:
-        logger.debug("Unhandled event type", { eventType: normalizedEventType });
+        logger.debug("Unhandled event type", {
+          eventType: normalizedEventType,
+        });
     }
   }
 
   private async handleStreamCreated(
     event: ParsedContractEvent,
-    eventData: Record<string, unknown>
+    eventData: Record<string, unknown>,
   ): Promise<void> {
     const streamId = this.readStreamId(eventData);
     const totalAmount =
-      toBigIntOrNull(eventData.total_amount) ?? toBigIntOrNull(eventData.amount);
+      toBigIntOrNull(eventData.total_amount) ??
+      toBigIntOrNull(eventData.amount);
     const sender = this.readStringOrUnknown(eventData.sender);
     const receiver = this.readStringOrUnknown(eventData.receiver);
 
     if (streamId === null || streamId.length === 0 || totalAmount === null) {
-      logger.warn("Unable to index stream_created event due to missing fields", {
-        txHash: event.txHash,
-        streamId,
-        hasTotalAmount: totalAmount !== null,
-      });
+      logger.warn(
+        "Unable to index stream_created event due to missing fields",
+        {
+          txHash: event.txHash,
+          streamId,
+          hasTotalAmount: totalAmount !== null,
+        },
+      );
       return;
     }
 
@@ -496,7 +539,10 @@ export class EventWatcher {
       sender,
       receiver,
       totalAmount,
-      createdAtIso: this.resolveEventTimestampIso(eventData.timestamp, event.ledgerClosedAt),
+      createdAtIso: this.resolveEventTimestampIso(
+        eventData.timestamp,
+        event.ledgerClosedAt,
+      ),
       ledger: event.ledger,
     });
 
@@ -505,6 +551,7 @@ export class EventWatcher {
       eventType: "create",
       streamId,
       txHash: event.txHash,
+      eventIndex: event.eventIndex,
       ledger: event.ledger,
       ledgerClosedAt: event.ledgerClosedAt,
       sender,
@@ -523,7 +570,7 @@ export class EventWatcher {
       quorum: number;
       votesFor: number;
       votesAgainst: number;
-    }
+    },
   ): Promise<void> {
     await prisma.$executeRaw`
       INSERT INTO "Proposal" ("id", "creator", "description", "quorum", "votesFor", "votesAgainst", "txHash", "updatedAt")
@@ -542,16 +589,19 @@ export class EventWatcher {
 
   private async handleStreamWithdrawn(
     event: ParsedContractEvent,
-    eventData: Record<string, unknown>
+    eventData: Record<string, unknown>,
   ): Promise<void> {
     const streamId = this.readStreamId(eventData);
     const amount = toBigIntOrNull(eventData.amount);
     if (streamId === null || streamId.length === 0 || amount === null) {
-      logger.warn("Unable to index stream_withdrawn event due to missing fields", {
-        txHash: event.txHash,
-        streamId,
-        hasAmount: amount !== null,
-      });
+      logger.warn(
+        "Unable to index stream_withdrawn event due to missing fields",
+        {
+          txHash: event.txHash,
+          streamId,
+          hasAmount: amount !== null,
+        },
+      );
       return;
     }
 
@@ -566,6 +616,7 @@ export class EventWatcher {
       eventType: "withdraw",
       streamId,
       txHash: event.txHash,
+      eventIndex: event.eventIndex,
       ledger: event.ledger,
       ledgerClosedAt: event.ledgerClosedAt,
       amount,
@@ -575,22 +626,33 @@ export class EventWatcher {
 
   private async handleStreamCancelled(
     event: ParsedContractEvent,
-    eventData: Record<string, unknown>
+    eventData: Record<string, unknown>,
   ): Promise<void> {
     const streamId = this.readStreamId(eventData);
     const toReceiver = toBigIntOrNull(eventData.to_receiver);
     const toSender = toBigIntOrNull(eventData.to_sender);
-    if (streamId === null || streamId.length === 0 || toReceiver === null || toSender === null) {
-      logger.warn("Unable to index stream_cancelled event due to missing fields", {
-        txHash: event.txHash,
-        streamId,
-        hasToReceiver: toReceiver !== null,
-        hasToSender: toSender !== null,
-      });
+    if (
+      streamId === null ||
+      streamId.length === 0 ||
+      toReceiver === null ||
+      toSender === null
+    ) {
+      logger.warn(
+        "Unable to index stream_cancelled event due to missing fields",
+        {
+          txHash: event.txHash,
+          streamId,
+          hasToReceiver: toReceiver !== null,
+          hasToSender: toSender !== null,
+        },
+      );
       return;
     }
 
-    const closedAtIso = this.resolveEventTimestampIso(eventData.timestamp, event.ledgerClosedAt);
+    const closedAtIso = this.resolveEventTimestampIso(
+      eventData.timestamp,
+      event.ledgerClosedAt,
+    );
     const summary = await this.streamLifecycleService.cancelStream({
       streamId,
       toReceiver,
@@ -613,6 +675,7 @@ export class EventWatcher {
       eventType: "cancel",
       streamId,
       txHash: event.txHash,
+      eventIndex: event.eventIndex,
       ledger: event.ledger,
       ledgerClosedAt: event.ledgerClosedAt,
       amount: toReceiver + toSender,
@@ -635,7 +698,7 @@ export class EventWatcher {
 
   private resolveEventTimestampIso(
     eventTimestamp: unknown,
-    fallbackIso: string
+    fallbackIso: string,
   ): string {
     const timestampSeconds = toBigIntOrNull(eventTimestamp);
     if (timestampSeconds === null) {
@@ -653,10 +716,7 @@ export class EventWatcher {
    */
   private async storeLedgerHash(sequence: number): Promise<void> {
     try {
-      const page = await this.horizonServer
-        .ledgers()
-        .ledger(sequence)
-        .call();
+      const page = await this.horizonServer.ledgers().ledger(sequence).call();
       const ledgerRecord = page.records?.[0];
       if (!ledgerRecord) {
         logger.warn("No ledger record returned", { sequence });
@@ -664,7 +724,17 @@ export class EventWatcher {
       }
       const hash = ledgerRecord.hash;
 
-      await (prisma as unknown as { ledgerHash: { upsert: (arg: { where: { sequence: number }; update: { hash: string }; create: { sequence: number; hash: string } }) => Promise<unknown> } }).ledgerHash.upsert({
+      await (
+        prisma as unknown as {
+          ledgerHash: {
+            upsert: (arg: {
+              where: { sequence: number };
+              update: { hash: string };
+              create: { sequence: number; hash: string };
+            }) => Promise<unknown>;
+          };
+        }
+      ).ledgerHash.upsert({
         where: { sequence },
         update: { hash },
         create: { sequence, hash },
@@ -696,16 +766,20 @@ export class EventWatcher {
     try {
       const result = await this.verificationService.verifyLedgers(
         fromSequence,
-        toSequence
+        toSequence,
       );
 
       if (!result.verified) {
-        logger.error("Ledger hash verification FAILED — data integrity mismatch", undefined, {
-          fromSequence,
-          toSequence,
-          mismatchCount: result.mismatches.length,
-          mismatches: result.mismatches,
-        });
+        logger.error(
+          "Ledger hash verification FAILED — data integrity mismatch",
+          undefined,
+          {
+            fromSequence,
+            toSequence,
+            mismatchCount: result.mismatches.length,
+            mismatches: result.mismatches,
+          },
+        );
       } else {
         logger.info("Ledger hash verification passed", {
           fromSequence,

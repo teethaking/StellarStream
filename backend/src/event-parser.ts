@@ -16,12 +16,17 @@ export interface ParsedProposalCreatedEvent {
   votesAgainst: number;
 }
 /**
- * Parse raw Stellar event into structured format
+ * Parse raw Stellar event into structured format.
+ * Event IDs from Soroban RPC follow the format: "<ledger>-<txIndex>-<eventIndex>"
+ * We extract eventIndex to support the unique (txHash, eventIndex) constraint.
  */
 export function parseContractEvent(
-  event: SorobanRpc.Api.EventResponse
+  event: SorobanRpc.Api.EventResponse,
 ): ParsedContractEvent | null {
   try {
+    // Extract eventIndex from the event ID: "<ledger>-<txIndex>-<eventIndex>"
+    const eventIndex = parseEventIndex(event.id);
+
     return {
       id: event.id,
       type: event.type,
@@ -31,12 +36,29 @@ export function parseContractEvent(
       topics: event.topic.map((topic) => topic.toXDR("base64")),
       value: parseScVal(event.value),
       txHash: event.txHash ?? "unknown",
+      eventIndex,
       inSuccessfulContractCall: event.inSuccessfulContractCall,
     };
   } catch (error) {
-    logger.error("Failed to parse contract event", error, { eventId: event.id });
+    logger.error("Failed to parse contract event", error, {
+      eventId: event.id,
+    });
     return null;
   }
+}
+
+/**
+ * Extract the event index from a Soroban event ID.
+ * Format: "<ledger>-<txIndex>-<eventIndex>"
+ * Falls back to 0 if the format is unexpected.
+ */
+function parseEventIndex(eventId: string): number {
+  const parts = eventId.split("-");
+  if (parts.length >= 3) {
+    const idx = parseInt(parts[parts.length - 1], 10);
+    return Number.isFinite(idx) ? idx : 0;
+  }
+  return 0;
 }
 
 /**
@@ -68,12 +90,16 @@ function parseScVal(scVal: xdr.ScVal): unknown {
 
       case "scvU128": {
         const parts = scVal.u128();
-        return (BigInt(parts.hi().toString()) << 64n) | BigInt(parts.lo().toString());
+        return (
+          (BigInt(parts.hi().toString()) << 64n) | BigInt(parts.lo().toString())
+        );
       }
 
       case "scvI128": {
         const parts = scVal.i128();
-        return (BigInt(parts.hi().toString()) << 64n) | BigInt(parts.lo().toString());
+        return (
+          (BigInt(parts.hi().toString()) << 64n) | BigInt(parts.lo().toString())
+        );
       }
 
       case "scvU256":
@@ -120,7 +146,7 @@ function parseScVal(scVal: xdr.ScVal): unknown {
       scope.setTag("failure_type", "indexer_failure");
       scope.setTag("event_type", "xdr_parse_failure");
       scope.setContext("xdr_payload", {
-        raw: scVal.toXDR("base64")        // the raw XDR strin
+        raw: scVal.toXDR("base64"), // the raw XDR strin
       });
       Sentry.captureException(error);
     });
@@ -149,7 +175,7 @@ export function extractEventType(topics: string[]): string {
  * Returns null when the event is not a proposal creation.
  */
 export function parseProposalCreatedEventXdr(
-  event: SorobanRpc.Api.EventResponse
+  event: SorobanRpc.Api.EventResponse,
 ): ParsedProposalCreatedEvent | null {
   try {
     if (event.topic.length === 0) {
@@ -162,7 +188,11 @@ export function parseProposalCreatedEventXdr(
     }
 
     const payload = parseScVal(event.value);
-    if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+    if (
+      typeof payload !== "object" ||
+      payload === null ||
+      Array.isArray(payload)
+    ) {
       return null;
     }
 
@@ -173,10 +203,13 @@ export function parseProposalCreatedEventXdr(
     }
 
     const topicCreator = event.topic[1] ? parseScVal(event.topic[1]) : null;
-    const creator = readText(data.creator ?? data.sender ?? topicCreator, "unknown");
+    const creator = readText(
+      data.creator ?? data.sender ?? topicCreator,
+      "unknown",
+    );
     const description = readText(
       data.description ?? data.title ?? data.metadata,
-      `Proposal #${proposalId}`
+      `Proposal #${proposalId}`,
     );
     const quorum = readInt(data.quorum ?? data.required_approvals, 0);
     const votesFor = readInt(data.votes_for ?? data.votesFor, 0);
@@ -210,7 +243,9 @@ function readId(value: unknown): string | null {
 }
 
 function readText(value: unknown, fallback: string): string {
-  return typeof value === "string" && value.trim().length > 0 ? value.trim() : fallback;
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : fallback;
 }
 
 function readInt(value: unknown, fallback: number): number {

@@ -29,6 +29,8 @@ export interface ParsedContractEvent {
   topics: string[];
   value: unknown;
   txHash: string;
+  /** Zero-based index of this event within its transaction, extracted from event.id */
+  eventIndex: number;
   inSuccessfulContractCall: boolean;
 }
 

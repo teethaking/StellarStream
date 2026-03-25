@@ -12,6 +12,8 @@ export interface EventLogEntry {
   eventType: string;
   streamId: string;
   txHash: string;
+  /** Zero-based index of this event within its transaction */
+  eventIndex?: number;
   ledger: number;
   ledgerClosedAt: string;
   sender?: string;
@@ -36,21 +38,42 @@ export interface AuditLogItem {
 
 export class AuditLogService {
   /**
-   * Log an event to the audit log
+   * Log an event to the audit log.
+   * Uses upsert on (txHash, eventIndex) to guarantee idempotency —
+   * re-processing the same on-chain event (e.g. after a re-org recovery)
+   * will update the existing row rather than creating a duplicate.
    */
   async logEvent(entry: EventLogEntry): Promise<void> {
     try {
-      await prisma.eventLog.create({
-        data: {
-          eventType: entry.eventType,
-          streamId: entry.streamId,
-          txHash: entry.txHash,
-          ledger: entry.ledger,
-          ledgerClosedAt: entry.ledgerClosedAt,
-          sender: entry.sender ?? null,
-          receiver: entry.receiver ?? null,
-          amount: entry.amount ?? null,
-          metadata: entry.metadata ? JSON.stringify(entry.metadata) : null,
+      const eventIndex = entry.eventIndex ?? 0;
+      const data = {
+        eventType: entry.eventType,
+        streamId: entry.streamId,
+        txHash: entry.txHash,
+        eventIndex,
+        ledger: entry.ledger,
+        ledgerClosedAt: entry.ledgerClosedAt,
+        sender: entry.sender ?? null,
+        receiver: entry.receiver ?? null,
+        amount: entry.amount ?? null,
+        metadata: entry.metadata ? JSON.stringify(entry.metadata) : null,
+      };
+
+      await prisma.eventLog.upsert({
+        where: {
+          txHash_eventIndex: { txHash: entry.txHash, eventIndex },
+        },
+        create: data,
+        update: {
+          // On re-org recovery, refresh mutable fields but preserve createdAt
+          eventType: data.eventType,
+          streamId: data.streamId,
+          ledger: data.ledger,
+          ledgerClosedAt: data.ledgerClosedAt,
+          sender: data.sender,
+          receiver: data.receiver,
+          amount: data.amount,
+          metadata: data.metadata,
         },
       });
 
@@ -58,6 +81,7 @@ export class AuditLogService {
         eventType: entry.eventType,
         streamId: entry.streamId,
         txHash: entry.txHash,
+        eventIndex,
       });
     } catch (error) {
       logger.error("Failed to log event to audit log", error, {
@@ -79,31 +103,33 @@ export class AuditLogService {
         take: limit,
       });
 
-      return events.map((event: {
-        id: string;
-        eventType: string;
-        streamId: string;
-        txHash: string;
-        ledger: number;
-        ledgerClosedAt: string;
-        sender: string | null;
-        receiver: string | null;
-        amount: bigint | null;
-        metadata: string | null;
-        createdAt: Date;
-      }) => ({
-        id: event.id,
-        eventType: event.eventType,
-        streamId: event.streamId,
-        txHash: event.txHash,
-        ledger: event.ledger,
-        ledgerClosedAt: event.ledgerClosedAt,
-        sender: event.sender,
-        receiver: event.receiver,
-        amount: event.amount?.toString() ?? null,
-        metadata: event.metadata ? JSON.parse(event.metadata) : null,
-        createdAt: event.createdAt,
-      }));
+      return events.map(
+        (event: {
+          id: string;
+          eventType: string;
+          streamId: string;
+          txHash: string;
+          ledger: number;
+          ledgerClosedAt: string;
+          sender: string | null;
+          receiver: string | null;
+          amount: bigint | null;
+          metadata: string | null;
+          createdAt: Date;
+        }) => ({
+          id: event.id,
+          eventType: event.eventType,
+          streamId: event.streamId,
+          txHash: event.txHash,
+          ledger: event.ledger,
+          ledgerClosedAt: event.ledgerClosedAt,
+          sender: event.sender,
+          receiver: event.receiver,
+          amount: event.amount?.toString() ?? null,
+          metadata: event.metadata ? JSON.parse(event.metadata) : null,
+          createdAt: event.createdAt,
+        }),
+      );
     } catch (error) {
       logger.error("Failed to retrieve audit log", error);
       throw error;
@@ -124,31 +150,33 @@ export class AuditLogService {
         },
       });
 
-      return events.map((event: {
-        id: string;
-        eventType: string;
-        streamId: string;
-        txHash: string;
-        ledger: number;
-        ledgerClosedAt: string;
-        sender: string | null;
-        receiver: string | null;
-        amount: bigint | null;
-        metadata: string | null;
-        createdAt: Date;
-      }) => ({
-        id: event.id,
-        eventType: event.eventType,
-        streamId: event.streamId,
-        txHash: event.txHash,
-        ledger: event.ledger,
-        ledgerClosedAt: event.ledgerClosedAt,
-        sender: event.sender,
-        receiver: event.receiver,
-        amount: event.amount?.toString() ?? null,
-        metadata: event.metadata ? JSON.parse(event.metadata) : null,
-        createdAt: event.createdAt,
-      }));
+      return events.map(
+        (event: {
+          id: string;
+          eventType: string;
+          streamId: string;
+          txHash: string;
+          ledger: number;
+          ledgerClosedAt: string;
+          sender: string | null;
+          receiver: string | null;
+          amount: bigint | null;
+          metadata: string | null;
+          createdAt: Date;
+        }) => ({
+          id: event.id,
+          eventType: event.eventType,
+          streamId: event.streamId,
+          txHash: event.txHash,
+          ledger: event.ledger,
+          ledgerClosedAt: event.ledgerClosedAt,
+          sender: event.sender,
+          receiver: event.receiver,
+          amount: event.amount?.toString() ?? null,
+          metadata: event.metadata ? JSON.parse(event.metadata) : null,
+          createdAt: event.createdAt,
+        }),
+      );
     } catch (error) {
       logger.error("Failed to retrieve stream events", error, { streamId });
       throw error;

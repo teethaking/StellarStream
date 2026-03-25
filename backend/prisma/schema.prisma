@@ -51,6 +51,7 @@ model EventLog {
   eventType      String   // create, withdraw, cancel
   streamId       String
   txHash         String
+  eventIndex     Int      @default(0) // Position of event within the transaction
   ledger         Int
   ledgerClosedAt String
   sender         String?
@@ -59,6 +60,7 @@ model EventLog {
   metadata       String?  // JSON string
   createdAt      DateTime @default(now())
 
+  @@unique([txHash, eventIndex])
   @@index([streamId])
   @@index([eventType])
   @@index([createdAt])
