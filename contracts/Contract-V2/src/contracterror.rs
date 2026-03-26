@@ -41,4 +41,8 @@ pub enum Error {
     MigrationPaused = 31,
     /// Relayer fee exceeds the available withdrawal amount
     InvalidRelayerFee = 32,
+    /// split_bps must be < 10000 (cannot split 100% away from beneficiary)
+    InvalidSplitBps = 33,
+    /// Address is flagged by the compliance oracle
+    AddressFlagged = 34,
 }

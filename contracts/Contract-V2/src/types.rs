@@ -30,6 +30,12 @@ pub struct StreamV2 {
     pub cycle_duration: u64,
     /// 0 = Unilateral cancellation, 1 = Mutual (both parties required) (Issue: Joint Signature)
     pub cancellation_type: u32,
+    /// Who receives accrued vault yield: 0 = Sender, 1 = Receiver, 2 = Treasury (Issue #410)
+    pub yield_recipient: u32,
+    /// Address that receives a split of every withdrawal (Issue #411)
+    pub split_address: Option<Address>,
+    /// Fraction of each withdrawal routed to split_address, in basis points 0–9999 (Issue #411)
+    pub split_bps: u32,
 }
 
 #[contracttype]
@@ -55,6 +61,12 @@ pub struct StreamArgs {
     pub cancellation_type: u32,
     /// Reserved for future routing extensions; protocol fees currently go to treasury only.
     pub affiliate: Option<Address>,
+    /// Who receives accrued vault yield: 0 = Sender, 1 = Receiver, 2 = Treasury (Issue #410)
+    pub yield_recipient: u32,
+    /// Address that receives a split of every withdrawal (Issue #411)
+    pub split_address: Option<Address>,
+    /// Fraction of each withdrawal routed to split_address, in basis points 0–9999 (Issue #411)
+    pub split_bps: u32,
 }
 
 #[contracttype]
@@ -329,5 +341,19 @@ pub struct FeesWithdrawnEvent {
     pub recipient: Address,
     pub token: Address,
     pub amount: i128,
+    pub timestamp: u64,
+}
+
+// ----------------------------------------------------------------
+// Issue #411: Stream-Splitting Events
+// ----------------------------------------------------------------
+
+#[contracttype]
+#[derive(Clone, Debug)]
+pub struct StreamSplitUpdatedEvent {
+    pub stream_id: u64,
+    pub beneficiary: Address,
+    pub split_address: Option<Address>,
+    pub split_bps: u32,
     pub timestamp: u64,
 }
