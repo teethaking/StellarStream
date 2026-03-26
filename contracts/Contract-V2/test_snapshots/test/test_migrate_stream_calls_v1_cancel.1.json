@@ -537,19 +537,20 @@
                         "symbol": "end_time"
                       },
                       "val": {
+                        "u64": 0
+                      }
+                    },
+                    {
+                      "key": {
+                        "symbol": "end_time"
+                      },
+                      "val": {
                         "u64": 200
                       }
                     },
                     {
                       "key": {
-                        "symbol": "is_pending"
-                      },
-                      "val": {
-                        "bool": false
-                      }
-                    },
-                    {
-                      "key": {
+                        "symbol": "multiplier_bps"
                         "symbol": "is_recurrent"
                       },
                       "val": {
@@ -561,17 +562,20 @@
                         "symbol": "migrated_from_v1"
                       },
                       "val": {
-                        "bool": true
+                        "i128": {
+                          "hi": 0,
+                          "lo": 0
+                        }
                       }
                     },
                     {
                       "key": {
-                        "symbol": "multiplier_bps"
+                        "symbol": "packed_meta"
                       },
                       "val": {
-                        "i128": {
+                        "u128": {
                           "hi": 0,
-                          "lo": 0
+                          "lo": 281474976710656
                         }
                       }
                     },
@@ -652,14 +656,6 @@
                           "hi": 0,
                           "lo": 0
                         }
-                      }
-                    },
-                    {
-                      "key": {
-                        "symbol": "yield_enabled"
-                      },
-                      "val": {
-                        "bool": false
                       }
                     }
                   ]

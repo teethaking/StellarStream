@@ -2,6 +2,40 @@ use crate::contracterror::Error;
 use crate::types::StreamV2;
 use soroban_sdk::{contracttype, symbol_short, Address, Env, Symbol, Vec};
 
+const STATUS_ACTIVE: u8 = 0;
+const STATUS_CANCELLED: u8 = 1;
+const STATUS_PENDING: u8 = 2;
+const STATUS_MASK: u128 = 0xFF;
+const PENALTY_BPS_SHIFT: u32 = 8;
+const PENALTY_BPS_MASK: u128 = 0xFFFF_FFFF;
+const CURVE_TYPE_SHIFT: u32 = 40;
+const CURVE_TYPE_MASK: u128 = 0xFF;
+const MIGRATED_FROM_V1_SHIFT: u32 = 48;
+const YIELD_ENABLED_SHIFT: u32 = 49;
+const IS_RECURRENT_SHIFT: u32 = 50;
+const CANCELLATION_TYPE_SHIFT: u32 = 51;
+const CANCELLATION_TYPE_MASK: u128 = 0xFFFF_FFFF;
+
+#[contracttype]
+#[derive(Clone, Debug, PartialEq)]
+struct StoredStreamV2 {
+    pub sender: Address,
+    pub receiver: Address,
+    pub beneficiary: Address,
+    pub token: Address,
+    pub total_amount: i128,
+    pub start_time: u64,
+    pub end_time: u64,
+    pub cliff_time: u64,
+    pub withdrawn_amount: i128,
+    pub packed_meta: u128,
+    pub v1_stream_id: u64,
+    pub step_duration: i128,
+    pub multiplier_bps: i128,
+    pub vault_address: Option<Address>,
+    pub cycle_duration: u64,
+}
+
 // ----------------------------------------------------------------
 // DataKeyV2 — all storage keys for the V2 contract.
 //
@@ -168,10 +202,74 @@ pub fn next_stream_id(env: &Env) -> u64 {
     id
 }
 
+pub(crate) fn pack_stream_metadata(stream: &StreamV2) -> u128 {
+    let status = if stream.cancelled {
+        STATUS_CANCELLED
+    } else if stream.is_pending {
+        STATUS_PENDING
+    } else {
+        STATUS_ACTIVE
+    };
+
+    let mut packed = status as u128;
+    packed |= (0u128 & PENALTY_BPS_MASK) << PENALTY_BPS_SHIFT;
+    packed |= (0u128 & CURVE_TYPE_MASK) << CURVE_TYPE_SHIFT;
+
+    if stream.migrated_from_v1 {
+        packed |= 1u128 << MIGRATED_FROM_V1_SHIFT;
+    }
+    if stream.yield_enabled {
+        packed |= 1u128 << YIELD_ENABLED_SHIFT;
+    }
+    if stream.is_recurrent {
+        packed |= 1u128 << IS_RECURRENT_SHIFT;
+    }
+
+    packed | ((stream.cancellation_type as u128 & CANCELLATION_TYPE_MASK) << CANCELLATION_TYPE_SHIFT)
+}
+
+pub(crate) fn unpack_stream_metadata(packed: u128) -> (u8, u32, u8, bool, bool, bool, u32) {
+    let status = (packed & STATUS_MASK) as u8;
+    let penalty_bps = ((packed >> PENALTY_BPS_SHIFT) & PENALTY_BPS_MASK) as u32;
+    let curve_type = ((packed >> CURVE_TYPE_SHIFT) & CURVE_TYPE_MASK) as u8;
+    let migrated_from_v1 = ((packed >> MIGRATED_FROM_V1_SHIFT) & 1) != 0;
+    let yield_enabled = ((packed >> YIELD_ENABLED_SHIFT) & 1) != 0;
+    let is_recurrent = ((packed >> IS_RECURRENT_SHIFT) & 1) != 0;
+    let cancellation_type =
+        ((packed >> CANCELLATION_TYPE_SHIFT) & CANCELLATION_TYPE_MASK) as u32;
+
+    (
+        status,
+        penalty_bps,
+        curve_type,
+        migrated_from_v1,
+        yield_enabled,
+        is_recurrent,
+        cancellation_type,
+    )
+}
+
 /// Persist a V2 stream in persistent storage and set its initial TTL.
 pub fn set_stream(env: &Env, stream_id: u64, stream: &StreamV2) {
     let key = DataKeyV2::Stream(stream_id);
-    env.storage().persistent().set(&key, stream);
+    let stored = StoredStreamV2 {
+        sender: stream.sender.clone(),
+        receiver: stream.receiver.clone(),
+        beneficiary: stream.beneficiary.clone(),
+        token: stream.token.clone(),
+        total_amount: stream.total_amount,
+        start_time: stream.start_time,
+        end_time: stream.end_time,
+        cliff_time: stream.cliff_time,
+        withdrawn_amount: stream.withdrawn_amount,
+        packed_meta: pack_stream_metadata(stream),
+        v1_stream_id: stream.v1_stream_id,
+        step_duration: stream.step_duration,
+        multiplier_bps: stream.multiplier_bps,
+        vault_address: stream.vault_address.clone(),
+        cycle_duration: stream.cycle_duration,
+    };
+    env.storage().persistent().set(&key, &stored);
     env.storage()
         .persistent()
         .extend_ttl(&key, STREAM_TTL_THRESHOLD, STREAM_TTL_BUMP);
@@ -180,13 +278,39 @@ pub fn set_stream(env: &Env, stream_id: u64, stream: &StreamV2) {
 /// Read a V2 stream from persistent storage.
 pub fn get_stream(env: &Env, stream_id: u64) -> Option<StreamV2> {
     let key = DataKeyV2::Stream(stream_id);
-    let stream: Option<StreamV2> = env.storage().persistent().get(&key);
+    let stream: Option<StoredStreamV2> = env.storage().persistent().get(&key);
     if stream.is_some() {
         env.storage()
             .persistent()
             .extend_ttl(&key, STREAM_TTL_THRESHOLD, STREAM_TTL_BUMP);
     }
-    stream
+    stream.map(|stored| {
+        let (status, _penalty_bps, _curve_type, migrated_from_v1, yield_enabled, is_recurrent, cancellation_type) =
+            unpack_stream_metadata(stored.packed_meta);
+
+        StreamV2 {
+            sender: stored.sender,
+            receiver: stored.receiver,
+            beneficiary: stored.beneficiary,
+            token: stored.token,
+            total_amount: stored.total_amount,
+            start_time: stored.start_time,
+            end_time: stored.end_time,
+            cliff_time: stored.cliff_time,
+            withdrawn_amount: stored.withdrawn_amount,
+            cancelled: status == STATUS_CANCELLED,
+            migrated_from_v1,
+            v1_stream_id: stored.v1_stream_id,
+            step_duration: stored.step_duration,
+            multiplier_bps: stored.multiplier_bps,
+            vault_address: stored.vault_address,
+            yield_enabled,
+            is_pending: status == STATUS_PENDING,
+            is_recurrent,
+            cycle_duration: stored.cycle_duration,
+            cancellation_type,
+        }
+    })
 }
 
 // ----------------------------------------------------------------

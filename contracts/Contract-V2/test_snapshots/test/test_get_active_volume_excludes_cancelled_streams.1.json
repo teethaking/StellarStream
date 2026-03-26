@@ -714,6 +714,7 @@
                     },
                     {
                       "key": {
+                        "symbol": "cliff_time"
                         "symbol": "cancellation_type"
                       },
                       "val": {
@@ -725,12 +726,12 @@
                         "symbol": "cancelled"
                       },
                       "val": {
-                        "bool": true
+                        "u64": 0
                       }
                     },
                     {
                       "key": {
-                        "symbol": "cliff_time"
+                        "symbol": "cycle_duration"
                       },
                       "val": {
                         "u64": 0
@@ -754,6 +755,7 @@
                     },
                     {
                       "key": {
+                        "symbol": "multiplier_bps"
                         "symbol": "is_pending"
                       },
                       "val": {
@@ -773,17 +775,20 @@
                         "symbol": "migrated_from_v1"
                       },
                       "val": {
-                        "bool": false
+                        "i128": {
+                          "hi": 0,
+                          "lo": 0
+                        }
                       }
                     },
                     {
                       "key": {
-                        "symbol": "multiplier_bps"
+                        "symbol": "packed_meta"
                       },
                       "val": {
-                        "i128": {
+                        "u128": {
                           "hi": 0,
-                          "lo": 0
+                          "lo": 1
                         }
                       }
                     },
@@ -865,14 +870,6 @@
                           "lo": 50000000
                         }
                       }
-                    },
-                    {
-                      "key": {
-                        "symbol": "yield_enabled"
-                      },
-                      "val": {
-                        "bool": false
-                      }
                     }
                   ]
                 }
@@ -930,6 +927,7 @@
                     },
                     {
                       "key": {
+                        "symbol": "cliff_time"
                         "symbol": "cancellation_type"
                       },
                       "val": {
@@ -941,12 +939,12 @@
                         "symbol": "cancelled"
                       },
                       "val": {
-                        "bool": false
+                        "u64": 0
                       }
                     },
                     {
                       "key": {
-                        "symbol": "cliff_time"
+                        "symbol": "cycle_duration"
                       },
                       "val": {
                         "u64": 0
@@ -970,6 +968,7 @@
                     },
                     {
                       "key": {
+                        "symbol": "multiplier_bps"
                         "symbol": "is_pending"
                       },
                       "val": {
@@ -989,15 +988,18 @@
                         "symbol": "migrated_from_v1"
                       },
                       "val": {
-                        "bool": false
+                        "i128": {
+                          "hi": 0,
+                          "lo": 0
+                        }
                       }
                     },
                     {
                       "key": {
-                        "symbol": "multiplier_bps"
+                        "symbol": "packed_meta"
                       },
                       "val": {
-                        "i128": {
+                        "u128": {
                           "hi": 0,
                           "lo": 0
                         }
@@ -1080,14 +1082,6 @@
                           "hi": 0,
                           "lo": 0
                         }
-                      }
-                    },
-                    {
-                      "key": {
-                        "symbol": "yield_enabled"
-                      },
-                      "val": {
-                        "bool": false
                       }
                     }
                   ]

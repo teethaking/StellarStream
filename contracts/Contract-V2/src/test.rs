@@ -55,6 +55,49 @@ fn stream_args(sender: &Address, receiver: &Address, token: &Address, total_amou
     }
 }
 
+#[test]
+fn test_packed_stream_metadata_round_trip() {
+    let env = Env::default();
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token = Address::generate(&env);
+
+    let stream = StreamV2 {
+        sender,
+        receiver: receiver.clone(),
+        beneficiary: receiver,
+        token,
+        total_amount: 123,
+        start_time: 1,
+        end_time: 2,
+        cliff_time: 1,
+        withdrawn_amount: 3,
+        cancelled: false,
+        migrated_from_v1: true,
+        v1_stream_id: 9,
+        step_duration: 0,
+        multiplier_bps: 0,
+        vault_address: None,
+        yield_enabled: true,
+        is_pending: true,
+        is_recurrent: true,
+        cycle_duration: 10,
+        cancellation_type: 7,
+    };
+
+    let packed = crate::storage::pack_stream_metadata(&stream);
+    let (status, penalty_bps, curve_type, migrated_from_v1, yield_enabled, is_recurrent, cancellation_type) =
+        crate::storage::unpack_stream_metadata(packed);
+
+    assert_eq!(status, 2);
+    assert_eq!(penalty_bps, 0);
+    assert_eq!(curve_type, 0);
+    assert!(migrated_from_v1);
+    assert!(yield_enabled);
+    assert!(is_recurrent);
+    assert_eq!(cancellation_type, 7);
+}
+
 // ── Init tests ───────────────────────────────────────────────────────────────
 
 #[test]
