@@ -7,6 +7,11 @@ pub enum Error {
     NotAdmin = 2,
     RecipientNotVerified = 3,
     NoVerifiedRecipients = 4,
-    InvalidSplit = 5,       // bps don't sum to 10000
+    InvalidSplit = 5,
     Overflow = 6,
+    NotAuthorizedAdmin = 7,   // caller is not in the 3-admin list
+    AlreadyApproved = 8,      // caller already voted on this proposal
+    ProposalNotFound = 9,
+    AlreadyExecuted = 10,
+    QuorumNotReached = 11,    // < 2 approvals
 }
