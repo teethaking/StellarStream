@@ -16,11 +16,11 @@ pub use types::{
     FeesWithdrawnEvent, LedgerFootprint, MigrationEvent, MultiAssetRecipient, NebulaEvent,
     Operation, OperationExecutedEvent, OperationScheduledEvent, PendingRateUpdate, PermitArgs,
     PermitStreamCreatedEvent, RateUpdateAcceptedEvent, RateUpdateCancelledEvent,
-    RateUpdateProposedEvent, SimulationCheck, SimulationReport, SimulationResult, StreamArgs,
-    StreamBatchEntry, StreamCancelledV2Event, StreamClaimV2Event, StreamCreatedV2Event,
-    StreamMigratedEvent, StreamRefilledEvent, StreamRequestApprovedEvent,
-    StreamRequestExecutedEvent, StreamRequestInitiatedEvent, StreamStatus, StreamToppedUpEvent,
-    StreamV2, SwapResult, SwapStreamArgs, SwapStreamCreatedEvent,
+    RateUpdateProposedEvent, SignatureStreamCreatedEvent, SimulationCheck, SimulationReport,
+    SimulationResult, StreamArgs, StreamBatchEntry, StreamCancelledV2Event, StreamClaimV2Event,
+    StreamCreatedV2Event, StreamMigratedEvent, StreamParams, StreamRefilledEvent,
+    StreamRequestApprovedEvent, StreamRequestExecutedEvent, StreamRequestInitiatedEvent,
+    StreamStatus, StreamToppedUpEvent, StreamV2, SwapResult, SwapStreamArgs, SwapStreamCreatedEvent,
 };
 use v1_interface::Client as V1Client;
 
@@ -2389,6 +2389,145 @@ impl Contract {
                 version: 2,
                 timestamp: now,
                 action: symbol_short!("permit"),
+                data,
+            },
+        );
+
+        Ok(stream_id)
+    }
+
+    // ----------------------------------------------------------------
+    // Issue #402 — Permit2-Style Signature Streaming
+    // ----------------------------------------------------------------
+
+    /// Allow a receiver to claim and start a stream using an off-chain signed
+    /// intent from the sender.
+    ///
+    /// The sender signs `StreamParams` off-chain (e.g. via Freighter) and shares
+    /// the signature with the receiver. The receiver calls this function to
+    /// atomically verify the signature, pull funds from the sender, and open the
+    /// stream — without requiring the sender to be online at claim time.
+    ///
+    /// # Verification
+    /// - `expiration_ledger`: the signed intent expires at this ledger number.
+    /// - `nonce`: replay protection; must match the stored nonce for `sender_pubkey`.
+    /// - `signature`: Ed25519 signature over the canonical hash of `params`.
+    ///
+    /// # Authorization
+    /// The receiver must authorize this call (they are the one claiming).
+    pub fn create_via_signature(
+        env: Env,
+        params: StreamParams,
+        signature: soroban_sdk::BytesN<64>,
+    ) -> Result<u64, Error> {
+        Self::require_not_paused(&env)?;
+        Self::require_asset_whitelisted(&env, &params.token)?;
+
+        // 1. Check expiration_ledger deadline
+        if env.ledger().sequence() > params.expiration_ledger {
+            return Err(Error::ExpiredDeadline);
+        }
+
+        // 2. Dust threshold check
+        if params.total_amount < storage::get_min_value(&env, &params.token) {
+            return Err(Error::BelowDustThreshold);
+        }
+
+        // 3. Replay-protection nonce check
+        let nonce_key = (symbol_short!("SIG_NONC"), params.sender_pubkey.clone());
+        let stored_nonce: u64 = env.storage().instance().get(&nonce_key).unwrap_or(0u64);
+        if params.nonce != stored_nonce {
+            return Err(Error::InvalidNonce);
+        }
+
+        // 4. Build the canonical message and verify the Ed25519 signature.
+        //    The message commits to: domain separator, contract address, and all
+        //    StreamParams fields so nothing can be altered after signing.
+        let mut msg = Bytes::new(&env);
+        msg.extend_from_slice(b"STELLARSTREAM_INTENT_V1");
+        msg.append(&env.current_contract_address().to_xdr(&env));
+        msg.append(&params.sender_pubkey.clone().into());
+        msg.append(&params.receiver.clone().to_xdr(&env));
+        msg.append(&params.token.clone().to_xdr(&env));
+        msg.extend_from_slice(&params.total_amount.to_be_bytes());
+        msg.extend_from_slice(&params.start_time.to_be_bytes());
+        msg.extend_from_slice(&params.cliff_time.to_be_bytes());
+        msg.extend_from_slice(&params.end_time.to_be_bytes());
+        msg.extend_from_slice(&params.nonce.to_be_bytes());
+        msg.extend_from_slice(&params.expiration_ledger.to_be_bytes());
+        if params.step_duration > 0 {
+            msg.extend_from_slice(&params.step_duration.to_be_bytes());
+            msg.extend_from_slice(&params.multiplier_bps.to_be_bytes());
+        }
+
+        let msg_hash: soroban_sdk::BytesN<32> = env.crypto().sha256(&msg).into();
+        env.crypto()
+            .ed25519_verify(&params.sender_pubkey, &msg_hash.into(), &signature);
+
+        // 5. Consume the nonce to prevent replay
+        env.storage()
+            .instance()
+            .set(&nonce_key, &(stored_nonce + 1));
+
+        // 6. Pull funds from the sender into the contract
+        let sender_addr =
+            Address::from_string_bytes(&params.sender_pubkey.clone().into());
+        let token_client = soroban_sdk::token::TokenClient::new(&env, &params.token);
+        token_client.transfer_from(
+            &env.current_contract_address(),
+            &sender_addr,
+            &env.current_contract_address(),
+            &params.total_amount,
+        );
+
+        // 7. Deduct protocol fee and create the stream
+        let stream_amount = Self::apply_protocol_fee(&env, &params.token, params.total_amount)?;
+        let stream_id = storage::next_stream_id(&env);
+
+        let stream = StreamV2 {
+            sender: sender_addr.clone(),
+            receiver: params.receiver.clone(),
+            beneficiary: params.receiver.clone(),
+            token: params.token.clone(),
+            total_amount: stream_amount,
+            start_time: params.start_time,
+            end_time: params.end_time,
+            cliff_time: params.cliff_time,
+            withdrawn_amount: 0,
+            cancelled: false,
+            migrated_from_v1: false,
+            v1_stream_id: 0,
+            step_duration: params.step_duration,
+            multiplier_bps: params.multiplier_bps,
+            penalty_bps: 0,
+            vault_address: params.vault_address,
+            yield_enabled: params.yield_enabled,
+            is_pending: false,
+            is_recurrent: false,
+            cycle_duration: 0,
+            cancellation_type: 0,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
+        };
+
+        // 8. Emit event
+        let now = env.ledger().timestamp();
+        let mut data = Vec::new(&env);
+        data.push_back(stream_id.into_val(&env));
+        data.push_back(params.receiver.clone().into_val(&env));
+        data.push_back(params.token.clone().into_val(&env));
+        data.push_back(stream_amount.into_val(&env));
+        data.push_back(params.expiration_ledger.into_val(&env));
+        data.push_back(params.nonce.into_val(&env));
+        data.push_back(now.into_val(&env));
+
+        env.events().publish(
+            (stream_id, symbol_short!("sig_claim")),
+            NebulaEvent {
+                version: 2,
+                timestamp: now,
+                action: symbol_short!("sig_claim"),
                 data,
             },
         );

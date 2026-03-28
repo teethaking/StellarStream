@@ -88,6 +88,58 @@ pub struct PermitArgs {
 }
 
 // ----------------------------------------------------------------
+// Issue #402 — Permit2-Style Signature Streaming
+// ----------------------------------------------------------------
+
+/// The stream parameters that the sender signs off-chain.
+/// The receiver submits this along with the sender's signature to claim
+/// and start the stream without requiring the sender to be online.
+#[contracttype]
+#[derive(Clone, Debug, PartialEq)]
+pub struct StreamParams {
+    /// The sender's Ed25519 public key (32 bytes).
+    pub sender_pubkey: BytesN<32>,
+    /// The intended receiver of the stream.
+    pub receiver: Address,
+    /// The token to stream.
+    pub token: Address,
+    /// Total amount to stream (before protocol fee).
+    pub total_amount: i128,
+    /// Stream start time (Unix timestamp).
+    pub start_time: u64,
+    /// Cliff time — no withdrawals before this (Unix timestamp, 0 = no cliff).
+    pub cliff_time: u64,
+    /// Stream end time (Unix timestamp).
+    pub end_time: u64,
+    /// Replay-protection nonce (must match the stored nonce for sender_pubkey).
+    pub nonce: u64,
+    /// Ledger number after which this signed intent is no longer valid.
+    pub expiration_ledger: u32,
+    /// Step duration for stepped streams (0 = linear).
+    pub step_duration: i128,
+    /// Multiplier in basis points for exponential streams (0 = linear).
+    pub multiplier_bps: i128,
+    /// Optional vault address for yield-bearing streams.
+    pub vault_address: Option<Address>,
+    /// Whether to enable yield on the stream.
+    pub yield_enabled: bool,
+}
+
+/// Event emitted when a stream is created via an off-chain signed intent.
+#[contracttype]
+#[derive(Clone, Debug)]
+pub struct SignatureStreamCreatedEvent {
+    pub stream_id: u64,
+    pub sender_pubkey: BytesN<32>,
+    pub receiver: Address,
+    pub token: Address,
+    pub total_amount: i128,
+    pub expiration_ledger: u32,
+    pub nonce: u64,
+    pub timestamp: u64,
+}
+
+// ----------------------------------------------------------------
 // Batch Read Helper Types
 // ----------------------------------------------------------------
 

@@ -3669,3 +3669,120 @@ fn test_simulate_ledger_footprint_estimated() {
     assert!(report.footprint.estimated_writes > 0);
     assert!(report.footprint.event_bytes > 0);
 }
+
+// ----------------------------------------------------------------
+// Issue #402 — Permit2-Style Signature Streaming Tests
+// ----------------------------------------------------------------
+
+/// Build a minimal StreamParams for testing.
+fn make_stream_params(
+    env: &Env,
+    pubkey: soroban_sdk::BytesN<32>,
+    receiver: &Address,
+    token: &Address,
+    expiration_ledger: u32,
+) -> crate::types::StreamParams {
+    crate::types::StreamParams {
+        sender_pubkey: pubkey,
+        receiver: receiver.clone(),
+        token: token.clone(),
+        total_amount: 1_000_000_000,
+        start_time: 0,
+        cliff_time: 0,
+        end_time: 200,
+        nonce: 0,
+        expiration_ledger,
+        step_duration: 0,
+        multiplier_bps: 0,
+        vault_address: None,
+        yield_enabled: false,
+    }
+}
+
+#[test]
+fn test_create_via_signature_fails_when_paused() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, _) = create_token(&env, &token_admin);
+    let (_, client) = setup_v2(&env, &admin);
+    client.add_to_whitelist(&token_id);
+    client.pause();
+
+    let pubkey = soroban_sdk::BytesN::from_array(&env, &[1u8; 32]);
+    let bad_sig = soroban_sdk::BytesN::from_array(&env, &[0u8; 64]);
+    let params = make_stream_params(&env, pubkey, &receiver, &token_id, 9999);
+
+    let result = client.try_create_via_signature(&params, &bad_sig);
+    assert_eq!(result, Err(Ok(Error::ContractPaused)));
+}
+
+#[test]
+fn test_create_via_signature_fails_with_expired_ledger() {
+    let env = Env::default();
+    env.mock_all_auths();
+    // Set current ledger sequence to 500
+    env.ledger().with_mut(|li| li.sequence_number = 500);
+
+    let admin = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, _) = create_token(&env, &token_admin);
+    let (_, client) = setup_v2(&env, &admin);
+    client.add_to_whitelist(&token_id);
+
+    let pubkey = soroban_sdk::BytesN::from_array(&env, &[1u8; 32]);
+    let bad_sig = soroban_sdk::BytesN::from_array(&env, &[0u8; 64]);
+    // expiration_ledger = 100, current sequence = 500 → expired
+    let params = make_stream_params(&env, pubkey, &receiver, &token_id, 100);
+
+    let result = client.try_create_via_signature(&params, &bad_sig);
+    assert_eq!(result, Err(Ok(Error::ExpiredDeadline)));
+}
+
+#[test]
+fn test_create_via_signature_fails_with_wrong_nonce() {
+    let env = Env::default();
+    env.mock_all_auths();
+    env.ledger().with_mut(|li| li.sequence_number = 100);
+
+    let admin = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, _) = create_token(&env, &token_admin);
+    let (_, client) = setup_v2(&env, &admin);
+    client.add_to_whitelist(&token_id);
+
+    let pubkey = soroban_sdk::BytesN::from_array(&env, &[2u8; 32]);
+    let bad_sig = soroban_sdk::BytesN::from_array(&env, &[0u8; 64]);
+
+    let mut params = make_stream_params(&env, pubkey, &receiver, &token_id, 9999);
+    params.nonce = 42; // stored nonce is 0 → mismatch
+
+    let result = client.try_create_via_signature(&params, &bad_sig);
+    assert_eq!(result, Err(Ok(Error::InvalidNonce)));
+}
+
+#[test]
+fn test_create_via_signature_fails_for_non_whitelisted_asset() {
+    let env = Env::default();
+    env.mock_all_auths();
+    env.ledger().with_mut(|li| li.sequence_number = 100);
+
+    let admin = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, _) = create_token(&env, &token_admin);
+    let (_, client) = setup_v2(&env, &admin);
+    // Intentionally NOT whitelisting the token
+
+    let pubkey = soroban_sdk::BytesN::from_array(&env, &[3u8; 32]);
+    let bad_sig = soroban_sdk::BytesN::from_array(&env, &[0u8; 64]);
+    let params = make_stream_params(&env, pubkey, &receiver, &token_id, 9999);
+
+    let result = client.try_create_via_signature(&params, &bad_sig);
+    assert_eq!(result, Err(Ok(Error::AssetNotWhitelisted)));
+}
