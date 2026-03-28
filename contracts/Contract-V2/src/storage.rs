@@ -143,6 +143,16 @@ pub enum DataKeyV2 {
     // -- Issue #632 — Gas Tank Buffer ----------------------------------
     /// Per-sender XLM gas buffer in stroops.
     GasBuffer(Address), // 30
+
+    // -- Emergency Recovery Multi-Sig (Issue: Security Critical) --------
+    /// Vec<Address> of pre-approved recovery council members
+    RecoveryCouncil, // 31
+    /// Required number of council signatures to execute recovery
+    RecoveryThreshold, // 32
+    /// Timestamp when recovery was initiated (None = not initiated)
+    RecoveryInitiatedAt, // 33
+    /// Addresses that have already approved the current recovery
+    RecoveryApprovals, // 34
 }
 
 /// Global stream counter.
@@ -921,4 +931,69 @@ pub fn has_pending_rate_update(env: &Env, stream_id: u64) -> bool {
     env.storage()
         .instance()
         .has(&DataKeyV2::PendingRateUpdate(stream_id))
+}
+
+
+// ----------------------------------------------------------------
+// Emergency Recovery Multi-Sig (Issue: Security Critical)
+// ----------------------------------------------------------------
+
+/// 7-day grace period before recovery funds can move.
+pub const RECOVERY_GRACE_PERIOD: u64 = 604_800;
+
+/// Persist the recovery council and required threshold.
+pub fn set_recovery_council(env: &Env, council: &Vec<Address>, threshold: u32) {
+    env.storage().instance().set(&DataKeyV2::RecoveryCouncil, council);
+    env.storage().instance().set(&DataKeyV2::RecoveryThreshold, &threshold);
+    bump_instance(env);
+}
+
+/// Return the recovery council, if configured.
+pub fn get_recovery_council(env: &Env) -> Option<Vec<Address>> {
+    env.storage().instance().get(&DataKeyV2::RecoveryCouncil)
+}
+
+/// Return the recovery threshold (default 1).
+pub fn get_recovery_threshold(env: &Env) -> u32 {
+    env.storage()
+        .instance()
+        .get(&DataKeyV2::RecoveryThreshold)
+        .unwrap_or(1)
+}
+
+/// Record the timestamp when recovery was initiated.
+pub fn set_recovery_initiated_at(env: &Env, ts: u64) {
+    env.storage().instance().set(&DataKeyV2::RecoveryInitiatedAt, &ts);
+    // Reset approvals list on new initiation.
+    let empty: Vec<Address> = Vec::new(env);
+    env.storage().instance().set(&DataKeyV2::RecoveryApprovals, &empty);
+    bump_instance(env);
+}
+
+/// Return the timestamp when recovery was initiated, if any.
+pub fn get_recovery_initiated_at(env: &Env) -> Option<u64> {
+    env.storage().instance().get(&DataKeyV2::RecoveryInitiatedAt)
+}
+
+/// Clear recovery state (after execution or cancellation).
+pub fn clear_recovery(env: &Env) {
+    env.storage().instance().remove(&DataKeyV2::RecoveryInitiatedAt);
+    env.storage().instance().remove(&DataKeyV2::RecoveryApprovals);
+    bump_instance(env);
+}
+
+/// Return the list of addresses that have approved the current recovery.
+pub fn get_recovery_approvals(env: &Env) -> Vec<Address> {
+    env.storage()
+        .instance()
+        .get(&DataKeyV2::RecoveryApprovals)
+        .unwrap_or_else(|| Vec::new(env))
+}
+
+/// Append `signer` to the recovery approvals list.
+pub fn add_recovery_approval(env: &Env, signer: &Address) {
+    let mut approvals = get_recovery_approvals(env);
+    approvals.push_back(signer.clone());
+    env.storage().instance().set(&DataKeyV2::RecoveryApprovals, &approvals);
+    bump_instance(env);
 }

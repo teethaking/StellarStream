@@ -116,4 +116,19 @@ pub enum Error {
     SimulationStorageLimitExceeded = 65,
     /// Simulation: Invalid parameters for stream creation
     SimulationInvalidParams = 66,
+    // -- Emergency Recovery Multi-Sig (Issue: Security Critical) --------
+    /// Recovery council has not been configured
+    RecoveryCouncilNotSet = 69,
+    /// Signer is not a member of the recovery council
+    NotCouncilMember = 70,
+    /// Recovery has already been initiated; cannot re-initiate
+    RecoveryAlreadyInitiated = 71,
+    /// Recovery grace period (7 days) has not elapsed yet
+    RecoveryGracePeriodActive = 72,
+    /// No active recovery has been initiated
+    RecoveryNotInitiated = 73,
+    /// Signer has already approved this recovery
+    RecoveryAlreadyApproved = 74,
+    /// Not enough council signatures to execute recovery
+    RecoveryInsufficientSignatures = 75,
 }

@@ -4266,6 +4266,144 @@ impl Contract {
     pub fn get_gas_buffer_balance(env: Env, user: Address) -> i128 {
         storage::get_gas_buffer(&env, &user)
     }
+
+    // ----------------------------------------------------------------
+    // Emergency Recovery Multi-Sig (Issue: Security Critical)
+    // ----------------------------------------------------------------
+
+    /// Configure the recovery council and required signature threshold.
+    ///
+    /// Can only be called by the current admin. The council addresses are
+    /// stored on-chain and cannot be changed without another admin call,
+    /// preventing a compromised admin from silently swapping council members
+    /// after the fact.
+    ///
+    /// # Parameters
+    /// - `admin`: Current contract admin (must sign).
+    /// - `council`: Vec of council member addresses (hardcoded or set here at init).
+    /// - `threshold`: Minimum signatures required to execute recovery.
+    pub fn set_recovery_council(
+        env: Env,
+        admin: Address,
+        council: Vec<Address>,
+        threshold: u32,
+    ) -> Result<(), Error> {
+        storage::try_get_admin(&env)?.require_auth();
+
+        if threshold == 0 || threshold > council.len() {
+            return Err(Error::InvalidThreshold);
+        }
+
+        storage::set_recovery_council(&env, &council, threshold);
+        Ok(())
+    }
+
+    /// Return the configured recovery council.
+    pub fn get_recovery_council(env: Env) -> Option<Vec<Address>> {
+        storage::get_recovery_council(&env)
+    }
+
+    /// Initiate the 7-day recovery grace period.
+    ///
+    /// Any single council member can call this to start the clock. Once
+    /// initiated, the council has 7 days to gather enough signatures before
+    /// calling `recovery_split`.
+    ///
+    /// # Parameters
+    /// - `initiator`: A council member address (must sign).
+    pub fn init_recovery(env: Env, initiator: Address) -> Result<(), Error> {
+        let council = storage::get_recovery_council(&env)
+            .ok_or(Error::RecoveryCouncilNotSet)?;
+
+        if !council.contains(&initiator) {
+            return Err(Error::NotCouncilMember);
+        }
+        initiator.require_auth();
+
+        if storage::get_recovery_initiated_at(&env).is_some() {
+            return Err(Error::RecoveryAlreadyInitiated);
+        }
+
+        let now = env.ledger().timestamp();
+        storage::set_recovery_initiated_at(&env, now);
+
+        env.events().publish(
+            (soroban_sdk::symbol_short!("rec_init"), initiator),
+            now,
+        );
+
+        Ok(())
+    }
+
+    /// Execute an emergency recovery split after the 7-day grace period.
+    ///
+    /// Requires at least `recovery_threshold` council signatures. Transfers
+    /// the full contract token balance to `destination`.
+    ///
+    /// # Parameters
+    /// - `council_signatures`: Vec of council member addresses signing this call.
+    /// - `token`: The token to recover.
+    /// - `destination`: Address that receives the recovered funds.
+    pub fn recovery_split(
+        env: Env,
+        council_signatures: Vec<Address>,
+        token: Address,
+        destination: Address,
+    ) -> Result<i128, Error> {
+        let council = storage::get_recovery_council(&env)
+            .ok_or(Error::RecoveryCouncilNotSet)?;
+
+        let initiated_at = storage::get_recovery_initiated_at(&env)
+            .ok_or(Error::RecoveryNotInitiated)?;
+
+        // Enforce 7-day grace period.
+        let now = env.ledger().timestamp();
+        if now < initiated_at.saturating_add(storage::RECOVERY_GRACE_PERIOD) {
+            return Err(Error::RecoveryGracePeriodActive);
+        }
+
+        let threshold = storage::get_recovery_threshold(&env);
+        let mut approvals = storage::get_recovery_approvals(&env);
+
+        // Validate and auth each signer; deduplicate.
+        for signer in council_signatures.iter() {
+            if !council.contains(&signer) {
+                return Err(Error::NotCouncilMember);
+            }
+            if approvals.contains(&signer) {
+                return Err(Error::RecoveryAlreadyApproved);
+            }
+            signer.require_auth();
+            approvals.push_back(signer.clone());
+        }
+
+        if approvals.len() < threshold {
+            // Persist partial approvals so subsequent calls can accumulate.
+            env.storage()
+                .instance()
+                .set(&crate::storage::DataKeyV2::RecoveryApprovals, &approvals);
+            storage::bump_instance(&env);
+            return Err(Error::RecoveryInsufficientSignatures);
+        }
+
+        // Transfer the full balance of `token` to `destination`.
+        let token_client = soroban_sdk::token::TokenClient::new(&env, &token);
+        let balance = token_client.balance(&env.current_contract_address());
+
+        if balance > 0 {
+            token_client.transfer(&env.current_contract_address(), &destination, &balance);
+        }
+
+        // Clear recovery state to prevent replay.
+        storage::clear_recovery(&env);
+
+        env.events().publish(
+            (soroban_sdk::symbol_short!("rec_exec"), destination.clone()),
+            balance,
+        );
+
+        Ok(balance)
+    }
 }
 
 mod test;

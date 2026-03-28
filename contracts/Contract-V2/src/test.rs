@@ -3786,3 +3786,198 @@ fn test_create_via_signature_fails_for_non_whitelisted_asset() {
     let result = client.try_create_via_signature(&params, &bad_sig);
     assert_eq!(result, Err(Ok(Error::AssetNotWhitelisted)));
 }
+
+// ── Emergency Recovery Multi-Sig Tests ───────────────────────────────────────
+
+#[test]
+fn test_set_recovery_council_success() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let c2 = Address::generate(&env);
+    let c3 = Address::generate(&env);
+    let council = vec![&env, c1.clone(), c2.clone(), c3.clone()];
+
+    client.set_recovery_council(&admin, &council, &2);
+    let stored = client.get_recovery_council().unwrap();
+    assert_eq!(stored.len(), 3);
+}
+
+#[test]
+fn test_set_recovery_council_invalid_threshold() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let council = vec![&env, c1.clone()];
+
+    // threshold > council size
+    let result = client.try_set_recovery_council(&admin, &council, &5);
+    assert_eq!(result, Err(Ok(Error::InvalidThreshold)));
+
+    // threshold = 0
+    let result2 = client.try_set_recovery_council(&admin, &council, &0);
+    assert_eq!(result2, Err(Ok(Error::InvalidThreshold)));
+}
+
+#[test]
+fn test_init_recovery_success() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let council = vec![&env, c1.clone()];
+    client.set_recovery_council(&admin, &council, &1);
+
+    client.init_recovery(&c1);
+}
+
+#[test]
+fn test_init_recovery_not_council_member() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let outsider = Address::generate(&env);
+    let council = vec![&env, c1.clone()];
+    client.set_recovery_council(&admin, &council, &1);
+
+    let result = client.try_init_recovery(&outsider);
+    assert_eq!(result, Err(Ok(Error::NotCouncilMember)));
+}
+
+#[test]
+fn test_init_recovery_already_initiated() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let council = vec![&env, c1.clone()];
+    client.set_recovery_council(&admin, &council, &1);
+    client.init_recovery(&c1);
+
+    let result = client.try_init_recovery(&c1);
+    assert_eq!(result, Err(Ok(Error::RecoveryAlreadyInitiated)));
+}
+
+#[test]
+fn test_recovery_split_grace_period_active() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let council = vec![&env, c1.clone()];
+    client.set_recovery_council(&admin, &council, &1);
+    client.init_recovery(&c1);
+
+    let (token_id, _, sac) = create_token(&env, &admin);
+    let destination = Address::generate(&env);
+    let signers = vec![&env, c1.clone()];
+
+    // Grace period not elapsed — should fail
+    let result = client.try_recovery_split(&signers, &token_id, &destination);
+    assert_eq!(result, Err(Ok(Error::RecoveryGracePeriodActive)));
+}
+
+#[test]
+fn test_recovery_split_success_after_grace_period() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (contract_id, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let council = vec![&env, c1.clone()];
+    client.set_recovery_council(&admin, &council, &1);
+
+    // Set ledger time and initiate recovery
+    env.ledger().with_mut(|l| l.timestamp = 1_000_000);
+    client.init_recovery(&c1);
+
+    // Advance past 7-day grace period
+    env.ledger().with_mut(|l| l.timestamp = 1_000_000 + 604_801);
+
+    let (token_id, token_client, sac) = create_token(&env, &admin);
+    // Fund the contract
+    sac.mint(&contract_id, &5_000_000);
+
+    let destination = Address::generate(&env);
+    let signers = vec![&env, c1.clone()];
+
+    let recovered = client.recovery_split(&signers, &token_id, &destination);
+    assert_eq!(recovered, 5_000_000);
+    assert_eq!(token_client.balance(&destination), 5_000_000);
+}
+
+#[test]
+fn test_recovery_split_insufficient_signatures() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let c2 = Address::generate(&env);
+    let council = vec![&env, c1.clone(), c2.clone()];
+    client.set_recovery_council(&admin, &council, &2);
+
+    env.ledger().with_mut(|l| l.timestamp = 1_000_000);
+    client.init_recovery(&c1);
+    env.ledger().with_mut(|l| l.timestamp = 1_000_000 + 604_801);
+
+    let (token_id, _, _) = create_token(&env, &admin);
+    let destination = Address::generate(&env);
+
+    // Only 1 signer, threshold is 2
+    let signers = vec![&env, c1.clone()];
+    let result = client.try_recovery_split(&signers, &token_id, &destination);
+    assert_eq!(result, Err(Ok(Error::RecoveryInsufficientSignatures)));
+}
+
+#[test]
+fn test_recovery_split_no_council_set() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let (token_id, _, _) = create_token(&env, &admin);
+    let destination = Address::generate(&env);
+    let c1 = Address::generate(&env);
+    let signers = vec![&env, c1.clone()];
+
+    let result = client.try_recovery_split(&signers, &token_id, &destination);
+    assert_eq!(result, Err(Ok(Error::RecoveryCouncilNotSet)));
+}
+
+#[test]
+fn test_recovery_split_not_initiated() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    let c1 = Address::generate(&env);
+    let council = vec![&env, c1.clone()];
+    client.set_recovery_council(&admin, &council, &1);
+
+    let (token_id, _, _) = create_token(&env, &admin);
+    let destination = Address::generate(&env);
+    let signers = vec![&env, c1.clone()];
+
+    let result = client.try_recovery_split(&signers, &token_id, &destination);
+    assert_eq!(result, Err(Ok(Error::RecoveryNotInitiated)));
+}
