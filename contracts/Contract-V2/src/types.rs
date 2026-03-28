@@ -249,7 +249,18 @@ pub struct PermitStreamCreatedEvent {
 }
 
 // ----------------------------------------------------------------
-// Issue #601 — Multi-Asset Batch Disbursement
+// Issue #597 - Atomic Multi-Transfer Implementation
+// ----------------------------------------------------------------
+
+#[contracttype]
+#[derive(Clone, Debug)]
+pub struct Recipient {
+    pub address: Address,
+    pub amount: i128,
+}
+
+// ----------------------------------------------------------------
+// Issue #601 - Multi-Asset Batch Disbursement
 // ----------------------------------------------------------------
 
 /// A single recipient entry for `split_multi_asset`.

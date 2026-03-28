@@ -1361,6 +1361,98 @@ fn test_split_multi_asset_requires_gas_buffer() {
 }
 
 #[test]
+fn test_split_funds_success() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver1 = Address::generate(&env);
+    let receiver2 = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &1_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    // Deposit exactly one execution's gas buffer fee.
+    v2_client
+        .deposit_gas_buffer(&sender, &GAS_FEE_PER_SPLIT_STROOPS)
+        .unwrap();
+
+    let recipients = soroban_sdk::vec![
+        &env,
+        crate::types::Recipient {
+            address: receiver1.clone(),
+            amount: 100_000_000,
+        },
+        crate::types::Recipient {
+            address: receiver2.clone(),
+            amount: 100_000_000,
+        },
+    ];
+
+    v2_client
+        .split_funds(&sender, &token_id, &recipients)
+        .unwrap();
+
+    assert_eq!(token_client.balance(&receiver1), 100_000_000);
+    assert_eq!(token_client.balance(&receiver2), 100_000_000);
+    assert_eq!(v2_client.get_gas_buffer_balance(&sender), 0);
+}
+
+#[test]
+fn test_split_funds_fails_atomically_on_insufficient_balance() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver1 = Address::generate(&env);
+    let receiver2 = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    // Mint only enough for the gas-buffer deposit + the first recipient.
+    asset_client.mint(&sender, &(GAS_FEE_PER_SPLIT_STROOPS + 100_000_000));
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    // Deposit exactly one execution's gas buffer fee.
+    v2_client
+        .deposit_gas_buffer(&sender, &GAS_FEE_PER_SPLIT_STROOPS)
+        .unwrap();
+
+    let recipients = soroban_sdk::vec![
+        &env,
+        crate::types::Recipient {
+            address: receiver1.clone(),
+            amount: 100_000_000,
+        },
+        crate::types::Recipient {
+            address: receiver2.clone(),
+            amount: 1,
+        },
+    ];
+
+    let sender_balance_before = token_client.balance(&sender);
+
+    // Should fail atomically (insufficient balance on second transfer).
+    let result = v2_client.try_split_funds(&sender, &token_id, &recipients);
+    assert!(result.is_err());
+
+    // No recipients should receive tokens.
+    assert_eq!(token_client.balance(&receiver1), 0);
+    assert_eq!(token_client.balance(&receiver2), 0);
+
+    // Sender balance should be unchanged from immediately before the call.
+    assert_eq!(token_client.balance(&sender), sender_balance_before);
+}
+
+#[test]
 fn test_split_multi_asset_fails_on_non_token_asset() {
     let env = Env::default();
     env.mock_all_auths();
@@ -2443,7 +2535,12 @@ fn test_compliance_oracle_allows_clean_address() {
     env.ledger().set_timestamp(500);
     v2_client.withdraw(&sid, &receiver);
     assert_eq!(token_client.balance(&receiver), 500_000_000);
-}<'a>(env: &'a Env, penalty_bps: u32) -> (ContractClient<'a>, Address, Address, Address, u64) {
+}
+
+fn make_penalised_stream<'a>(
+    env: &'a Env,
+    penalty_bps: u32,
+) -> (ContractClient<'a>, Address, Address, Address, u64) {
     env.mock_all_auths();
     let admin = Address::generate(env);
     let sender = Address::generate(env);
