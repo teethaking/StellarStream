@@ -23,6 +23,7 @@ import {
   Rocket,
   Coins,
   FileText,
+  TrendingUp,
 } from "lucide-react";
 import { TransactionQueueManager } from "@/components/dashboard/TransactionQueueManager";
 
@@ -91,6 +92,11 @@ export function Sidebar({ onOpenAuditLog }: SidebarProps) {
       label: "Splitter",
       href: "/dashboard/splitter",
       icon: Share2,
+    },
+    {
+      label: "Affiliate Portal",
+      href: "/dashboard/affiliate",
+      icon: TrendingUp,
     },
     {
       label: "Transparency",
