@@ -469,6 +469,10 @@ impl Contract {
             cycle_duration: 0,
             cancellation_type: 0, // Unilateral cancellation
             affiliate: None,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
+            curve_type: 0,
         };
 
         // Create the stream
@@ -614,6 +618,10 @@ impl Contract {
             is_recurrent: args.is_recurrent,
             cycle_duration: args.cycle_duration,
             cancellation_type: args.cancellation_type,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
+            curve_type: args.curve_type,
         };
 
         storage::set_stream(&env, stream_id, &stream);
@@ -874,6 +882,7 @@ impl Contract {
             yield_recipient: 0,
             split_address: None,
             split_bps: 0,
+            curve_type: 0,
         };
 
         storage::set_stream(&env, v2_stream_id, &v2_stream);
@@ -981,6 +990,10 @@ impl Contract {
             is_recurrent: false,
             cycle_duration: 0,
             cancellation_type: 0,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
+            curve_type: 0,
         };
 
         storage::set_stream(&env, v2_stream_id, &v2_stream);
@@ -1681,12 +1694,14 @@ impl Contract {
             }
 
             numerator / denominator
+        } else if stream.curve_type == 1 {
+            // Exponential (back-loaded): unlocked = total * (elapsed / duration)^2
+            math::calculate_exponential_unlocked(stream.total_amount, duration, elapsed)
         } else {
             // Issue #403 — Smooth-Flow: use calculate_flow (backed by mul_div)
             // for overflow-safe, precision-preserving linear unlocking.
             math::calculate_flow(stream.total_amount, duration, elapsed)
-        }
-    }
+        }    }
 
     fn power_scale(q_bps: i128, n: u32) -> i128 {
         let mut res = 1_000_000_000_i128;
@@ -2216,6 +2231,7 @@ impl Contract {
             yield_recipient: args.yield_recipient,
             split_address: args.split_address.clone(),
             split_bps: args.split_bps,
+            curve_type: args.curve_type,
         };
 
         storage::set_stream(&env, stream_id, &stream);
@@ -2336,6 +2352,7 @@ impl Contract {
             yield_recipient: 0,
             split_address: None,
             split_bps: 0,
+            curve_type: 0,
         };
 
         storage::set_stream(&env, stream_id, &stream);
@@ -2476,6 +2493,7 @@ impl Contract {
             yield_recipient: 0,
             split_address: None,
             split_bps: 0,
+            curve_type: 0,
         };
 
         // 8. Emit event
@@ -2664,6 +2682,7 @@ impl Contract {
             yield_recipient: args.yield_recipient,
             split_address: args.split_address.clone(),
             split_bps: args.split_bps,
+            curve_type: 0,
         };
 
         storage::set_stream(&env, stream_id, &stream);
@@ -3193,6 +3212,7 @@ impl Contract {
                 yield_recipient: args.yield_recipient,
                 split_address: args.split_address.clone(),
                 split_bps: args.split_bps,
+                curve_type: args.curve_type,
             };
 
             let now = env.ledger().timestamp();
@@ -3454,6 +3474,10 @@ impl Contract {
             is_recurrent: args.is_recurrent,
             cycle_duration: args.cycle_duration,
             cancellation_type: args.cancellation_type,
+            yield_recipient: args.yield_recipient,
+            split_address: args.split_address.clone(),
+            split_bps: args.split_bps,
+            curve_type: args.curve_type,
         };
 
         storage::set_stream(env, stream_id, &stream);

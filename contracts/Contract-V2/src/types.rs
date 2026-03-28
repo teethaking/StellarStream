@@ -36,6 +36,8 @@ pub struct StreamV2 {
     pub split_address: Option<Address>,
     /// Fraction of each withdrawal routed to split_address, in basis points 0–9999 (Issue #411)
     pub split_bps: u32,
+    /// Curve type: 0 = Linear, 1 = Exponential (back-loaded, unlocked = total * (elapsed/duration)^2)
+    pub curve_type: u32,
 }
 
 #[contracttype]
@@ -67,6 +69,8 @@ pub struct StreamArgs {
     pub split_address: Option<Address>,
     /// Fraction of each withdrawal routed to split_address, in basis points 0–9999 (Issue #411)
     pub split_bps: u32,
+    /// Curve type: 0 = Linear, 1 = Exponential (back-loaded, unlocked = total * (elapsed/duration)^2)
+    pub curve_type: u32,
 }
 
 #[contracttype]

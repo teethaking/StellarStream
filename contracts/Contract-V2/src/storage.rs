@@ -276,7 +276,7 @@ pub(crate) fn pack_stream_metadata(stream: &StreamV2) -> u128 {
 
     let mut packed = status as u128;
     packed |= ((stream.penalty_bps as u128) & PENALTY_BPS_MASK) << PENALTY_BPS_SHIFT;
-    packed |= (0u128 & CURVE_TYPE_MASK) << CURVE_TYPE_SHIFT;
+    packed |= ((stream.curve_type as u128) & CURVE_TYPE_MASK) << CURVE_TYPE_SHIFT;
 
     if stream.migrated_from_v1 {
         packed |= 1u128 << MIGRATED_FROM_V1_SHIFT;
@@ -351,7 +351,7 @@ pub fn get_stream(env: &Env, stream_id: u64) -> Option<StreamV2> {
             .extend_ttl(&key, STREAM_TTL_THRESHOLD, STREAM_TTL_BUMP);
     }
     stream.map(|stored| {
-        let (status, penalty_bps, _curve_type, migrated_from_v1, yield_enabled, is_recurrent, cancellation_type) =
+        let (status, penalty_bps, curve_type, migrated_from_v1, yield_enabled, is_recurrent, cancellation_type) =
             unpack_stream_metadata(stored.packed_meta);
 
         StreamV2 {
@@ -379,6 +379,7 @@ pub fn get_stream(env: &Env, stream_id: u64) -> Option<StreamV2> {
             yield_recipient: stored.yield_recipient,
             split_address: stored.split_address,
             split_bps: stored.split_bps,
+            curve_type: curve_type as u32,
         }
     })
 }
