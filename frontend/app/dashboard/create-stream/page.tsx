@@ -13,6 +13,7 @@ import type { RecoveryErrorType } from "@/components/error-recovery-cards";
 import { useHardwareWalletTimeout } from "@/lib/hooks/use-hardware-wallet-timeout";
 import { ConfirmOnDeviceModal } from "@/components/confirm-on-device-modal";
 import { LoadProposalDataButton } from "@/components/load-proposal-data-button";
+import { HighContrastGrid } from "@/components/high-contrast-grid";
 import { useWallet } from "@/lib/wallet-context";
 import { Server } from "@stellar/stellar-sdk";
 
@@ -687,42 +688,75 @@ function StreamSplitter({
             {splitRecipients.length > 0 && (
               <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-3">
                 <h4 className="text-xs text-white/60 uppercase tracking-wider">Split Recipients</h4>
-                <div className="mt-2 space-y-2">
-                  {splitRecipients.map((recipient, index) => {
-                    const status = recipientValidation[recipient.address] || "ok";
-                    const warning = status !== "ok";
-                    return (
-                      <div key={`${recipient.address}-${index}`} className="rounded-lg border px-3 py-2" style={{ borderColor: warning ? "rgba(250,204,21,0.3)" : "rgba(255,255,255,0.1)", background: warning ? "rgba(250,204,21,0.08)" : "rgba(255,255,255,0.04)" }}>
-                        <div className="flex items-center justify-between gap-2">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="text-xs text-white break-all">{recipient.address}</p>
+                <div className="mt-2">
+                  <HighContrastGrid
+                    rows={splitRecipients}
+                    rowKey={(recipient, index) => `${recipient.address}-${index}`}
+                    columns={[
+                      {
+                        key: "address",
+                        header: "Address",
+                        render: (recipient) => {
+                          const status = recipientValidation[recipient.address] || "ok";
+                          const warning = status !== "ok";
+                          return (
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <p className="break-all font-mono text-[12px] font-semibold text-white/95">
+                                  {recipient.address}
+                                </p>
+                                {warning && (
+                                  <span
+                                    className="text-yellow-300 text-[11px] font-bold"
+                                    title={getRecipientStatusLabel(status)}
+                                  >
+                                    ⚠
+                                  </span>
+                                )}
+                              </div>
                               {warning && (
-                                <span className="text-yellow-300 text-[11px] font-semibold" title={getRecipientStatusLabel(status)}>
-                                  ⚠
-                                </span>
+                                <p className="mt-1 text-[11px] font-semibold text-yellow-300">
+                                  {getRecipientStatusLabel(status)}
+                                </p>
                               )}
                             </div>
-                            <p className={`text-[11px] ${warning ? "text-yellow-300" : "text-white/50"}`}>
-                              {recipient.percent}%
+                          );
+                        },
+                      },
+                      {
+                        key: "percent",
+                        header: "Share",
+                        className: "text-right",
+                        render: (recipient) => {
+                          const status = recipientValidation[recipient.address] || "ok";
+                          const warning = status !== "ok";
+                          return (
+                            <p
+                              className={`font-mono text-[13px] font-extrabold tabular-nums ${
+                                warning ? "text-yellow-200" : "text-cyan-200"
+                              }`}
+                            >
+                              {recipient.percent.toFixed(2)}%
                             </p>
-                            {warning && (
-                              <p className="text-[11px] text-yellow-300 mt-1">
-                                {getRecipientStatusLabel(status)}
-                              </p>
-                            )}
-                          </div>
+                          );
+                        },
+                      },
+                      {
+                        key: "actions",
+                        header: "",
+                        className: "text-right",
+                        render: (_, index) => (
                           <button
                             type="button"
                             onClick={() => removeRecipient(index)}
-                            className="text-red-400 text-xs font-medium hover:text-red-300"
+                            className="text-red-300 text-[11px] font-bold hover:text-red-200"
                           >
                             Remove
                           </button>
-                        </div>
-                      </div>
-                    );
-                  })}
+                        ),
+                      },
+                    ]}
+                  />
                 </div>
               </div>
             )}
