@@ -721,6 +721,12 @@ impl SplitterV3 {
         let contract_addr = env.current_contract_address();
         token_client.transfer(&sender, &contract_addr, &total_amount);
 
+        // Emit SplitStarted event with sender and total recipient count.
+        env.events().publish(
+            (symbol_short!("splitstrt"), sender.clone()),
+            recipients.len() as u32,
+        );
+
         for r in recipients.iter() {
             let amount = total_amount
                 .checked_mul(r.bps as i128)
@@ -728,6 +734,11 @@ impl SplitterV3 {
                 / 10_000;
             if amount > 0 {
                 token_client.transfer(&contract_addr, &r.address, &amount);
+                // Emit PaymentSent event per recipient for backend indexing.
+                env.events().publish(
+                    (symbol_short!("paysent"), r.address.clone()),
+                    amount,
+                );
             }
         }
 
