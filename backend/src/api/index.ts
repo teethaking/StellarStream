@@ -18,6 +18,7 @@ import cachedStatsRouter from "./cached-stats.routes.js";
 
 import orgMemberRouter from "./org-member.routes.js";
 import assetMappingRouter from "./asset-mapping.routes.js";
+import dustAuditRouter from "./dust-audit.routes.js";
 
 const router = Router();
 
@@ -35,6 +36,7 @@ router.use("/webhooks", webhooksRouter);
 router.use("/stats", cachedStatsRouter);
 router.use("/", orgMemberRouter);
 router.use("/asset-mapping", assetMappingRouter);
+router.use("/dust-audit", dustAuditRouter);
 
 const auditLogService = new AuditLogService();
 
