@@ -163,6 +163,16 @@ export type SplitLog = $Result.DefaultSelection<Prisma.$SplitLogPayload>
  * 
  */
 export type MonitoredTransaction = $Result.DefaultSelection<Prisma.$MonitoredTransactionPayload>
+/**
+ * Model DisbursementDraft
+ * 
+ */
+export type DisbursementDraft = $Result.DefaultSelection<Prisma.$DisbursementDraftPayload>
+/**
+ * Model DisbursementDraftVersion
+ * 
+ */
+export type DisbursementDraftVersion = $Result.DefaultSelection<Prisma.$DisbursementDraftVersionPayload>
 
 /**
  * Enums
@@ -644,6 +654,26 @@ export class PrismaClient<
     * ```
     */
   get monitoredTransaction(): Prisma.MonitoredTransactionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.disbursementDraft`: Exposes CRUD operations for the **DisbursementDraft** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DisbursementDrafts
+    * const disbursementDrafts = await prisma.disbursementDraft.findMany()
+    * ```
+    */
+  get disbursementDraft(): Prisma.DisbursementDraftDelegate<ExtArgs>;
+
+  /**
+   * `prisma.disbursementDraftVersion`: Exposes CRUD operations for the **DisbursementDraftVersion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DisbursementDraftVersions
+    * const disbursementDraftVersions = await prisma.disbursementDraftVersion.findMany()
+    * ```
+    */
+  get disbursementDraftVersion(): Prisma.DisbursementDraftVersionDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1114,7 +1144,9 @@ export namespace Prisma {
     PriceHistory: 'PriceHistory',
     ProtocolInefficiencyReport: 'ProtocolInefficiencyReport',
     SplitLog: 'SplitLog',
-    MonitoredTransaction: 'MonitoredTransaction'
+    MonitoredTransaction: 'MonitoredTransaction',
+    DisbursementDraft: 'DisbursementDraft',
+    DisbursementDraftVersion: 'DisbursementDraftVersion'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1130,7 +1162,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "stream" | "contractEvent" | "tokenPrice" | "webhook" | "webhookDelivery" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "organizationMember" | "apiKey" | "ledgerHash" | "notificationSubscription" | "invoiceLink" | "affiliate" | "globalStats" | "globalStats_V3" | "tvlSnapshot" | "asset" | "autopilotSchedule" | "assetConfig" | "disbursement" | "splitRecipient" | "assetMapping" | "priceHistory" | "protocolInefficiencyReport" | "splitLog" | "monitoredTransaction"
+      modelProps: "stream" | "contractEvent" | "tokenPrice" | "webhook" | "webhookDelivery" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "organizationMember" | "apiKey" | "ledgerHash" | "notificationSubscription" | "invoiceLink" | "affiliate" | "globalStats" | "globalStats_V3" | "tvlSnapshot" | "asset" | "autopilotSchedule" | "assetConfig" | "disbursement" | "splitRecipient" | "assetMapping" | "priceHistory" | "protocolInefficiencyReport" | "splitLog" | "monitoredTransaction" | "disbursementDraft" | "disbursementDraftVersion"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3234,6 +3266,146 @@ export namespace Prisma {
           }
         }
       }
+      DisbursementDraft: {
+        payload: Prisma.$DisbursementDraftPayload<ExtArgs>
+        fields: Prisma.DisbursementDraftFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DisbursementDraftFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DisbursementDraftFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>
+          }
+          findFirst: {
+            args: Prisma.DisbursementDraftFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DisbursementDraftFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>
+          }
+          findMany: {
+            args: Prisma.DisbursementDraftFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>[]
+          }
+          create: {
+            args: Prisma.DisbursementDraftCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>
+          }
+          createMany: {
+            args: Prisma.DisbursementDraftCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DisbursementDraftCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>[]
+          }
+          delete: {
+            args: Prisma.DisbursementDraftDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>
+          }
+          update: {
+            args: Prisma.DisbursementDraftUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>
+          }
+          deleteMany: {
+            args: Prisma.DisbursementDraftDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DisbursementDraftUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DisbursementDraftUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftPayload>
+          }
+          aggregate: {
+            args: Prisma.DisbursementDraftAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDisbursementDraft>
+          }
+          groupBy: {
+            args: Prisma.DisbursementDraftGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DisbursementDraftGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DisbursementDraftCountArgs<ExtArgs>
+            result: $Utils.Optional<DisbursementDraftCountAggregateOutputType> | number
+          }
+        }
+      }
+      DisbursementDraftVersion: {
+        payload: Prisma.$DisbursementDraftVersionPayload<ExtArgs>
+        fields: Prisma.DisbursementDraftVersionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DisbursementDraftVersionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DisbursementDraftVersionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>
+          }
+          findFirst: {
+            args: Prisma.DisbursementDraftVersionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DisbursementDraftVersionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>
+          }
+          findMany: {
+            args: Prisma.DisbursementDraftVersionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>[]
+          }
+          create: {
+            args: Prisma.DisbursementDraftVersionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>
+          }
+          createMany: {
+            args: Prisma.DisbursementDraftVersionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DisbursementDraftVersionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>[]
+          }
+          delete: {
+            args: Prisma.DisbursementDraftVersionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>
+          }
+          update: {
+            args: Prisma.DisbursementDraftVersionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>
+          }
+          deleteMany: {
+            args: Prisma.DisbursementDraftVersionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DisbursementDraftVersionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DisbursementDraftVersionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DisbursementDraftVersionPayload>
+          }
+          aggregate: {
+            args: Prisma.DisbursementDraftVersionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDisbursementDraftVersion>
+          }
+          groupBy: {
+            args: Prisma.DisbursementDraftVersionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DisbursementDraftVersionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DisbursementDraftVersionCountArgs<ExtArgs>
+            result: $Utils.Optional<DisbursementDraftVersionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3418,6 +3590,37 @@ export namespace Prisma {
    */
   export type DisbursementCountOutputTypeCountRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SplitRecipientWhereInput
+  }
+
+
+  /**
+   * Count Type DisbursementDraftCountOutputType
+   */
+
+  export type DisbursementDraftCountOutputType = {
+    versions: number
+  }
+
+  export type DisbursementDraftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    versions?: boolean | DisbursementDraftCountOutputTypeCountVersionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DisbursementDraftCountOutputType without action
+   */
+  export type DisbursementDraftCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftCountOutputType
+     */
+    select?: DisbursementDraftCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DisbursementDraftCountOutputType without action
+   */
+  export type DisbursementDraftCountOutputTypeCountVersionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DisbursementDraftVersionWhereInput
   }
 
 
@@ -32288,6 +32491,2023 @@ export namespace Prisma {
 
 
   /**
+   * Model DisbursementDraft
+   */
+
+  export type AggregateDisbursementDraft = {
+    _count: DisbursementDraftCountAggregateOutputType | null
+    _avg: DisbursementDraftAvgAggregateOutputType | null
+    _sum: DisbursementDraftSumAggregateOutputType | null
+    _min: DisbursementDraftMinAggregateOutputType | null
+    _max: DisbursementDraftMaxAggregateOutputType | null
+  }
+
+  export type DisbursementDraftAvgAggregateOutputType = {
+    currentVersion: number | null
+  }
+
+  export type DisbursementDraftSumAggregateOutputType = {
+    currentVersion: number | null
+  }
+
+  export type DisbursementDraftMinAggregateOutputType = {
+    id: string | null
+    senderAddress: string | null
+    name: string | null
+    asset: string | null
+    currentVersion: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DisbursementDraftMaxAggregateOutputType = {
+    id: string | null
+    senderAddress: string | null
+    name: string | null
+    asset: string | null
+    currentVersion: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DisbursementDraftCountAggregateOutputType = {
+    id: number
+    senderAddress: number
+    name: number
+    asset: number
+    currentVersion: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DisbursementDraftAvgAggregateInputType = {
+    currentVersion?: true
+  }
+
+  export type DisbursementDraftSumAggregateInputType = {
+    currentVersion?: true
+  }
+
+  export type DisbursementDraftMinAggregateInputType = {
+    id?: true
+    senderAddress?: true
+    name?: true
+    asset?: true
+    currentVersion?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DisbursementDraftMaxAggregateInputType = {
+    id?: true
+    senderAddress?: true
+    name?: true
+    asset?: true
+    currentVersion?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DisbursementDraftCountAggregateInputType = {
+    id?: true
+    senderAddress?: true
+    name?: true
+    asset?: true
+    currentVersion?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DisbursementDraftAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DisbursementDraft to aggregate.
+     */
+    where?: DisbursementDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDrafts to fetch.
+     */
+    orderBy?: DisbursementDraftOrderByWithRelationInput | DisbursementDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DisbursementDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DisbursementDrafts
+    **/
+    _count?: true | DisbursementDraftCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DisbursementDraftAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DisbursementDraftSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DisbursementDraftMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DisbursementDraftMaxAggregateInputType
+  }
+
+  export type GetDisbursementDraftAggregateType<T extends DisbursementDraftAggregateArgs> = {
+        [P in keyof T & keyof AggregateDisbursementDraft]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDisbursementDraft[P]>
+      : GetScalarType<T[P], AggregateDisbursementDraft[P]>
+  }
+
+
+
+
+  export type DisbursementDraftGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DisbursementDraftWhereInput
+    orderBy?: DisbursementDraftOrderByWithAggregationInput | DisbursementDraftOrderByWithAggregationInput[]
+    by: DisbursementDraftScalarFieldEnum[] | DisbursementDraftScalarFieldEnum
+    having?: DisbursementDraftScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DisbursementDraftCountAggregateInputType | true
+    _avg?: DisbursementDraftAvgAggregateInputType
+    _sum?: DisbursementDraftSumAggregateInputType
+    _min?: DisbursementDraftMinAggregateInputType
+    _max?: DisbursementDraftMaxAggregateInputType
+  }
+
+  export type DisbursementDraftGroupByOutputType = {
+    id: string
+    senderAddress: string
+    name: string | null
+    asset: string
+    currentVersion: number
+    status: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DisbursementDraftCountAggregateOutputType | null
+    _avg: DisbursementDraftAvgAggregateOutputType | null
+    _sum: DisbursementDraftSumAggregateOutputType | null
+    _min: DisbursementDraftMinAggregateOutputType | null
+    _max: DisbursementDraftMaxAggregateOutputType | null
+  }
+
+  type GetDisbursementDraftGroupByPayload<T extends DisbursementDraftGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DisbursementDraftGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DisbursementDraftGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DisbursementDraftGroupByOutputType[P]>
+            : GetScalarType<T[P], DisbursementDraftGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DisbursementDraftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    senderAddress?: boolean
+    name?: boolean
+    asset?: boolean
+    currentVersion?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    versions?: boolean | DisbursementDraft$versionsArgs<ExtArgs>
+    _count?: boolean | DisbursementDraftCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["disbursementDraft"]>
+
+  export type DisbursementDraftSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    senderAddress?: boolean
+    name?: boolean
+    asset?: boolean
+    currentVersion?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["disbursementDraft"]>
+
+  export type DisbursementDraftSelectScalar = {
+    id?: boolean
+    senderAddress?: boolean
+    name?: boolean
+    asset?: boolean
+    currentVersion?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DisbursementDraftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    versions?: boolean | DisbursementDraft$versionsArgs<ExtArgs>
+    _count?: boolean | DisbursementDraftCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DisbursementDraftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $DisbursementDraftPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DisbursementDraft"
+    objects: {
+      versions: Prisma.$DisbursementDraftVersionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      senderAddress: string
+      name: string | null
+      asset: string
+      currentVersion: number
+      status: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["disbursementDraft"]>
+    composites: {}
+  }
+
+  type DisbursementDraftGetPayload<S extends boolean | null | undefined | DisbursementDraftDefaultArgs> = $Result.GetResult<Prisma.$DisbursementDraftPayload, S>
+
+  type DisbursementDraftCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DisbursementDraftFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DisbursementDraftCountAggregateInputType | true
+    }
+
+  export interface DisbursementDraftDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DisbursementDraft'], meta: { name: 'DisbursementDraft' } }
+    /**
+     * Find zero or one DisbursementDraft that matches the filter.
+     * @param {DisbursementDraftFindUniqueArgs} args - Arguments to find a DisbursementDraft
+     * @example
+     * // Get one DisbursementDraft
+     * const disbursementDraft = await prisma.disbursementDraft.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DisbursementDraftFindUniqueArgs>(args: SelectSubset<T, DisbursementDraftFindUniqueArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DisbursementDraft that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DisbursementDraftFindUniqueOrThrowArgs} args - Arguments to find a DisbursementDraft
+     * @example
+     * // Get one DisbursementDraft
+     * const disbursementDraft = await prisma.disbursementDraft.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DisbursementDraftFindUniqueOrThrowArgs>(args: SelectSubset<T, DisbursementDraftFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DisbursementDraft that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftFindFirstArgs} args - Arguments to find a DisbursementDraft
+     * @example
+     * // Get one DisbursementDraft
+     * const disbursementDraft = await prisma.disbursementDraft.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DisbursementDraftFindFirstArgs>(args?: SelectSubset<T, DisbursementDraftFindFirstArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DisbursementDraft that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftFindFirstOrThrowArgs} args - Arguments to find a DisbursementDraft
+     * @example
+     * // Get one DisbursementDraft
+     * const disbursementDraft = await prisma.disbursementDraft.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DisbursementDraftFindFirstOrThrowArgs>(args?: SelectSubset<T, DisbursementDraftFindFirstOrThrowArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DisbursementDrafts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DisbursementDrafts
+     * const disbursementDrafts = await prisma.disbursementDraft.findMany()
+     * 
+     * // Get first 10 DisbursementDrafts
+     * const disbursementDrafts = await prisma.disbursementDraft.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const disbursementDraftWithIdOnly = await prisma.disbursementDraft.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DisbursementDraftFindManyArgs>(args?: SelectSubset<T, DisbursementDraftFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DisbursementDraft.
+     * @param {DisbursementDraftCreateArgs} args - Arguments to create a DisbursementDraft.
+     * @example
+     * // Create one DisbursementDraft
+     * const DisbursementDraft = await prisma.disbursementDraft.create({
+     *   data: {
+     *     // ... data to create a DisbursementDraft
+     *   }
+     * })
+     * 
+     */
+    create<T extends DisbursementDraftCreateArgs>(args: SelectSubset<T, DisbursementDraftCreateArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DisbursementDrafts.
+     * @param {DisbursementDraftCreateManyArgs} args - Arguments to create many DisbursementDrafts.
+     * @example
+     * // Create many DisbursementDrafts
+     * const disbursementDraft = await prisma.disbursementDraft.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DisbursementDraftCreateManyArgs>(args?: SelectSubset<T, DisbursementDraftCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DisbursementDrafts and returns the data saved in the database.
+     * @param {DisbursementDraftCreateManyAndReturnArgs} args - Arguments to create many DisbursementDrafts.
+     * @example
+     * // Create many DisbursementDrafts
+     * const disbursementDraft = await prisma.disbursementDraft.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DisbursementDrafts and only return the `id`
+     * const disbursementDraftWithIdOnly = await prisma.disbursementDraft.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DisbursementDraftCreateManyAndReturnArgs>(args?: SelectSubset<T, DisbursementDraftCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DisbursementDraft.
+     * @param {DisbursementDraftDeleteArgs} args - Arguments to delete one DisbursementDraft.
+     * @example
+     * // Delete one DisbursementDraft
+     * const DisbursementDraft = await prisma.disbursementDraft.delete({
+     *   where: {
+     *     // ... filter to delete one DisbursementDraft
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DisbursementDraftDeleteArgs>(args: SelectSubset<T, DisbursementDraftDeleteArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DisbursementDraft.
+     * @param {DisbursementDraftUpdateArgs} args - Arguments to update one DisbursementDraft.
+     * @example
+     * // Update one DisbursementDraft
+     * const disbursementDraft = await prisma.disbursementDraft.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DisbursementDraftUpdateArgs>(args: SelectSubset<T, DisbursementDraftUpdateArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DisbursementDrafts.
+     * @param {DisbursementDraftDeleteManyArgs} args - Arguments to filter DisbursementDrafts to delete.
+     * @example
+     * // Delete a few DisbursementDrafts
+     * const { count } = await prisma.disbursementDraft.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DisbursementDraftDeleteManyArgs>(args?: SelectSubset<T, DisbursementDraftDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DisbursementDrafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DisbursementDrafts
+     * const disbursementDraft = await prisma.disbursementDraft.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DisbursementDraftUpdateManyArgs>(args: SelectSubset<T, DisbursementDraftUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DisbursementDraft.
+     * @param {DisbursementDraftUpsertArgs} args - Arguments to update or create a DisbursementDraft.
+     * @example
+     * // Update or create a DisbursementDraft
+     * const disbursementDraft = await prisma.disbursementDraft.upsert({
+     *   create: {
+     *     // ... data to create a DisbursementDraft
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DisbursementDraft we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DisbursementDraftUpsertArgs>(args: SelectSubset<T, DisbursementDraftUpsertArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DisbursementDrafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftCountArgs} args - Arguments to filter DisbursementDrafts to count.
+     * @example
+     * // Count the number of DisbursementDrafts
+     * const count = await prisma.disbursementDraft.count({
+     *   where: {
+     *     // ... the filter for the DisbursementDrafts we want to count
+     *   }
+     * })
+    **/
+    count<T extends DisbursementDraftCountArgs>(
+      args?: Subset<T, DisbursementDraftCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DisbursementDraftCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DisbursementDraft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DisbursementDraftAggregateArgs>(args: Subset<T, DisbursementDraftAggregateArgs>): Prisma.PrismaPromise<GetDisbursementDraftAggregateType<T>>
+
+    /**
+     * Group by DisbursementDraft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DisbursementDraftGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DisbursementDraftGroupByArgs['orderBy'] }
+        : { orderBy?: DisbursementDraftGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DisbursementDraftGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDisbursementDraftGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DisbursementDraft model
+   */
+  readonly fields: DisbursementDraftFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DisbursementDraft.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DisbursementDraftClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    versions<T extends DisbursementDraft$versionsArgs<ExtArgs> = {}>(args?: Subset<T, DisbursementDraft$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DisbursementDraft model
+   */ 
+  interface DisbursementDraftFieldRefs {
+    readonly id: FieldRef<"DisbursementDraft", 'String'>
+    readonly senderAddress: FieldRef<"DisbursementDraft", 'String'>
+    readonly name: FieldRef<"DisbursementDraft", 'String'>
+    readonly asset: FieldRef<"DisbursementDraft", 'String'>
+    readonly currentVersion: FieldRef<"DisbursementDraft", 'Int'>
+    readonly status: FieldRef<"DisbursementDraft", 'String'>
+    readonly createdAt: FieldRef<"DisbursementDraft", 'DateTime'>
+    readonly updatedAt: FieldRef<"DisbursementDraft", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DisbursementDraft findUnique
+   */
+  export type DisbursementDraftFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraft to fetch.
+     */
+    where: DisbursementDraftWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraft findUniqueOrThrow
+   */
+  export type DisbursementDraftFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraft to fetch.
+     */
+    where: DisbursementDraftWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraft findFirst
+   */
+  export type DisbursementDraftFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraft to fetch.
+     */
+    where?: DisbursementDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDrafts to fetch.
+     */
+    orderBy?: DisbursementDraftOrderByWithRelationInput | DisbursementDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DisbursementDrafts.
+     */
+    cursor?: DisbursementDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DisbursementDrafts.
+     */
+    distinct?: DisbursementDraftScalarFieldEnum | DisbursementDraftScalarFieldEnum[]
+  }
+
+  /**
+   * DisbursementDraft findFirstOrThrow
+   */
+  export type DisbursementDraftFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraft to fetch.
+     */
+    where?: DisbursementDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDrafts to fetch.
+     */
+    orderBy?: DisbursementDraftOrderByWithRelationInput | DisbursementDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DisbursementDrafts.
+     */
+    cursor?: DisbursementDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DisbursementDrafts.
+     */
+    distinct?: DisbursementDraftScalarFieldEnum | DisbursementDraftScalarFieldEnum[]
+  }
+
+  /**
+   * DisbursementDraft findMany
+   */
+  export type DisbursementDraftFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDrafts to fetch.
+     */
+    where?: DisbursementDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDrafts to fetch.
+     */
+    orderBy?: DisbursementDraftOrderByWithRelationInput | DisbursementDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DisbursementDrafts.
+     */
+    cursor?: DisbursementDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDrafts.
+     */
+    skip?: number
+    distinct?: DisbursementDraftScalarFieldEnum | DisbursementDraftScalarFieldEnum[]
+  }
+
+  /**
+   * DisbursementDraft create
+   */
+  export type DisbursementDraftCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DisbursementDraft.
+     */
+    data: XOR<DisbursementDraftCreateInput, DisbursementDraftUncheckedCreateInput>
+  }
+
+  /**
+   * DisbursementDraft createMany
+   */
+  export type DisbursementDraftCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DisbursementDrafts.
+     */
+    data: DisbursementDraftCreateManyInput | DisbursementDraftCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DisbursementDraft createManyAndReturn
+   */
+  export type DisbursementDraftCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DisbursementDrafts.
+     */
+    data: DisbursementDraftCreateManyInput | DisbursementDraftCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DisbursementDraft update
+   */
+  export type DisbursementDraftUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DisbursementDraft.
+     */
+    data: XOR<DisbursementDraftUpdateInput, DisbursementDraftUncheckedUpdateInput>
+    /**
+     * Choose, which DisbursementDraft to update.
+     */
+    where: DisbursementDraftWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraft updateMany
+   */
+  export type DisbursementDraftUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DisbursementDrafts.
+     */
+    data: XOR<DisbursementDraftUpdateManyMutationInput, DisbursementDraftUncheckedUpdateManyInput>
+    /**
+     * Filter which DisbursementDrafts to update
+     */
+    where?: DisbursementDraftWhereInput
+  }
+
+  /**
+   * DisbursementDraft upsert
+   */
+  export type DisbursementDraftUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DisbursementDraft to update in case it exists.
+     */
+    where: DisbursementDraftWhereUniqueInput
+    /**
+     * In case the DisbursementDraft found by the `where` argument doesn't exist, create a new DisbursementDraft with this data.
+     */
+    create: XOR<DisbursementDraftCreateInput, DisbursementDraftUncheckedCreateInput>
+    /**
+     * In case the DisbursementDraft was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DisbursementDraftUpdateInput, DisbursementDraftUncheckedUpdateInput>
+  }
+
+  /**
+   * DisbursementDraft delete
+   */
+  export type DisbursementDraftDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+    /**
+     * Filter which DisbursementDraft to delete.
+     */
+    where: DisbursementDraftWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraft deleteMany
+   */
+  export type DisbursementDraftDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DisbursementDrafts to delete
+     */
+    where?: DisbursementDraftWhereInput
+  }
+
+  /**
+   * DisbursementDraft.versions
+   */
+  export type DisbursementDraft$versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    where?: DisbursementDraftVersionWhereInput
+    orderBy?: DisbursementDraftVersionOrderByWithRelationInput | DisbursementDraftVersionOrderByWithRelationInput[]
+    cursor?: DisbursementDraftVersionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DisbursementDraftVersionScalarFieldEnum | DisbursementDraftVersionScalarFieldEnum[]
+  }
+
+  /**
+   * DisbursementDraft without action
+   */
+  export type DisbursementDraftDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraft
+     */
+    select?: DisbursementDraftSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DisbursementDraftVersion
+   */
+
+  export type AggregateDisbursementDraftVersion = {
+    _count: DisbursementDraftVersionCountAggregateOutputType | null
+    _avg: DisbursementDraftVersionAvgAggregateOutputType | null
+    _sum: DisbursementDraftVersionSumAggregateOutputType | null
+    _min: DisbursementDraftVersionMinAggregateOutputType | null
+    _max: DisbursementDraftVersionMaxAggregateOutputType | null
+  }
+
+  export type DisbursementDraftVersionAvgAggregateOutputType = {
+    version: number | null
+  }
+
+  export type DisbursementDraftVersionSumAggregateOutputType = {
+    version: number | null
+  }
+
+  export type DisbursementDraftVersionMinAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    version: number | null
+    totalAmount: string | null
+    changeNote: string | null
+    changedBy: string | null
+    createdAt: Date | null
+  }
+
+  export type DisbursementDraftVersionMaxAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    version: number | null
+    totalAmount: string | null
+    changeNote: string | null
+    changedBy: string | null
+    createdAt: Date | null
+  }
+
+  export type DisbursementDraftVersionCountAggregateOutputType = {
+    id: number
+    draftId: number
+    version: number
+    totalAmount: number
+    recipients: number
+    changeNote: number
+    changedBy: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DisbursementDraftVersionAvgAggregateInputType = {
+    version?: true
+  }
+
+  export type DisbursementDraftVersionSumAggregateInputType = {
+    version?: true
+  }
+
+  export type DisbursementDraftVersionMinAggregateInputType = {
+    id?: true
+    draftId?: true
+    version?: true
+    totalAmount?: true
+    changeNote?: true
+    changedBy?: true
+    createdAt?: true
+  }
+
+  export type DisbursementDraftVersionMaxAggregateInputType = {
+    id?: true
+    draftId?: true
+    version?: true
+    totalAmount?: true
+    changeNote?: true
+    changedBy?: true
+    createdAt?: true
+  }
+
+  export type DisbursementDraftVersionCountAggregateInputType = {
+    id?: true
+    draftId?: true
+    version?: true
+    totalAmount?: true
+    recipients?: true
+    changeNote?: true
+    changedBy?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DisbursementDraftVersionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DisbursementDraftVersion to aggregate.
+     */
+    where?: DisbursementDraftVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDraftVersions to fetch.
+     */
+    orderBy?: DisbursementDraftVersionOrderByWithRelationInput | DisbursementDraftVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DisbursementDraftVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDraftVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDraftVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DisbursementDraftVersions
+    **/
+    _count?: true | DisbursementDraftVersionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DisbursementDraftVersionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DisbursementDraftVersionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DisbursementDraftVersionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DisbursementDraftVersionMaxAggregateInputType
+  }
+
+  export type GetDisbursementDraftVersionAggregateType<T extends DisbursementDraftVersionAggregateArgs> = {
+        [P in keyof T & keyof AggregateDisbursementDraftVersion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDisbursementDraftVersion[P]>
+      : GetScalarType<T[P], AggregateDisbursementDraftVersion[P]>
+  }
+
+
+
+
+  export type DisbursementDraftVersionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DisbursementDraftVersionWhereInput
+    orderBy?: DisbursementDraftVersionOrderByWithAggregationInput | DisbursementDraftVersionOrderByWithAggregationInput[]
+    by: DisbursementDraftVersionScalarFieldEnum[] | DisbursementDraftVersionScalarFieldEnum
+    having?: DisbursementDraftVersionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DisbursementDraftVersionCountAggregateInputType | true
+    _avg?: DisbursementDraftVersionAvgAggregateInputType
+    _sum?: DisbursementDraftVersionSumAggregateInputType
+    _min?: DisbursementDraftVersionMinAggregateInputType
+    _max?: DisbursementDraftVersionMaxAggregateInputType
+  }
+
+  export type DisbursementDraftVersionGroupByOutputType = {
+    id: string
+    draftId: string
+    version: number
+    totalAmount: string
+    recipients: JsonValue
+    changeNote: string | null
+    changedBy: string
+    createdAt: Date
+    _count: DisbursementDraftVersionCountAggregateOutputType | null
+    _avg: DisbursementDraftVersionAvgAggregateOutputType | null
+    _sum: DisbursementDraftVersionSumAggregateOutputType | null
+    _min: DisbursementDraftVersionMinAggregateOutputType | null
+    _max: DisbursementDraftVersionMaxAggregateOutputType | null
+  }
+
+  type GetDisbursementDraftVersionGroupByPayload<T extends DisbursementDraftVersionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DisbursementDraftVersionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DisbursementDraftVersionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DisbursementDraftVersionGroupByOutputType[P]>
+            : GetScalarType<T[P], DisbursementDraftVersionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DisbursementDraftVersionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    version?: boolean
+    totalAmount?: boolean
+    recipients?: boolean
+    changeNote?: boolean
+    changedBy?: boolean
+    createdAt?: boolean
+    draft?: boolean | DisbursementDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["disbursementDraftVersion"]>
+
+  export type DisbursementDraftVersionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    version?: boolean
+    totalAmount?: boolean
+    recipients?: boolean
+    changeNote?: boolean
+    changedBy?: boolean
+    createdAt?: boolean
+    draft?: boolean | DisbursementDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["disbursementDraftVersion"]>
+
+  export type DisbursementDraftVersionSelectScalar = {
+    id?: boolean
+    draftId?: boolean
+    version?: boolean
+    totalAmount?: boolean
+    recipients?: boolean
+    changeNote?: boolean
+    changedBy?: boolean
+    createdAt?: boolean
+  }
+
+  export type DisbursementDraftVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | DisbursementDraftDefaultArgs<ExtArgs>
+  }
+  export type DisbursementDraftVersionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | DisbursementDraftDefaultArgs<ExtArgs>
+  }
+
+  export type $DisbursementDraftVersionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DisbursementDraftVersion"
+    objects: {
+      draft: Prisma.$DisbursementDraftPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      draftId: string
+      version: number
+      totalAmount: string
+      recipients: Prisma.JsonValue
+      changeNote: string | null
+      changedBy: string
+      createdAt: Date
+    }, ExtArgs["result"]["disbursementDraftVersion"]>
+    composites: {}
+  }
+
+  type DisbursementDraftVersionGetPayload<S extends boolean | null | undefined | DisbursementDraftVersionDefaultArgs> = $Result.GetResult<Prisma.$DisbursementDraftVersionPayload, S>
+
+  type DisbursementDraftVersionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DisbursementDraftVersionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DisbursementDraftVersionCountAggregateInputType | true
+    }
+
+  export interface DisbursementDraftVersionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DisbursementDraftVersion'], meta: { name: 'DisbursementDraftVersion' } }
+    /**
+     * Find zero or one DisbursementDraftVersion that matches the filter.
+     * @param {DisbursementDraftVersionFindUniqueArgs} args - Arguments to find a DisbursementDraftVersion
+     * @example
+     * // Get one DisbursementDraftVersion
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DisbursementDraftVersionFindUniqueArgs>(args: SelectSubset<T, DisbursementDraftVersionFindUniqueArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DisbursementDraftVersion that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DisbursementDraftVersionFindUniqueOrThrowArgs} args - Arguments to find a DisbursementDraftVersion
+     * @example
+     * // Get one DisbursementDraftVersion
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DisbursementDraftVersionFindUniqueOrThrowArgs>(args: SelectSubset<T, DisbursementDraftVersionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DisbursementDraftVersion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftVersionFindFirstArgs} args - Arguments to find a DisbursementDraftVersion
+     * @example
+     * // Get one DisbursementDraftVersion
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DisbursementDraftVersionFindFirstArgs>(args?: SelectSubset<T, DisbursementDraftVersionFindFirstArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DisbursementDraftVersion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftVersionFindFirstOrThrowArgs} args - Arguments to find a DisbursementDraftVersion
+     * @example
+     * // Get one DisbursementDraftVersion
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DisbursementDraftVersionFindFirstOrThrowArgs>(args?: SelectSubset<T, DisbursementDraftVersionFindFirstOrThrowArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DisbursementDraftVersions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftVersionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DisbursementDraftVersions
+     * const disbursementDraftVersions = await prisma.disbursementDraftVersion.findMany()
+     * 
+     * // Get first 10 DisbursementDraftVersions
+     * const disbursementDraftVersions = await prisma.disbursementDraftVersion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const disbursementDraftVersionWithIdOnly = await prisma.disbursementDraftVersion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DisbursementDraftVersionFindManyArgs>(args?: SelectSubset<T, DisbursementDraftVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DisbursementDraftVersion.
+     * @param {DisbursementDraftVersionCreateArgs} args - Arguments to create a DisbursementDraftVersion.
+     * @example
+     * // Create one DisbursementDraftVersion
+     * const DisbursementDraftVersion = await prisma.disbursementDraftVersion.create({
+     *   data: {
+     *     // ... data to create a DisbursementDraftVersion
+     *   }
+     * })
+     * 
+     */
+    create<T extends DisbursementDraftVersionCreateArgs>(args: SelectSubset<T, DisbursementDraftVersionCreateArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DisbursementDraftVersions.
+     * @param {DisbursementDraftVersionCreateManyArgs} args - Arguments to create many DisbursementDraftVersions.
+     * @example
+     * // Create many DisbursementDraftVersions
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DisbursementDraftVersionCreateManyArgs>(args?: SelectSubset<T, DisbursementDraftVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DisbursementDraftVersions and returns the data saved in the database.
+     * @param {DisbursementDraftVersionCreateManyAndReturnArgs} args - Arguments to create many DisbursementDraftVersions.
+     * @example
+     * // Create many DisbursementDraftVersions
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DisbursementDraftVersions and only return the `id`
+     * const disbursementDraftVersionWithIdOnly = await prisma.disbursementDraftVersion.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DisbursementDraftVersionCreateManyAndReturnArgs>(args?: SelectSubset<T, DisbursementDraftVersionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DisbursementDraftVersion.
+     * @param {DisbursementDraftVersionDeleteArgs} args - Arguments to delete one DisbursementDraftVersion.
+     * @example
+     * // Delete one DisbursementDraftVersion
+     * const DisbursementDraftVersion = await prisma.disbursementDraftVersion.delete({
+     *   where: {
+     *     // ... filter to delete one DisbursementDraftVersion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DisbursementDraftVersionDeleteArgs>(args: SelectSubset<T, DisbursementDraftVersionDeleteArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DisbursementDraftVersion.
+     * @param {DisbursementDraftVersionUpdateArgs} args - Arguments to update one DisbursementDraftVersion.
+     * @example
+     * // Update one DisbursementDraftVersion
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DisbursementDraftVersionUpdateArgs>(args: SelectSubset<T, DisbursementDraftVersionUpdateArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DisbursementDraftVersions.
+     * @param {DisbursementDraftVersionDeleteManyArgs} args - Arguments to filter DisbursementDraftVersions to delete.
+     * @example
+     * // Delete a few DisbursementDraftVersions
+     * const { count } = await prisma.disbursementDraftVersion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DisbursementDraftVersionDeleteManyArgs>(args?: SelectSubset<T, DisbursementDraftVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DisbursementDraftVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftVersionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DisbursementDraftVersions
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DisbursementDraftVersionUpdateManyArgs>(args: SelectSubset<T, DisbursementDraftVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DisbursementDraftVersion.
+     * @param {DisbursementDraftVersionUpsertArgs} args - Arguments to update or create a DisbursementDraftVersion.
+     * @example
+     * // Update or create a DisbursementDraftVersion
+     * const disbursementDraftVersion = await prisma.disbursementDraftVersion.upsert({
+     *   create: {
+     *     // ... data to create a DisbursementDraftVersion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DisbursementDraftVersion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DisbursementDraftVersionUpsertArgs>(args: SelectSubset<T, DisbursementDraftVersionUpsertArgs<ExtArgs>>): Prisma__DisbursementDraftVersionClient<$Result.GetResult<Prisma.$DisbursementDraftVersionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DisbursementDraftVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftVersionCountArgs} args - Arguments to filter DisbursementDraftVersions to count.
+     * @example
+     * // Count the number of DisbursementDraftVersions
+     * const count = await prisma.disbursementDraftVersion.count({
+     *   where: {
+     *     // ... the filter for the DisbursementDraftVersions we want to count
+     *   }
+     * })
+    **/
+    count<T extends DisbursementDraftVersionCountArgs>(
+      args?: Subset<T, DisbursementDraftVersionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DisbursementDraftVersionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DisbursementDraftVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftVersionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DisbursementDraftVersionAggregateArgs>(args: Subset<T, DisbursementDraftVersionAggregateArgs>): Prisma.PrismaPromise<GetDisbursementDraftVersionAggregateType<T>>
+
+    /**
+     * Group by DisbursementDraftVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DisbursementDraftVersionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DisbursementDraftVersionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DisbursementDraftVersionGroupByArgs['orderBy'] }
+        : { orderBy?: DisbursementDraftVersionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DisbursementDraftVersionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDisbursementDraftVersionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DisbursementDraftVersion model
+   */
+  readonly fields: DisbursementDraftVersionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DisbursementDraftVersion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DisbursementDraftVersionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    draft<T extends DisbursementDraftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DisbursementDraftDefaultArgs<ExtArgs>>): Prisma__DisbursementDraftClient<$Result.GetResult<Prisma.$DisbursementDraftPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DisbursementDraftVersion model
+   */ 
+  interface DisbursementDraftVersionFieldRefs {
+    readonly id: FieldRef<"DisbursementDraftVersion", 'String'>
+    readonly draftId: FieldRef<"DisbursementDraftVersion", 'String'>
+    readonly version: FieldRef<"DisbursementDraftVersion", 'Int'>
+    readonly totalAmount: FieldRef<"DisbursementDraftVersion", 'String'>
+    readonly recipients: FieldRef<"DisbursementDraftVersion", 'Json'>
+    readonly changeNote: FieldRef<"DisbursementDraftVersion", 'String'>
+    readonly changedBy: FieldRef<"DisbursementDraftVersion", 'String'>
+    readonly createdAt: FieldRef<"DisbursementDraftVersion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DisbursementDraftVersion findUnique
+   */
+  export type DisbursementDraftVersionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraftVersion to fetch.
+     */
+    where: DisbursementDraftVersionWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraftVersion findUniqueOrThrow
+   */
+  export type DisbursementDraftVersionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraftVersion to fetch.
+     */
+    where: DisbursementDraftVersionWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraftVersion findFirst
+   */
+  export type DisbursementDraftVersionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraftVersion to fetch.
+     */
+    where?: DisbursementDraftVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDraftVersions to fetch.
+     */
+    orderBy?: DisbursementDraftVersionOrderByWithRelationInput | DisbursementDraftVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DisbursementDraftVersions.
+     */
+    cursor?: DisbursementDraftVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDraftVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDraftVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DisbursementDraftVersions.
+     */
+    distinct?: DisbursementDraftVersionScalarFieldEnum | DisbursementDraftVersionScalarFieldEnum[]
+  }
+
+  /**
+   * DisbursementDraftVersion findFirstOrThrow
+   */
+  export type DisbursementDraftVersionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraftVersion to fetch.
+     */
+    where?: DisbursementDraftVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDraftVersions to fetch.
+     */
+    orderBy?: DisbursementDraftVersionOrderByWithRelationInput | DisbursementDraftVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DisbursementDraftVersions.
+     */
+    cursor?: DisbursementDraftVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDraftVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDraftVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DisbursementDraftVersions.
+     */
+    distinct?: DisbursementDraftVersionScalarFieldEnum | DisbursementDraftVersionScalarFieldEnum[]
+  }
+
+  /**
+   * DisbursementDraftVersion findMany
+   */
+  export type DisbursementDraftVersionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which DisbursementDraftVersions to fetch.
+     */
+    where?: DisbursementDraftVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DisbursementDraftVersions to fetch.
+     */
+    orderBy?: DisbursementDraftVersionOrderByWithRelationInput | DisbursementDraftVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DisbursementDraftVersions.
+     */
+    cursor?: DisbursementDraftVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DisbursementDraftVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DisbursementDraftVersions.
+     */
+    skip?: number
+    distinct?: DisbursementDraftVersionScalarFieldEnum | DisbursementDraftVersionScalarFieldEnum[]
+  }
+
+  /**
+   * DisbursementDraftVersion create
+   */
+  export type DisbursementDraftVersionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DisbursementDraftVersion.
+     */
+    data: XOR<DisbursementDraftVersionCreateInput, DisbursementDraftVersionUncheckedCreateInput>
+  }
+
+  /**
+   * DisbursementDraftVersion createMany
+   */
+  export type DisbursementDraftVersionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DisbursementDraftVersions.
+     */
+    data: DisbursementDraftVersionCreateManyInput | DisbursementDraftVersionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DisbursementDraftVersion createManyAndReturn
+   */
+  export type DisbursementDraftVersionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DisbursementDraftVersions.
+     */
+    data: DisbursementDraftVersionCreateManyInput | DisbursementDraftVersionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DisbursementDraftVersion update
+   */
+  export type DisbursementDraftVersionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DisbursementDraftVersion.
+     */
+    data: XOR<DisbursementDraftVersionUpdateInput, DisbursementDraftVersionUncheckedUpdateInput>
+    /**
+     * Choose, which DisbursementDraftVersion to update.
+     */
+    where: DisbursementDraftVersionWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraftVersion updateMany
+   */
+  export type DisbursementDraftVersionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DisbursementDraftVersions.
+     */
+    data: XOR<DisbursementDraftVersionUpdateManyMutationInput, DisbursementDraftVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which DisbursementDraftVersions to update
+     */
+    where?: DisbursementDraftVersionWhereInput
+  }
+
+  /**
+   * DisbursementDraftVersion upsert
+   */
+  export type DisbursementDraftVersionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DisbursementDraftVersion to update in case it exists.
+     */
+    where: DisbursementDraftVersionWhereUniqueInput
+    /**
+     * In case the DisbursementDraftVersion found by the `where` argument doesn't exist, create a new DisbursementDraftVersion with this data.
+     */
+    create: XOR<DisbursementDraftVersionCreateInput, DisbursementDraftVersionUncheckedCreateInput>
+    /**
+     * In case the DisbursementDraftVersion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DisbursementDraftVersionUpdateInput, DisbursementDraftVersionUncheckedUpdateInput>
+  }
+
+  /**
+   * DisbursementDraftVersion delete
+   */
+  export type DisbursementDraftVersionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+    /**
+     * Filter which DisbursementDraftVersion to delete.
+     */
+    where: DisbursementDraftVersionWhereUniqueInput
+  }
+
+  /**
+   * DisbursementDraftVersion deleteMany
+   */
+  export type DisbursementDraftVersionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DisbursementDraftVersions to delete
+     */
+    where?: DisbursementDraftVersionWhereInput
+  }
+
+  /**
+   * DisbursementDraftVersion without action
+   */
+  export type DisbursementDraftVersionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DisbursementDraftVersion
+     */
+    select?: DisbursementDraftVersionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisbursementDraftVersionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -32761,6 +34981,34 @@ export namespace Prisma {
   };
 
   export type MonitoredTransactionScalarFieldEnum = (typeof MonitoredTransactionScalarFieldEnum)[keyof typeof MonitoredTransactionScalarFieldEnum]
+
+
+  export const DisbursementDraftScalarFieldEnum: {
+    id: 'id',
+    senderAddress: 'senderAddress',
+    name: 'name',
+    asset: 'asset',
+    currentVersion: 'currentVersion',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DisbursementDraftScalarFieldEnum = (typeof DisbursementDraftScalarFieldEnum)[keyof typeof DisbursementDraftScalarFieldEnum]
+
+
+  export const DisbursementDraftVersionScalarFieldEnum: {
+    id: 'id',
+    draftId: 'draftId',
+    version: 'version',
+    totalAmount: 'totalAmount',
+    recipients: 'recipients',
+    changeNote: 'changeNote',
+    changedBy: 'changedBy',
+    createdAt: 'createdAt'
+  };
+
+  export type DisbursementDraftVersionScalarFieldEnum = (typeof DisbursementDraftVersionScalarFieldEnum)[keyof typeof DisbursementDraftVersionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -35225,6 +37473,151 @@ export namespace Prisma {
     errorMessage?: StringNullableWithAggregatesFilter<"MonitoredTransaction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"MonitoredTransaction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MonitoredTransaction"> | Date | string
+  }
+
+  export type DisbursementDraftWhereInput = {
+    AND?: DisbursementDraftWhereInput | DisbursementDraftWhereInput[]
+    OR?: DisbursementDraftWhereInput[]
+    NOT?: DisbursementDraftWhereInput | DisbursementDraftWhereInput[]
+    id?: StringFilter<"DisbursementDraft"> | string
+    senderAddress?: StringFilter<"DisbursementDraft"> | string
+    name?: StringNullableFilter<"DisbursementDraft"> | string | null
+    asset?: StringFilter<"DisbursementDraft"> | string
+    currentVersion?: IntFilter<"DisbursementDraft"> | number
+    status?: StringFilter<"DisbursementDraft"> | string
+    createdAt?: DateTimeFilter<"DisbursementDraft"> | Date | string
+    updatedAt?: DateTimeFilter<"DisbursementDraft"> | Date | string
+    versions?: DisbursementDraftVersionListRelationFilter
+  }
+
+  export type DisbursementDraftOrderByWithRelationInput = {
+    id?: SortOrder
+    senderAddress?: SortOrder
+    name?: SortOrderInput | SortOrder
+    asset?: SortOrder
+    currentVersion?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    versions?: DisbursementDraftVersionOrderByRelationAggregateInput
+  }
+
+  export type DisbursementDraftWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DisbursementDraftWhereInput | DisbursementDraftWhereInput[]
+    OR?: DisbursementDraftWhereInput[]
+    NOT?: DisbursementDraftWhereInput | DisbursementDraftWhereInput[]
+    senderAddress?: StringFilter<"DisbursementDraft"> | string
+    name?: StringNullableFilter<"DisbursementDraft"> | string | null
+    asset?: StringFilter<"DisbursementDraft"> | string
+    currentVersion?: IntFilter<"DisbursementDraft"> | number
+    status?: StringFilter<"DisbursementDraft"> | string
+    createdAt?: DateTimeFilter<"DisbursementDraft"> | Date | string
+    updatedAt?: DateTimeFilter<"DisbursementDraft"> | Date | string
+    versions?: DisbursementDraftVersionListRelationFilter
+  }, "id">
+
+  export type DisbursementDraftOrderByWithAggregationInput = {
+    id?: SortOrder
+    senderAddress?: SortOrder
+    name?: SortOrderInput | SortOrder
+    asset?: SortOrder
+    currentVersion?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DisbursementDraftCountOrderByAggregateInput
+    _avg?: DisbursementDraftAvgOrderByAggregateInput
+    _max?: DisbursementDraftMaxOrderByAggregateInput
+    _min?: DisbursementDraftMinOrderByAggregateInput
+    _sum?: DisbursementDraftSumOrderByAggregateInput
+  }
+
+  export type DisbursementDraftScalarWhereWithAggregatesInput = {
+    AND?: DisbursementDraftScalarWhereWithAggregatesInput | DisbursementDraftScalarWhereWithAggregatesInput[]
+    OR?: DisbursementDraftScalarWhereWithAggregatesInput[]
+    NOT?: DisbursementDraftScalarWhereWithAggregatesInput | DisbursementDraftScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DisbursementDraft"> | string
+    senderAddress?: StringWithAggregatesFilter<"DisbursementDraft"> | string
+    name?: StringNullableWithAggregatesFilter<"DisbursementDraft"> | string | null
+    asset?: StringWithAggregatesFilter<"DisbursementDraft"> | string
+    currentVersion?: IntWithAggregatesFilter<"DisbursementDraft"> | number
+    status?: StringWithAggregatesFilter<"DisbursementDraft"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DisbursementDraft"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DisbursementDraft"> | Date | string
+  }
+
+  export type DisbursementDraftVersionWhereInput = {
+    AND?: DisbursementDraftVersionWhereInput | DisbursementDraftVersionWhereInput[]
+    OR?: DisbursementDraftVersionWhereInput[]
+    NOT?: DisbursementDraftVersionWhereInput | DisbursementDraftVersionWhereInput[]
+    id?: StringFilter<"DisbursementDraftVersion"> | string
+    draftId?: StringFilter<"DisbursementDraftVersion"> | string
+    version?: IntFilter<"DisbursementDraftVersion"> | number
+    totalAmount?: StringFilter<"DisbursementDraftVersion"> | string
+    recipients?: JsonFilter<"DisbursementDraftVersion">
+    changeNote?: StringNullableFilter<"DisbursementDraftVersion"> | string | null
+    changedBy?: StringFilter<"DisbursementDraftVersion"> | string
+    createdAt?: DateTimeFilter<"DisbursementDraftVersion"> | Date | string
+    draft?: XOR<DisbursementDraftRelationFilter, DisbursementDraftWhereInput>
+  }
+
+  export type DisbursementDraftVersionOrderByWithRelationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    version?: SortOrder
+    totalAmount?: SortOrder
+    recipients?: SortOrder
+    changeNote?: SortOrderInput | SortOrder
+    changedBy?: SortOrder
+    createdAt?: SortOrder
+    draft?: DisbursementDraftOrderByWithRelationInput
+  }
+
+  export type DisbursementDraftVersionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    draftId_version?: DisbursementDraftVersionDraftIdVersionCompoundUniqueInput
+    AND?: DisbursementDraftVersionWhereInput | DisbursementDraftVersionWhereInput[]
+    OR?: DisbursementDraftVersionWhereInput[]
+    NOT?: DisbursementDraftVersionWhereInput | DisbursementDraftVersionWhereInput[]
+    draftId?: StringFilter<"DisbursementDraftVersion"> | string
+    version?: IntFilter<"DisbursementDraftVersion"> | number
+    totalAmount?: StringFilter<"DisbursementDraftVersion"> | string
+    recipients?: JsonFilter<"DisbursementDraftVersion">
+    changeNote?: StringNullableFilter<"DisbursementDraftVersion"> | string | null
+    changedBy?: StringFilter<"DisbursementDraftVersion"> | string
+    createdAt?: DateTimeFilter<"DisbursementDraftVersion"> | Date | string
+    draft?: XOR<DisbursementDraftRelationFilter, DisbursementDraftWhereInput>
+  }, "id" | "draftId_version">
+
+  export type DisbursementDraftVersionOrderByWithAggregationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    version?: SortOrder
+    totalAmount?: SortOrder
+    recipients?: SortOrder
+    changeNote?: SortOrderInput | SortOrder
+    changedBy?: SortOrder
+    createdAt?: SortOrder
+    _count?: DisbursementDraftVersionCountOrderByAggregateInput
+    _avg?: DisbursementDraftVersionAvgOrderByAggregateInput
+    _max?: DisbursementDraftVersionMaxOrderByAggregateInput
+    _min?: DisbursementDraftVersionMinOrderByAggregateInput
+    _sum?: DisbursementDraftVersionSumOrderByAggregateInput
+  }
+
+  export type DisbursementDraftVersionScalarWhereWithAggregatesInput = {
+    AND?: DisbursementDraftVersionScalarWhereWithAggregatesInput | DisbursementDraftVersionScalarWhereWithAggregatesInput[]
+    OR?: DisbursementDraftVersionScalarWhereWithAggregatesInput[]
+    NOT?: DisbursementDraftVersionScalarWhereWithAggregatesInput | DisbursementDraftVersionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DisbursementDraftVersion"> | string
+    draftId?: StringWithAggregatesFilter<"DisbursementDraftVersion"> | string
+    version?: IntWithAggregatesFilter<"DisbursementDraftVersion"> | number
+    totalAmount?: StringWithAggregatesFilter<"DisbursementDraftVersion"> | string
+    recipients?: JsonWithAggregatesFilter<"DisbursementDraftVersion">
+    changeNote?: StringNullableWithAggregatesFilter<"DisbursementDraftVersion"> | string | null
+    changedBy?: StringWithAggregatesFilter<"DisbursementDraftVersion"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DisbursementDraftVersion"> | Date | string
   }
 
   export type StreamCreateInput = {
@@ -37834,6 +40227,163 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DisbursementDraftCreateInput = {
+    id?: string
+    senderAddress: string
+    name?: string | null
+    asset: string
+    currentVersion?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: DisbursementDraftVersionCreateNestedManyWithoutDraftInput
+  }
+
+  export type DisbursementDraftUncheckedCreateInput = {
+    id?: string
+    senderAddress: string
+    name?: string | null
+    asset: string
+    currentVersion?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: DisbursementDraftVersionUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type DisbursementDraftUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset?: StringFieldUpdateOperationsInput | string
+    currentVersion?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: DisbursementDraftVersionUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DisbursementDraftUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset?: StringFieldUpdateOperationsInput | string
+    currentVersion?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: DisbursementDraftVersionUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DisbursementDraftCreateManyInput = {
+    id?: string
+    senderAddress: string
+    name?: string | null
+    asset: string
+    currentVersion?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DisbursementDraftUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset?: StringFieldUpdateOperationsInput | string
+    currentVersion?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisbursementDraftUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset?: StringFieldUpdateOperationsInput | string
+    currentVersion?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisbursementDraftVersionCreateInput = {
+    id?: string
+    version: number
+    totalAmount: string
+    recipients: JsonNullValueInput | InputJsonValue
+    changeNote?: string | null
+    changedBy: string
+    createdAt?: Date | string
+    draft: DisbursementDraftCreateNestedOneWithoutVersionsInput
+  }
+
+  export type DisbursementDraftVersionUncheckedCreateInput = {
+    id?: string
+    draftId: string
+    version: number
+    totalAmount: string
+    recipients: JsonNullValueInput | InputJsonValue
+    changeNote?: string | null
+    changedBy: string
+    createdAt?: Date | string
+  }
+
+  export type DisbursementDraftVersionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    totalAmount?: StringFieldUpdateOperationsInput | string
+    recipients?: JsonNullValueInput | InputJsonValue
+    changeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draft?: DisbursementDraftUpdateOneRequiredWithoutVersionsNestedInput
+  }
+
+  export type DisbursementDraftVersionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    totalAmount?: StringFieldUpdateOperationsInput | string
+    recipients?: JsonNullValueInput | InputJsonValue
+    changeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisbursementDraftVersionCreateManyInput = {
+    id?: string
+    draftId: string
+    version: number
+    totalAmount: string
+    recipients: JsonNullValueInput | InputJsonValue
+    changeNote?: string | null
+    changedBy: string
+    createdAt?: Date | string
+  }
+
+  export type DisbursementDraftVersionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    totalAmount?: StringFieldUpdateOperationsInput | string
+    recipients?: JsonNullValueInput | InputJsonValue
+    changeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisbursementDraftVersionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    totalAmount?: StringFieldUpdateOperationsInput | string
+    recipients?: JsonNullValueInput | InputJsonValue
+    changeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -39618,6 +42168,106 @@ export namespace Prisma {
     maxBumps?: SortOrder
   }
 
+  export type DisbursementDraftVersionListRelationFilter = {
+    every?: DisbursementDraftVersionWhereInput
+    some?: DisbursementDraftVersionWhereInput
+    none?: DisbursementDraftVersionWhereInput
+  }
+
+  export type DisbursementDraftVersionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DisbursementDraftCountOrderByAggregateInput = {
+    id?: SortOrder
+    senderAddress?: SortOrder
+    name?: SortOrder
+    asset?: SortOrder
+    currentVersion?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DisbursementDraftAvgOrderByAggregateInput = {
+    currentVersion?: SortOrder
+  }
+
+  export type DisbursementDraftMaxOrderByAggregateInput = {
+    id?: SortOrder
+    senderAddress?: SortOrder
+    name?: SortOrder
+    asset?: SortOrder
+    currentVersion?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DisbursementDraftMinOrderByAggregateInput = {
+    id?: SortOrder
+    senderAddress?: SortOrder
+    name?: SortOrder
+    asset?: SortOrder
+    currentVersion?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DisbursementDraftSumOrderByAggregateInput = {
+    currentVersion?: SortOrder
+  }
+
+  export type DisbursementDraftRelationFilter = {
+    is?: DisbursementDraftWhereInput
+    isNot?: DisbursementDraftWhereInput
+  }
+
+  export type DisbursementDraftVersionDraftIdVersionCompoundUniqueInput = {
+    draftId: string
+    version: number
+  }
+
+  export type DisbursementDraftVersionCountOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    version?: SortOrder
+    totalAmount?: SortOrder
+    recipients?: SortOrder
+    changeNote?: SortOrder
+    changedBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DisbursementDraftVersionAvgOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type DisbursementDraftVersionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    version?: SortOrder
+    totalAmount?: SortOrder
+    changeNote?: SortOrder
+    changedBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DisbursementDraftVersionMinOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    version?: SortOrder
+    totalAmount?: SortOrder
+    changeNote?: SortOrder
+    changedBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DisbursementDraftVersionSumOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -39765,6 +42415,62 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type DisbursementDraftVersionCreateNestedManyWithoutDraftInput = {
+    create?: XOR<DisbursementDraftVersionCreateWithoutDraftInput, DisbursementDraftVersionUncheckedCreateWithoutDraftInput> | DisbursementDraftVersionCreateWithoutDraftInput[] | DisbursementDraftVersionUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DisbursementDraftVersionCreateOrConnectWithoutDraftInput | DisbursementDraftVersionCreateOrConnectWithoutDraftInput[]
+    createMany?: DisbursementDraftVersionCreateManyDraftInputEnvelope
+    connect?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+  }
+
+  export type DisbursementDraftVersionUncheckedCreateNestedManyWithoutDraftInput = {
+    create?: XOR<DisbursementDraftVersionCreateWithoutDraftInput, DisbursementDraftVersionUncheckedCreateWithoutDraftInput> | DisbursementDraftVersionCreateWithoutDraftInput[] | DisbursementDraftVersionUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DisbursementDraftVersionCreateOrConnectWithoutDraftInput | DisbursementDraftVersionCreateOrConnectWithoutDraftInput[]
+    createMany?: DisbursementDraftVersionCreateManyDraftInputEnvelope
+    connect?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+  }
+
+  export type DisbursementDraftVersionUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<DisbursementDraftVersionCreateWithoutDraftInput, DisbursementDraftVersionUncheckedCreateWithoutDraftInput> | DisbursementDraftVersionCreateWithoutDraftInput[] | DisbursementDraftVersionUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DisbursementDraftVersionCreateOrConnectWithoutDraftInput | DisbursementDraftVersionCreateOrConnectWithoutDraftInput[]
+    upsert?: DisbursementDraftVersionUpsertWithWhereUniqueWithoutDraftInput | DisbursementDraftVersionUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: DisbursementDraftVersionCreateManyDraftInputEnvelope
+    set?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    disconnect?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    delete?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    connect?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    update?: DisbursementDraftVersionUpdateWithWhereUniqueWithoutDraftInput | DisbursementDraftVersionUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: DisbursementDraftVersionUpdateManyWithWhereWithoutDraftInput | DisbursementDraftVersionUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: DisbursementDraftVersionScalarWhereInput | DisbursementDraftVersionScalarWhereInput[]
+  }
+
+  export type DisbursementDraftVersionUncheckedUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<DisbursementDraftVersionCreateWithoutDraftInput, DisbursementDraftVersionUncheckedCreateWithoutDraftInput> | DisbursementDraftVersionCreateWithoutDraftInput[] | DisbursementDraftVersionUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DisbursementDraftVersionCreateOrConnectWithoutDraftInput | DisbursementDraftVersionCreateOrConnectWithoutDraftInput[]
+    upsert?: DisbursementDraftVersionUpsertWithWhereUniqueWithoutDraftInput | DisbursementDraftVersionUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: DisbursementDraftVersionCreateManyDraftInputEnvelope
+    set?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    disconnect?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    delete?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    connect?: DisbursementDraftVersionWhereUniqueInput | DisbursementDraftVersionWhereUniqueInput[]
+    update?: DisbursementDraftVersionUpdateWithWhereUniqueWithoutDraftInput | DisbursementDraftVersionUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: DisbursementDraftVersionUpdateManyWithWhereWithoutDraftInput | DisbursementDraftVersionUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: DisbursementDraftVersionScalarWhereInput | DisbursementDraftVersionScalarWhereInput[]
+  }
+
+  export type DisbursementDraftCreateNestedOneWithoutVersionsInput = {
+    create?: XOR<DisbursementDraftCreateWithoutVersionsInput, DisbursementDraftUncheckedCreateWithoutVersionsInput>
+    connectOrCreate?: DisbursementDraftCreateOrConnectWithoutVersionsInput
+    connect?: DisbursementDraftWhereUniqueInput
+  }
+
+  export type DisbursementDraftUpdateOneRequiredWithoutVersionsNestedInput = {
+    create?: XOR<DisbursementDraftCreateWithoutVersionsInput, DisbursementDraftUncheckedCreateWithoutVersionsInput>
+    connectOrCreate?: DisbursementDraftCreateOrConnectWithoutVersionsInput
+    upsert?: DisbursementDraftUpsertWithoutVersionsInput
+    connect?: DisbursementDraftWhereUniqueInput
+    update?: XOR<XOR<DisbursementDraftUpdateToOneWithWhereWithoutVersionsInput, DisbursementDraftUpdateWithoutVersionsInput>, DisbursementDraftUncheckedUpdateWithoutVersionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -40247,6 +42953,126 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DisbursementDraftVersionCreateWithoutDraftInput = {
+    id?: string
+    version: number
+    totalAmount: string
+    recipients: JsonNullValueInput | InputJsonValue
+    changeNote?: string | null
+    changedBy: string
+    createdAt?: Date | string
+  }
+
+  export type DisbursementDraftVersionUncheckedCreateWithoutDraftInput = {
+    id?: string
+    version: number
+    totalAmount: string
+    recipients: JsonNullValueInput | InputJsonValue
+    changeNote?: string | null
+    changedBy: string
+    createdAt?: Date | string
+  }
+
+  export type DisbursementDraftVersionCreateOrConnectWithoutDraftInput = {
+    where: DisbursementDraftVersionWhereUniqueInput
+    create: XOR<DisbursementDraftVersionCreateWithoutDraftInput, DisbursementDraftVersionUncheckedCreateWithoutDraftInput>
+  }
+
+  export type DisbursementDraftVersionCreateManyDraftInputEnvelope = {
+    data: DisbursementDraftVersionCreateManyDraftInput | DisbursementDraftVersionCreateManyDraftInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DisbursementDraftVersionUpsertWithWhereUniqueWithoutDraftInput = {
+    where: DisbursementDraftVersionWhereUniqueInput
+    update: XOR<DisbursementDraftVersionUpdateWithoutDraftInput, DisbursementDraftVersionUncheckedUpdateWithoutDraftInput>
+    create: XOR<DisbursementDraftVersionCreateWithoutDraftInput, DisbursementDraftVersionUncheckedCreateWithoutDraftInput>
+  }
+
+  export type DisbursementDraftVersionUpdateWithWhereUniqueWithoutDraftInput = {
+    where: DisbursementDraftVersionWhereUniqueInput
+    data: XOR<DisbursementDraftVersionUpdateWithoutDraftInput, DisbursementDraftVersionUncheckedUpdateWithoutDraftInput>
+  }
+
+  export type DisbursementDraftVersionUpdateManyWithWhereWithoutDraftInput = {
+    where: DisbursementDraftVersionScalarWhereInput
+    data: XOR<DisbursementDraftVersionUpdateManyMutationInput, DisbursementDraftVersionUncheckedUpdateManyWithoutDraftInput>
+  }
+
+  export type DisbursementDraftVersionScalarWhereInput = {
+    AND?: DisbursementDraftVersionScalarWhereInput | DisbursementDraftVersionScalarWhereInput[]
+    OR?: DisbursementDraftVersionScalarWhereInput[]
+    NOT?: DisbursementDraftVersionScalarWhereInput | DisbursementDraftVersionScalarWhereInput[]
+    id?: StringFilter<"DisbursementDraftVersion"> | string
+    draftId?: StringFilter<"DisbursementDraftVersion"> | string
+    version?: IntFilter<"DisbursementDraftVersion"> | number
+    totalAmount?: StringFilter<"DisbursementDraftVersion"> | string
+    recipients?: JsonFilter<"DisbursementDraftVersion">
+    changeNote?: StringNullableFilter<"DisbursementDraftVersion"> | string | null
+    changedBy?: StringFilter<"DisbursementDraftVersion"> | string
+    createdAt?: DateTimeFilter<"DisbursementDraftVersion"> | Date | string
+  }
+
+  export type DisbursementDraftCreateWithoutVersionsInput = {
+    id?: string
+    senderAddress: string
+    name?: string | null
+    asset: string
+    currentVersion?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DisbursementDraftUncheckedCreateWithoutVersionsInput = {
+    id?: string
+    senderAddress: string
+    name?: string | null
+    asset: string
+    currentVersion?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DisbursementDraftCreateOrConnectWithoutVersionsInput = {
+    where: DisbursementDraftWhereUniqueInput
+    create: XOR<DisbursementDraftCreateWithoutVersionsInput, DisbursementDraftUncheckedCreateWithoutVersionsInput>
+  }
+
+  export type DisbursementDraftUpsertWithoutVersionsInput = {
+    update: XOR<DisbursementDraftUpdateWithoutVersionsInput, DisbursementDraftUncheckedUpdateWithoutVersionsInput>
+    create: XOR<DisbursementDraftCreateWithoutVersionsInput, DisbursementDraftUncheckedCreateWithoutVersionsInput>
+    where?: DisbursementDraftWhereInput
+  }
+
+  export type DisbursementDraftUpdateToOneWithWhereWithoutVersionsInput = {
+    where?: DisbursementDraftWhereInput
+    data: XOR<DisbursementDraftUpdateWithoutVersionsInput, DisbursementDraftUncheckedUpdateWithoutVersionsInput>
+  }
+
+  export type DisbursementDraftUpdateWithoutVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset?: StringFieldUpdateOperationsInput | string
+    currentVersion?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisbursementDraftUncheckedUpdateWithoutVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset?: StringFieldUpdateOperationsInput | string
+    currentVersion?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SplitRecipientCreateManyDisbursementInput = {
     id?: string
     recipientAddress: string
@@ -40275,6 +43101,46 @@ export namespace Prisma {
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
   }
 
+  export type DisbursementDraftVersionCreateManyDraftInput = {
+    id?: string
+    version: number
+    totalAmount: string
+    recipients: JsonNullValueInput | InputJsonValue
+    changeNote?: string | null
+    changedBy: string
+    createdAt?: Date | string
+  }
+
+  export type DisbursementDraftVersionUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    totalAmount?: StringFieldUpdateOperationsInput | string
+    recipients?: JsonNullValueInput | InputJsonValue
+    changeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisbursementDraftVersionUncheckedUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    totalAmount?: StringFieldUpdateOperationsInput | string
+    recipients?: JsonNullValueInput | InputJsonValue
+    changeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisbursementDraftVersionUncheckedUpdateManyWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    totalAmount?: StringFieldUpdateOperationsInput | string
+    recipients?: JsonNullValueInput | InputJsonValue
+    changeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
 
 
   /**
@@ -40284,6 +43150,10 @@ export namespace Prisma {
      * @deprecated Use DisbursementCountOutputTypeDefaultArgs instead
      */
     export type DisbursementCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DisbursementCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DisbursementDraftCountOutputTypeDefaultArgs instead
+     */
+    export type DisbursementDraftCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DisbursementDraftCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use StreamDefaultArgs instead
      */
@@ -40404,6 +43274,14 @@ export namespace Prisma {
      * @deprecated Use MonitoredTransactionDefaultArgs instead
      */
     export type MonitoredTransactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MonitoredTransactionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DisbursementDraftDefaultArgs instead
+     */
+    export type DisbursementDraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DisbursementDraftDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DisbursementDraftVersionDefaultArgs instead
+     */
+    export type DisbursementDraftVersionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DisbursementDraftVersionDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

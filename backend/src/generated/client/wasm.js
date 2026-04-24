@@ -494,6 +494,28 @@ exports.Prisma.MonitoredTransactionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.DisbursementDraftScalarFieldEnum = {
+  id: 'id',
+  senderAddress: 'senderAddress',
+  name: 'name',
+  asset: 'asset',
+  currentVersion: 'currentVersion',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DisbursementDraftVersionScalarFieldEnum = {
+  id: 'id',
+  draftId: 'draftId',
+  version: 'version',
+  totalAmount: 'totalAmount',
+  recipients: 'recipients',
+  changeNote: 'changeNote',
+  changedBy: 'changedBy',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -573,7 +595,9 @@ exports.Prisma.ModelName = {
   PriceHistory: 'PriceHistory',
   ProtocolInefficiencyReport: 'ProtocolInefficiencyReport',
   SplitLog: 'SplitLog',
-  MonitoredTransaction: 'MonitoredTransaction'
+  MonitoredTransaction: 'MonitoredTransaction',
+  DisbursementDraft: 'DisbursementDraft',
+  DisbursementDraftVersion: 'DisbursementDraftVersion'
 };
 
 /**
