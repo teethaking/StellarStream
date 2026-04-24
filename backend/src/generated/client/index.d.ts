@@ -104,6 +104,11 @@ export type Affiliate = $Result.DefaultSelection<Prisma.$AffiliatePayload>
  */
 export type GlobalStats = $Result.DefaultSelection<Prisma.$GlobalStatsPayload>
 /**
+ * Model GlobalStats_V3
+ * 
+ */
+export type GlobalStats_V3 = $Result.DefaultSelection<Prisma.$GlobalStats_V3Payload>
+/**
  * Model TvlSnapshot
  * 
  */
@@ -144,10 +149,20 @@ export type AssetMapping = $Result.DefaultSelection<Prisma.$AssetMappingPayload>
  */
 export type PriceHistory = $Result.DefaultSelection<Prisma.$PriceHistoryPayload>
 /**
+ * Model ProtocolInefficiencyReport
+ * 
+ */
+export type ProtocolInefficiencyReport = $Result.DefaultSelection<Prisma.$ProtocolInefficiencyReportPayload>
+/**
  * Model SplitLog
  * 
  */
 export type SplitLog = $Result.DefaultSelection<Prisma.$SplitLogPayload>
+/**
+ * Model MonitoredTransaction
+ * 
+ */
+export type MonitoredTransaction = $Result.DefaultSelection<Prisma.$MonitoredTransactionPayload>
 
 /**
  * Enums
@@ -511,6 +526,16 @@ export class PrismaClient<
   get globalStats(): Prisma.GlobalStatsDelegate<ExtArgs>;
 
   /**
+   * `prisma.globalStats_V3`: Exposes CRUD operations for the **GlobalStats_V3** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GlobalStats_V3s
+    * const globalStats_V3s = await prisma.globalStats_V3.findMany()
+    * ```
+    */
+  get globalStats_V3(): Prisma.GlobalStats_V3Delegate<ExtArgs>;
+
+  /**
    * `prisma.tvlSnapshot`: Exposes CRUD operations for the **TvlSnapshot** model.
     * Example usage:
     * ```ts
@@ -591,6 +616,16 @@ export class PrismaClient<
   get priceHistory(): Prisma.PriceHistoryDelegate<ExtArgs>;
 
   /**
+   * `prisma.protocolInefficiencyReport`: Exposes CRUD operations for the **ProtocolInefficiencyReport** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProtocolInefficiencyReports
+    * const protocolInefficiencyReports = await prisma.protocolInefficiencyReport.findMany()
+    * ```
+    */
+  get protocolInefficiencyReport(): Prisma.ProtocolInefficiencyReportDelegate<ExtArgs>;
+
+  /**
    * `prisma.splitLog`: Exposes CRUD operations for the **SplitLog** model.
     * Example usage:
     * ```ts
@@ -599,6 +634,16 @@ export class PrismaClient<
     * ```
     */
   get splitLog(): Prisma.SplitLogDelegate<ExtArgs>;
+
+  /**
+   * `prisma.monitoredTransaction`: Exposes CRUD operations for the **MonitoredTransaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MonitoredTransactions
+    * const monitoredTransactions = await prisma.monitoredTransaction.findMany()
+    * ```
+    */
+  get monitoredTransaction(): Prisma.MonitoredTransactionDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1058,6 +1103,7 @@ export namespace Prisma {
     InvoiceLink: 'InvoiceLink',
     Affiliate: 'Affiliate',
     GlobalStats: 'GlobalStats',
+    GlobalStats_V3: 'GlobalStats_V3',
     TvlSnapshot: 'TvlSnapshot',
     Asset: 'Asset',
     AutopilotSchedule: 'AutopilotSchedule',
@@ -1066,7 +1112,9 @@ export namespace Prisma {
     SplitRecipient: 'SplitRecipient',
     AssetMapping: 'AssetMapping',
     PriceHistory: 'PriceHistory',
-    SplitLog: 'SplitLog'
+    ProtocolInefficiencyReport: 'ProtocolInefficiencyReport',
+    SplitLog: 'SplitLog',
+    MonitoredTransaction: 'MonitoredTransaction'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1082,7 +1130,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "stream" | "contractEvent" | "tokenPrice" | "webhook" | "webhookDelivery" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "organizationMember" | "apiKey" | "ledgerHash" | "notificationSubscription" | "invoiceLink" | "affiliate" | "globalStats" | "tvlSnapshot" | "asset" | "autopilotSchedule" | "assetConfig" | "disbursement" | "splitRecipient" | "assetMapping" | "priceHistory" | "splitLog"
+      modelProps: "stream" | "contractEvent" | "tokenPrice" | "webhook" | "webhookDelivery" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "organizationMember" | "apiKey" | "ledgerHash" | "notificationSubscription" | "invoiceLink" | "affiliate" | "globalStats" | "globalStats_V3" | "tvlSnapshot" | "asset" | "autopilotSchedule" | "assetConfig" | "disbursement" | "splitRecipient" | "assetMapping" | "priceHistory" | "protocolInefficiencyReport" | "splitLog" | "monitoredTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2346,6 +2394,76 @@ export namespace Prisma {
           }
         }
       }
+      GlobalStats_V3: {
+        payload: Prisma.$GlobalStats_V3Payload<ExtArgs>
+        fields: Prisma.GlobalStats_V3FieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GlobalStats_V3FindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GlobalStats_V3FindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>
+          }
+          findFirst: {
+            args: Prisma.GlobalStats_V3FindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GlobalStats_V3FindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>
+          }
+          findMany: {
+            args: Prisma.GlobalStats_V3FindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>[]
+          }
+          create: {
+            args: Prisma.GlobalStats_V3CreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>
+          }
+          createMany: {
+            args: Prisma.GlobalStats_V3CreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GlobalStats_V3CreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>[]
+          }
+          delete: {
+            args: Prisma.GlobalStats_V3DeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>
+          }
+          update: {
+            args: Prisma.GlobalStats_V3UpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>
+          }
+          deleteMany: {
+            args: Prisma.GlobalStats_V3DeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GlobalStats_V3UpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.GlobalStats_V3UpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalStats_V3Payload>
+          }
+          aggregate: {
+            args: Prisma.GlobalStats_V3AggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGlobalStats_V3>
+          }
+          groupBy: {
+            args: Prisma.GlobalStats_V3GroupByArgs<ExtArgs>
+            result: $Utils.Optional<GlobalStats_V3GroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GlobalStats_V3CountArgs<ExtArgs>
+            result: $Utils.Optional<GlobalStats_V3CountAggregateOutputType> | number
+          }
+        }
+      }
       TvlSnapshot: {
         payload: Prisma.$TvlSnapshotPayload<ExtArgs>
         fields: Prisma.TvlSnapshotFieldRefs
@@ -2906,6 +3024,76 @@ export namespace Prisma {
           }
         }
       }
+      ProtocolInefficiencyReport: {
+        payload: Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>
+        fields: Prisma.ProtocolInefficiencyReportFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProtocolInefficiencyReportFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProtocolInefficiencyReportFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>
+          }
+          findFirst: {
+            args: Prisma.ProtocolInefficiencyReportFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProtocolInefficiencyReportFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>
+          }
+          findMany: {
+            args: Prisma.ProtocolInefficiencyReportFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>[]
+          }
+          create: {
+            args: Prisma.ProtocolInefficiencyReportCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>
+          }
+          createMany: {
+            args: Prisma.ProtocolInefficiencyReportCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProtocolInefficiencyReportCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>[]
+          }
+          delete: {
+            args: Prisma.ProtocolInefficiencyReportDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>
+          }
+          update: {
+            args: Prisma.ProtocolInefficiencyReportUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProtocolInefficiencyReportDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProtocolInefficiencyReportUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ProtocolInefficiencyReportUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolInefficiencyReportPayload>
+          }
+          aggregate: {
+            args: Prisma.ProtocolInefficiencyReportAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProtocolInefficiencyReport>
+          }
+          groupBy: {
+            args: Prisma.ProtocolInefficiencyReportGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolInefficiencyReportGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProtocolInefficiencyReportCountArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolInefficiencyReportCountAggregateOutputType> | number
+          }
+        }
+      }
       SplitLog: {
         payload: Prisma.$SplitLogPayload<ExtArgs>
         fields: Prisma.SplitLogFieldRefs
@@ -2973,6 +3161,76 @@ export namespace Prisma {
           count: {
             args: Prisma.SplitLogCountArgs<ExtArgs>
             result: $Utils.Optional<SplitLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      MonitoredTransaction: {
+        payload: Prisma.$MonitoredTransactionPayload<ExtArgs>
+        fields: Prisma.MonitoredTransactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MonitoredTransactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MonitoredTransactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>
+          }
+          findFirst: {
+            args: Prisma.MonitoredTransactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MonitoredTransactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>
+          }
+          findMany: {
+            args: Prisma.MonitoredTransactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>[]
+          }
+          create: {
+            args: Prisma.MonitoredTransactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>
+          }
+          createMany: {
+            args: Prisma.MonitoredTransactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MonitoredTransactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>[]
+          }
+          delete: {
+            args: Prisma.MonitoredTransactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>
+          }
+          update: {
+            args: Prisma.MonitoredTransactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.MonitoredTransactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MonitoredTransactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MonitoredTransactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MonitoredTransactionPayload>
+          }
+          aggregate: {
+            args: Prisma.MonitoredTransactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMonitoredTransaction>
+          }
+          groupBy: {
+            args: Prisma.MonitoredTransactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MonitoredTransactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MonitoredTransactionCountArgs<ExtArgs>
+            result: $Utils.Optional<MonitoredTransactionCountAggregateOutputType> | number
           }
         }
       }
@@ -20479,6 +20737,934 @@ export namespace Prisma {
 
 
   /**
+   * Model GlobalStats_V3
+   */
+
+  export type AggregateGlobalStats_V3 = {
+    _count: GlobalStats_V3CountAggregateOutputType | null
+    _avg: GlobalStats_V3AvgAggregateOutputType | null
+    _sum: GlobalStats_V3SumAggregateOutputType | null
+    _min: GlobalStats_V3MinAggregateOutputType | null
+    _max: GlobalStats_V3MaxAggregateOutputType | null
+  }
+
+  export type GlobalStats_V3AvgAggregateOutputType = {
+    totalSplits: number | null
+    totalRecipients: number | null
+  }
+
+  export type GlobalStats_V3SumAggregateOutputType = {
+    totalSplits: number | null
+    totalRecipients: number | null
+  }
+
+  export type GlobalStats_V3MinAggregateOutputType = {
+    id: string | null
+    totalVolumeUsd: string | null
+    dailyVolumeUsd: string | null
+    totalSplits: number | null
+    totalRecipients: number | null
+    updatedAt: Date | null
+  }
+
+  export type GlobalStats_V3MaxAggregateOutputType = {
+    id: string | null
+    totalVolumeUsd: string | null
+    dailyVolumeUsd: string | null
+    totalSplits: number | null
+    totalRecipients: number | null
+    updatedAt: Date | null
+  }
+
+  export type GlobalStats_V3CountAggregateOutputType = {
+    id: number
+    totalVolumeUsd: number
+    dailyVolumeUsd: number
+    totalSplits: number
+    totalRecipients: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GlobalStats_V3AvgAggregateInputType = {
+    totalSplits?: true
+    totalRecipients?: true
+  }
+
+  export type GlobalStats_V3SumAggregateInputType = {
+    totalSplits?: true
+    totalRecipients?: true
+  }
+
+  export type GlobalStats_V3MinAggregateInputType = {
+    id?: true
+    totalVolumeUsd?: true
+    dailyVolumeUsd?: true
+    totalSplits?: true
+    totalRecipients?: true
+    updatedAt?: true
+  }
+
+  export type GlobalStats_V3MaxAggregateInputType = {
+    id?: true
+    totalVolumeUsd?: true
+    dailyVolumeUsd?: true
+    totalSplits?: true
+    totalRecipients?: true
+    updatedAt?: true
+  }
+
+  export type GlobalStats_V3CountAggregateInputType = {
+    id?: true
+    totalVolumeUsd?: true
+    dailyVolumeUsd?: true
+    totalSplits?: true
+    totalRecipients?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GlobalStats_V3AggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GlobalStats_V3 to aggregate.
+     */
+    where?: GlobalStats_V3WhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalStats_V3s to fetch.
+     */
+    orderBy?: GlobalStats_V3OrderByWithRelationInput | GlobalStats_V3OrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GlobalStats_V3WhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalStats_V3s from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalStats_V3s.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GlobalStats_V3s
+    **/
+    _count?: true | GlobalStats_V3CountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GlobalStats_V3AvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GlobalStats_V3SumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GlobalStats_V3MinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GlobalStats_V3MaxAggregateInputType
+  }
+
+  export type GetGlobalStats_V3AggregateType<T extends GlobalStats_V3AggregateArgs> = {
+        [P in keyof T & keyof AggregateGlobalStats_V3]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGlobalStats_V3[P]>
+      : GetScalarType<T[P], AggregateGlobalStats_V3[P]>
+  }
+
+
+
+
+  export type GlobalStats_V3GroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GlobalStats_V3WhereInput
+    orderBy?: GlobalStats_V3OrderByWithAggregationInput | GlobalStats_V3OrderByWithAggregationInput[]
+    by: GlobalStats_V3ScalarFieldEnum[] | GlobalStats_V3ScalarFieldEnum
+    having?: GlobalStats_V3ScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GlobalStats_V3CountAggregateInputType | true
+    _avg?: GlobalStats_V3AvgAggregateInputType
+    _sum?: GlobalStats_V3SumAggregateInputType
+    _min?: GlobalStats_V3MinAggregateInputType
+    _max?: GlobalStats_V3MaxAggregateInputType
+  }
+
+  export type GlobalStats_V3GroupByOutputType = {
+    id: string
+    totalVolumeUsd: string
+    dailyVolumeUsd: string
+    totalSplits: number
+    totalRecipients: number
+    updatedAt: Date
+    _count: GlobalStats_V3CountAggregateOutputType | null
+    _avg: GlobalStats_V3AvgAggregateOutputType | null
+    _sum: GlobalStats_V3SumAggregateOutputType | null
+    _min: GlobalStats_V3MinAggregateOutputType | null
+    _max: GlobalStats_V3MaxAggregateOutputType | null
+  }
+
+  type GetGlobalStats_V3GroupByPayload<T extends GlobalStats_V3GroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GlobalStats_V3GroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GlobalStats_V3GroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GlobalStats_V3GroupByOutputType[P]>
+            : GetScalarType<T[P], GlobalStats_V3GroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GlobalStats_V3Select<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    totalVolumeUsd?: boolean
+    dailyVolumeUsd?: boolean
+    totalSplits?: boolean
+    totalRecipients?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["globalStats_V3"]>
+
+  export type GlobalStats_V3SelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    totalVolumeUsd?: boolean
+    dailyVolumeUsd?: boolean
+    totalSplits?: boolean
+    totalRecipients?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["globalStats_V3"]>
+
+  export type GlobalStats_V3SelectScalar = {
+    id?: boolean
+    totalVolumeUsd?: boolean
+    dailyVolumeUsd?: boolean
+    totalSplits?: boolean
+    totalRecipients?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $GlobalStats_V3Payload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GlobalStats_V3"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      totalVolumeUsd: string
+      dailyVolumeUsd: string
+      totalSplits: number
+      totalRecipients: number
+      updatedAt: Date
+    }, ExtArgs["result"]["globalStats_V3"]>
+    composites: {}
+  }
+
+  type GlobalStats_V3GetPayload<S extends boolean | null | undefined | GlobalStats_V3DefaultArgs> = $Result.GetResult<Prisma.$GlobalStats_V3Payload, S>
+
+  type GlobalStats_V3CountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<GlobalStats_V3FindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: GlobalStats_V3CountAggregateInputType | true
+    }
+
+  export interface GlobalStats_V3Delegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GlobalStats_V3'], meta: { name: 'GlobalStats_V3' } }
+    /**
+     * Find zero or one GlobalStats_V3 that matches the filter.
+     * @param {GlobalStats_V3FindUniqueArgs} args - Arguments to find a GlobalStats_V3
+     * @example
+     * // Get one GlobalStats_V3
+     * const globalStats_V3 = await prisma.globalStats_V3.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GlobalStats_V3FindUniqueArgs>(args: SelectSubset<T, GlobalStats_V3FindUniqueArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one GlobalStats_V3 that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {GlobalStats_V3FindUniqueOrThrowArgs} args - Arguments to find a GlobalStats_V3
+     * @example
+     * // Get one GlobalStats_V3
+     * const globalStats_V3 = await prisma.globalStats_V3.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GlobalStats_V3FindUniqueOrThrowArgs>(args: SelectSubset<T, GlobalStats_V3FindUniqueOrThrowArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first GlobalStats_V3 that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalStats_V3FindFirstArgs} args - Arguments to find a GlobalStats_V3
+     * @example
+     * // Get one GlobalStats_V3
+     * const globalStats_V3 = await prisma.globalStats_V3.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GlobalStats_V3FindFirstArgs>(args?: SelectSubset<T, GlobalStats_V3FindFirstArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first GlobalStats_V3 that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalStats_V3FindFirstOrThrowArgs} args - Arguments to find a GlobalStats_V3
+     * @example
+     * // Get one GlobalStats_V3
+     * const globalStats_V3 = await prisma.globalStats_V3.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GlobalStats_V3FindFirstOrThrowArgs>(args?: SelectSubset<T, GlobalStats_V3FindFirstOrThrowArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more GlobalStats_V3s that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalStats_V3FindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GlobalStats_V3s
+     * const globalStats_V3s = await prisma.globalStats_V3.findMany()
+     * 
+     * // Get first 10 GlobalStats_V3s
+     * const globalStats_V3s = await prisma.globalStats_V3.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const globalStats_V3WithIdOnly = await prisma.globalStats_V3.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GlobalStats_V3FindManyArgs>(args?: SelectSubset<T, GlobalStats_V3FindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a GlobalStats_V3.
+     * @param {GlobalStats_V3CreateArgs} args - Arguments to create a GlobalStats_V3.
+     * @example
+     * // Create one GlobalStats_V3
+     * const GlobalStats_V3 = await prisma.globalStats_V3.create({
+     *   data: {
+     *     // ... data to create a GlobalStats_V3
+     *   }
+     * })
+     * 
+     */
+    create<T extends GlobalStats_V3CreateArgs>(args: SelectSubset<T, GlobalStats_V3CreateArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many GlobalStats_V3s.
+     * @param {GlobalStats_V3CreateManyArgs} args - Arguments to create many GlobalStats_V3s.
+     * @example
+     * // Create many GlobalStats_V3s
+     * const globalStats_V3 = await prisma.globalStats_V3.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GlobalStats_V3CreateManyArgs>(args?: SelectSubset<T, GlobalStats_V3CreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GlobalStats_V3s and returns the data saved in the database.
+     * @param {GlobalStats_V3CreateManyAndReturnArgs} args - Arguments to create many GlobalStats_V3s.
+     * @example
+     * // Create many GlobalStats_V3s
+     * const globalStats_V3 = await prisma.globalStats_V3.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GlobalStats_V3s and only return the `id`
+     * const globalStats_V3WithIdOnly = await prisma.globalStats_V3.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GlobalStats_V3CreateManyAndReturnArgs>(args?: SelectSubset<T, GlobalStats_V3CreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a GlobalStats_V3.
+     * @param {GlobalStats_V3DeleteArgs} args - Arguments to delete one GlobalStats_V3.
+     * @example
+     * // Delete one GlobalStats_V3
+     * const GlobalStats_V3 = await prisma.globalStats_V3.delete({
+     *   where: {
+     *     // ... filter to delete one GlobalStats_V3
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GlobalStats_V3DeleteArgs>(args: SelectSubset<T, GlobalStats_V3DeleteArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one GlobalStats_V3.
+     * @param {GlobalStats_V3UpdateArgs} args - Arguments to update one GlobalStats_V3.
+     * @example
+     * // Update one GlobalStats_V3
+     * const globalStats_V3 = await prisma.globalStats_V3.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GlobalStats_V3UpdateArgs>(args: SelectSubset<T, GlobalStats_V3UpdateArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more GlobalStats_V3s.
+     * @param {GlobalStats_V3DeleteManyArgs} args - Arguments to filter GlobalStats_V3s to delete.
+     * @example
+     * // Delete a few GlobalStats_V3s
+     * const { count } = await prisma.globalStats_V3.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GlobalStats_V3DeleteManyArgs>(args?: SelectSubset<T, GlobalStats_V3DeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GlobalStats_V3s.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalStats_V3UpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GlobalStats_V3s
+     * const globalStats_V3 = await prisma.globalStats_V3.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GlobalStats_V3UpdateManyArgs>(args: SelectSubset<T, GlobalStats_V3UpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one GlobalStats_V3.
+     * @param {GlobalStats_V3UpsertArgs} args - Arguments to update or create a GlobalStats_V3.
+     * @example
+     * // Update or create a GlobalStats_V3
+     * const globalStats_V3 = await prisma.globalStats_V3.upsert({
+     *   create: {
+     *     // ... data to create a GlobalStats_V3
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GlobalStats_V3 we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GlobalStats_V3UpsertArgs>(args: SelectSubset<T, GlobalStats_V3UpsertArgs<ExtArgs>>): Prisma__GlobalStats_V3Client<$Result.GetResult<Prisma.$GlobalStats_V3Payload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of GlobalStats_V3s.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalStats_V3CountArgs} args - Arguments to filter GlobalStats_V3s to count.
+     * @example
+     * // Count the number of GlobalStats_V3s
+     * const count = await prisma.globalStats_V3.count({
+     *   where: {
+     *     // ... the filter for the GlobalStats_V3s we want to count
+     *   }
+     * })
+    **/
+    count<T extends GlobalStats_V3CountArgs>(
+      args?: Subset<T, GlobalStats_V3CountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GlobalStats_V3CountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GlobalStats_V3.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalStats_V3AggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GlobalStats_V3AggregateArgs>(args: Subset<T, GlobalStats_V3AggregateArgs>): Prisma.PrismaPromise<GetGlobalStats_V3AggregateType<T>>
+
+    /**
+     * Group by GlobalStats_V3.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalStats_V3GroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GlobalStats_V3GroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GlobalStats_V3GroupByArgs['orderBy'] }
+        : { orderBy?: GlobalStats_V3GroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GlobalStats_V3GroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGlobalStats_V3GroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GlobalStats_V3 model
+   */
+  readonly fields: GlobalStats_V3FieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GlobalStats_V3.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GlobalStats_V3Client<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GlobalStats_V3 model
+   */ 
+  interface GlobalStats_V3FieldRefs {
+    readonly id: FieldRef<"GlobalStats_V3", 'String'>
+    readonly totalVolumeUsd: FieldRef<"GlobalStats_V3", 'String'>
+    readonly dailyVolumeUsd: FieldRef<"GlobalStats_V3", 'String'>
+    readonly totalSplits: FieldRef<"GlobalStats_V3", 'Int'>
+    readonly totalRecipients: FieldRef<"GlobalStats_V3", 'Int'>
+    readonly updatedAt: FieldRef<"GlobalStats_V3", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GlobalStats_V3 findUnique
+   */
+  export type GlobalStats_V3FindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * Filter, which GlobalStats_V3 to fetch.
+     */
+    where: GlobalStats_V3WhereUniqueInput
+  }
+
+  /**
+   * GlobalStats_V3 findUniqueOrThrow
+   */
+  export type GlobalStats_V3FindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * Filter, which GlobalStats_V3 to fetch.
+     */
+    where: GlobalStats_V3WhereUniqueInput
+  }
+
+  /**
+   * GlobalStats_V3 findFirst
+   */
+  export type GlobalStats_V3FindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * Filter, which GlobalStats_V3 to fetch.
+     */
+    where?: GlobalStats_V3WhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalStats_V3s to fetch.
+     */
+    orderBy?: GlobalStats_V3OrderByWithRelationInput | GlobalStats_V3OrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GlobalStats_V3s.
+     */
+    cursor?: GlobalStats_V3WhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalStats_V3s from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalStats_V3s.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GlobalStats_V3s.
+     */
+    distinct?: GlobalStats_V3ScalarFieldEnum | GlobalStats_V3ScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalStats_V3 findFirstOrThrow
+   */
+  export type GlobalStats_V3FindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * Filter, which GlobalStats_V3 to fetch.
+     */
+    where?: GlobalStats_V3WhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalStats_V3s to fetch.
+     */
+    orderBy?: GlobalStats_V3OrderByWithRelationInput | GlobalStats_V3OrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GlobalStats_V3s.
+     */
+    cursor?: GlobalStats_V3WhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalStats_V3s from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalStats_V3s.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GlobalStats_V3s.
+     */
+    distinct?: GlobalStats_V3ScalarFieldEnum | GlobalStats_V3ScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalStats_V3 findMany
+   */
+  export type GlobalStats_V3FindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * Filter, which GlobalStats_V3s to fetch.
+     */
+    where?: GlobalStats_V3WhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalStats_V3s to fetch.
+     */
+    orderBy?: GlobalStats_V3OrderByWithRelationInput | GlobalStats_V3OrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GlobalStats_V3s.
+     */
+    cursor?: GlobalStats_V3WhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalStats_V3s from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalStats_V3s.
+     */
+    skip?: number
+    distinct?: GlobalStats_V3ScalarFieldEnum | GlobalStats_V3ScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalStats_V3 create
+   */
+  export type GlobalStats_V3CreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * The data needed to create a GlobalStats_V3.
+     */
+    data: XOR<GlobalStats_V3CreateInput, GlobalStats_V3UncheckedCreateInput>
+  }
+
+  /**
+   * GlobalStats_V3 createMany
+   */
+  export type GlobalStats_V3CreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GlobalStats_V3s.
+     */
+    data: GlobalStats_V3CreateManyInput | GlobalStats_V3CreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GlobalStats_V3 createManyAndReturn
+   */
+  export type GlobalStats_V3CreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3SelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many GlobalStats_V3s.
+     */
+    data: GlobalStats_V3CreateManyInput | GlobalStats_V3CreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GlobalStats_V3 update
+   */
+  export type GlobalStats_V3UpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * The data needed to update a GlobalStats_V3.
+     */
+    data: XOR<GlobalStats_V3UpdateInput, GlobalStats_V3UncheckedUpdateInput>
+    /**
+     * Choose, which GlobalStats_V3 to update.
+     */
+    where: GlobalStats_V3WhereUniqueInput
+  }
+
+  /**
+   * GlobalStats_V3 updateMany
+   */
+  export type GlobalStats_V3UpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GlobalStats_V3s.
+     */
+    data: XOR<GlobalStats_V3UpdateManyMutationInput, GlobalStats_V3UncheckedUpdateManyInput>
+    /**
+     * Filter which GlobalStats_V3s to update
+     */
+    where?: GlobalStats_V3WhereInput
+  }
+
+  /**
+   * GlobalStats_V3 upsert
+   */
+  export type GlobalStats_V3UpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * The filter to search for the GlobalStats_V3 to update in case it exists.
+     */
+    where: GlobalStats_V3WhereUniqueInput
+    /**
+     * In case the GlobalStats_V3 found by the `where` argument doesn't exist, create a new GlobalStats_V3 with this data.
+     */
+    create: XOR<GlobalStats_V3CreateInput, GlobalStats_V3UncheckedCreateInput>
+    /**
+     * In case the GlobalStats_V3 was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GlobalStats_V3UpdateInput, GlobalStats_V3UncheckedUpdateInput>
+  }
+
+  /**
+   * GlobalStats_V3 delete
+   */
+  export type GlobalStats_V3DeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+    /**
+     * Filter which GlobalStats_V3 to delete.
+     */
+    where: GlobalStats_V3WhereUniqueInput
+  }
+
+  /**
+   * GlobalStats_V3 deleteMany
+   */
+  export type GlobalStats_V3DeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GlobalStats_V3s to delete
+     */
+    where?: GlobalStats_V3WhereInput
+  }
+
+  /**
+   * GlobalStats_V3 without action
+   */
+  export type GlobalStats_V3DefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalStats_V3
+     */
+    select?: GlobalStats_V3Select<ExtArgs> | null
+  }
+
+
+  /**
    * Model TvlSnapshot
    */
 
@@ -28110,6 +29296,978 @@ export namespace Prisma {
 
 
   /**
+   * Model ProtocolInefficiencyReport
+   */
+
+  export type AggregateProtocolInefficiencyReport = {
+    _count: ProtocolInefficiencyReportCountAggregateOutputType | null
+    _avg: ProtocolInefficiencyReportAvgAggregateOutputType | null
+    _sum: ProtocolInefficiencyReportSumAggregateOutputType | null
+    _min: ProtocolInefficiencyReportMinAggregateOutputType | null
+    _max: ProtocolInefficiencyReportMaxAggregateOutputType | null
+  }
+
+  export type ProtocolInefficiencyReportAvgAggregateOutputType = {
+    protocolVersion: number | null
+    eventCount: number | null
+    firstSeenLedger: number | null
+    lastSeenLedger: number | null
+  }
+
+  export type ProtocolInefficiencyReportSumAggregateOutputType = {
+    protocolVersion: number | null
+    eventCount: number | null
+    firstSeenLedger: number | null
+    lastSeenLedger: number | null
+  }
+
+  export type ProtocolInefficiencyReportMinAggregateOutputType = {
+    id: string | null
+    asset: string | null
+    protocolVersion: number | null
+    totalDustAmount: string | null
+    eventCount: number | null
+    firstSeenLedger: number | null
+    lastSeenLedger: number | null
+    generatedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProtocolInefficiencyReportMaxAggregateOutputType = {
+    id: string | null
+    asset: string | null
+    protocolVersion: number | null
+    totalDustAmount: string | null
+    eventCount: number | null
+    firstSeenLedger: number | null
+    lastSeenLedger: number | null
+    generatedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProtocolInefficiencyReportCountAggregateOutputType = {
+    id: number
+    asset: number
+    protocolVersion: number
+    totalDustAmount: number
+    eventCount: number
+    firstSeenLedger: number
+    lastSeenLedger: number
+    generatedAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProtocolInefficiencyReportAvgAggregateInputType = {
+    protocolVersion?: true
+    eventCount?: true
+    firstSeenLedger?: true
+    lastSeenLedger?: true
+  }
+
+  export type ProtocolInefficiencyReportSumAggregateInputType = {
+    protocolVersion?: true
+    eventCount?: true
+    firstSeenLedger?: true
+    lastSeenLedger?: true
+  }
+
+  export type ProtocolInefficiencyReportMinAggregateInputType = {
+    id?: true
+    asset?: true
+    protocolVersion?: true
+    totalDustAmount?: true
+    eventCount?: true
+    firstSeenLedger?: true
+    lastSeenLedger?: true
+    generatedAt?: true
+    updatedAt?: true
+  }
+
+  export type ProtocolInefficiencyReportMaxAggregateInputType = {
+    id?: true
+    asset?: true
+    protocolVersion?: true
+    totalDustAmount?: true
+    eventCount?: true
+    firstSeenLedger?: true
+    lastSeenLedger?: true
+    generatedAt?: true
+    updatedAt?: true
+  }
+
+  export type ProtocolInefficiencyReportCountAggregateInputType = {
+    id?: true
+    asset?: true
+    protocolVersion?: true
+    totalDustAmount?: true
+    eventCount?: true
+    firstSeenLedger?: true
+    lastSeenLedger?: true
+    generatedAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProtocolInefficiencyReportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProtocolInefficiencyReport to aggregate.
+     */
+    where?: ProtocolInefficiencyReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolInefficiencyReports to fetch.
+     */
+    orderBy?: ProtocolInefficiencyReportOrderByWithRelationInput | ProtocolInefficiencyReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProtocolInefficiencyReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolInefficiencyReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolInefficiencyReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProtocolInefficiencyReports
+    **/
+    _count?: true | ProtocolInefficiencyReportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProtocolInefficiencyReportAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProtocolInefficiencyReportSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProtocolInefficiencyReportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProtocolInefficiencyReportMaxAggregateInputType
+  }
+
+  export type GetProtocolInefficiencyReportAggregateType<T extends ProtocolInefficiencyReportAggregateArgs> = {
+        [P in keyof T & keyof AggregateProtocolInefficiencyReport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProtocolInefficiencyReport[P]>
+      : GetScalarType<T[P], AggregateProtocolInefficiencyReport[P]>
+  }
+
+
+
+
+  export type ProtocolInefficiencyReportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolInefficiencyReportWhereInput
+    orderBy?: ProtocolInefficiencyReportOrderByWithAggregationInput | ProtocolInefficiencyReportOrderByWithAggregationInput[]
+    by: ProtocolInefficiencyReportScalarFieldEnum[] | ProtocolInefficiencyReportScalarFieldEnum
+    having?: ProtocolInefficiencyReportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProtocolInefficiencyReportCountAggregateInputType | true
+    _avg?: ProtocolInefficiencyReportAvgAggregateInputType
+    _sum?: ProtocolInefficiencyReportSumAggregateInputType
+    _min?: ProtocolInefficiencyReportMinAggregateInputType
+    _max?: ProtocolInefficiencyReportMaxAggregateInputType
+  }
+
+  export type ProtocolInefficiencyReportGroupByOutputType = {
+    id: string
+    asset: string
+    protocolVersion: number
+    totalDustAmount: string
+    eventCount: number
+    firstSeenLedger: number | null
+    lastSeenLedger: number | null
+    generatedAt: Date
+    updatedAt: Date
+    _count: ProtocolInefficiencyReportCountAggregateOutputType | null
+    _avg: ProtocolInefficiencyReportAvgAggregateOutputType | null
+    _sum: ProtocolInefficiencyReportSumAggregateOutputType | null
+    _min: ProtocolInefficiencyReportMinAggregateOutputType | null
+    _max: ProtocolInefficiencyReportMaxAggregateOutputType | null
+  }
+
+  type GetProtocolInefficiencyReportGroupByPayload<T extends ProtocolInefficiencyReportGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProtocolInefficiencyReportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProtocolInefficiencyReportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProtocolInefficiencyReportGroupByOutputType[P]>
+            : GetScalarType<T[P], ProtocolInefficiencyReportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProtocolInefficiencyReportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    asset?: boolean
+    protocolVersion?: boolean
+    totalDustAmount?: boolean
+    eventCount?: boolean
+    firstSeenLedger?: boolean
+    lastSeenLedger?: boolean
+    generatedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["protocolInefficiencyReport"]>
+
+  export type ProtocolInefficiencyReportSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    asset?: boolean
+    protocolVersion?: boolean
+    totalDustAmount?: boolean
+    eventCount?: boolean
+    firstSeenLedger?: boolean
+    lastSeenLedger?: boolean
+    generatedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["protocolInefficiencyReport"]>
+
+  export type ProtocolInefficiencyReportSelectScalar = {
+    id?: boolean
+    asset?: boolean
+    protocolVersion?: boolean
+    totalDustAmount?: boolean
+    eventCount?: boolean
+    firstSeenLedger?: boolean
+    lastSeenLedger?: boolean
+    generatedAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $ProtocolInefficiencyReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProtocolInefficiencyReport"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      asset: string
+      protocolVersion: number
+      totalDustAmount: string
+      eventCount: number
+      firstSeenLedger: number | null
+      lastSeenLedger: number | null
+      generatedAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["protocolInefficiencyReport"]>
+    composites: {}
+  }
+
+  type ProtocolInefficiencyReportGetPayload<S extends boolean | null | undefined | ProtocolInefficiencyReportDefaultArgs> = $Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload, S>
+
+  type ProtocolInefficiencyReportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ProtocolInefficiencyReportFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ProtocolInefficiencyReportCountAggregateInputType | true
+    }
+
+  export interface ProtocolInefficiencyReportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProtocolInefficiencyReport'], meta: { name: 'ProtocolInefficiencyReport' } }
+    /**
+     * Find zero or one ProtocolInefficiencyReport that matches the filter.
+     * @param {ProtocolInefficiencyReportFindUniqueArgs} args - Arguments to find a ProtocolInefficiencyReport
+     * @example
+     * // Get one ProtocolInefficiencyReport
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProtocolInefficiencyReportFindUniqueArgs>(args: SelectSubset<T, ProtocolInefficiencyReportFindUniqueArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one ProtocolInefficiencyReport that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ProtocolInefficiencyReportFindUniqueOrThrowArgs} args - Arguments to find a ProtocolInefficiencyReport
+     * @example
+     * // Get one ProtocolInefficiencyReport
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProtocolInefficiencyReportFindUniqueOrThrowArgs>(args: SelectSubset<T, ProtocolInefficiencyReportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first ProtocolInefficiencyReport that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolInefficiencyReportFindFirstArgs} args - Arguments to find a ProtocolInefficiencyReport
+     * @example
+     * // Get one ProtocolInefficiencyReport
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProtocolInefficiencyReportFindFirstArgs>(args?: SelectSubset<T, ProtocolInefficiencyReportFindFirstArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first ProtocolInefficiencyReport that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolInefficiencyReportFindFirstOrThrowArgs} args - Arguments to find a ProtocolInefficiencyReport
+     * @example
+     * // Get one ProtocolInefficiencyReport
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProtocolInefficiencyReportFindFirstOrThrowArgs>(args?: SelectSubset<T, ProtocolInefficiencyReportFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more ProtocolInefficiencyReports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolInefficiencyReportFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProtocolInefficiencyReports
+     * const protocolInefficiencyReports = await prisma.protocolInefficiencyReport.findMany()
+     * 
+     * // Get first 10 ProtocolInefficiencyReports
+     * const protocolInefficiencyReports = await prisma.protocolInefficiencyReport.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const protocolInefficiencyReportWithIdOnly = await prisma.protocolInefficiencyReport.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProtocolInefficiencyReportFindManyArgs>(args?: SelectSubset<T, ProtocolInefficiencyReportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a ProtocolInefficiencyReport.
+     * @param {ProtocolInefficiencyReportCreateArgs} args - Arguments to create a ProtocolInefficiencyReport.
+     * @example
+     * // Create one ProtocolInefficiencyReport
+     * const ProtocolInefficiencyReport = await prisma.protocolInefficiencyReport.create({
+     *   data: {
+     *     // ... data to create a ProtocolInefficiencyReport
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProtocolInefficiencyReportCreateArgs>(args: SelectSubset<T, ProtocolInefficiencyReportCreateArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many ProtocolInefficiencyReports.
+     * @param {ProtocolInefficiencyReportCreateManyArgs} args - Arguments to create many ProtocolInefficiencyReports.
+     * @example
+     * // Create many ProtocolInefficiencyReports
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProtocolInefficiencyReportCreateManyArgs>(args?: SelectSubset<T, ProtocolInefficiencyReportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProtocolInefficiencyReports and returns the data saved in the database.
+     * @param {ProtocolInefficiencyReportCreateManyAndReturnArgs} args - Arguments to create many ProtocolInefficiencyReports.
+     * @example
+     * // Create many ProtocolInefficiencyReports
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProtocolInefficiencyReports and only return the `id`
+     * const protocolInefficiencyReportWithIdOnly = await prisma.protocolInefficiencyReport.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProtocolInefficiencyReportCreateManyAndReturnArgs>(args?: SelectSubset<T, ProtocolInefficiencyReportCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a ProtocolInefficiencyReport.
+     * @param {ProtocolInefficiencyReportDeleteArgs} args - Arguments to delete one ProtocolInefficiencyReport.
+     * @example
+     * // Delete one ProtocolInefficiencyReport
+     * const ProtocolInefficiencyReport = await prisma.protocolInefficiencyReport.delete({
+     *   where: {
+     *     // ... filter to delete one ProtocolInefficiencyReport
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProtocolInefficiencyReportDeleteArgs>(args: SelectSubset<T, ProtocolInefficiencyReportDeleteArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one ProtocolInefficiencyReport.
+     * @param {ProtocolInefficiencyReportUpdateArgs} args - Arguments to update one ProtocolInefficiencyReport.
+     * @example
+     * // Update one ProtocolInefficiencyReport
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProtocolInefficiencyReportUpdateArgs>(args: SelectSubset<T, ProtocolInefficiencyReportUpdateArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more ProtocolInefficiencyReports.
+     * @param {ProtocolInefficiencyReportDeleteManyArgs} args - Arguments to filter ProtocolInefficiencyReports to delete.
+     * @example
+     * // Delete a few ProtocolInefficiencyReports
+     * const { count } = await prisma.protocolInefficiencyReport.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProtocolInefficiencyReportDeleteManyArgs>(args?: SelectSubset<T, ProtocolInefficiencyReportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProtocolInefficiencyReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolInefficiencyReportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProtocolInefficiencyReports
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProtocolInefficiencyReportUpdateManyArgs>(args: SelectSubset<T, ProtocolInefficiencyReportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ProtocolInefficiencyReport.
+     * @param {ProtocolInefficiencyReportUpsertArgs} args - Arguments to update or create a ProtocolInefficiencyReport.
+     * @example
+     * // Update or create a ProtocolInefficiencyReport
+     * const protocolInefficiencyReport = await prisma.protocolInefficiencyReport.upsert({
+     *   create: {
+     *     // ... data to create a ProtocolInefficiencyReport
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProtocolInefficiencyReport we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProtocolInefficiencyReportUpsertArgs>(args: SelectSubset<T, ProtocolInefficiencyReportUpsertArgs<ExtArgs>>): Prisma__ProtocolInefficiencyReportClient<$Result.GetResult<Prisma.$ProtocolInefficiencyReportPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of ProtocolInefficiencyReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolInefficiencyReportCountArgs} args - Arguments to filter ProtocolInefficiencyReports to count.
+     * @example
+     * // Count the number of ProtocolInefficiencyReports
+     * const count = await prisma.protocolInefficiencyReport.count({
+     *   where: {
+     *     // ... the filter for the ProtocolInefficiencyReports we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProtocolInefficiencyReportCountArgs>(
+      args?: Subset<T, ProtocolInefficiencyReportCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProtocolInefficiencyReportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProtocolInefficiencyReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolInefficiencyReportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProtocolInefficiencyReportAggregateArgs>(args: Subset<T, ProtocolInefficiencyReportAggregateArgs>): Prisma.PrismaPromise<GetProtocolInefficiencyReportAggregateType<T>>
+
+    /**
+     * Group by ProtocolInefficiencyReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolInefficiencyReportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProtocolInefficiencyReportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProtocolInefficiencyReportGroupByArgs['orderBy'] }
+        : { orderBy?: ProtocolInefficiencyReportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProtocolInefficiencyReportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProtocolInefficiencyReportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProtocolInefficiencyReport model
+   */
+  readonly fields: ProtocolInefficiencyReportFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProtocolInefficiencyReport.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProtocolInefficiencyReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProtocolInefficiencyReport model
+   */ 
+  interface ProtocolInefficiencyReportFieldRefs {
+    readonly id: FieldRef<"ProtocolInefficiencyReport", 'String'>
+    readonly asset: FieldRef<"ProtocolInefficiencyReport", 'String'>
+    readonly protocolVersion: FieldRef<"ProtocolInefficiencyReport", 'Int'>
+    readonly totalDustAmount: FieldRef<"ProtocolInefficiencyReport", 'String'>
+    readonly eventCount: FieldRef<"ProtocolInefficiencyReport", 'Int'>
+    readonly firstSeenLedger: FieldRef<"ProtocolInefficiencyReport", 'Int'>
+    readonly lastSeenLedger: FieldRef<"ProtocolInefficiencyReport", 'Int'>
+    readonly generatedAt: FieldRef<"ProtocolInefficiencyReport", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProtocolInefficiencyReport", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProtocolInefficiencyReport findUnique
+   */
+  export type ProtocolInefficiencyReportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * Filter, which ProtocolInefficiencyReport to fetch.
+     */
+    where: ProtocolInefficiencyReportWhereUniqueInput
+  }
+
+  /**
+   * ProtocolInefficiencyReport findUniqueOrThrow
+   */
+  export type ProtocolInefficiencyReportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * Filter, which ProtocolInefficiencyReport to fetch.
+     */
+    where: ProtocolInefficiencyReportWhereUniqueInput
+  }
+
+  /**
+   * ProtocolInefficiencyReport findFirst
+   */
+  export type ProtocolInefficiencyReportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * Filter, which ProtocolInefficiencyReport to fetch.
+     */
+    where?: ProtocolInefficiencyReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolInefficiencyReports to fetch.
+     */
+    orderBy?: ProtocolInefficiencyReportOrderByWithRelationInput | ProtocolInefficiencyReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProtocolInefficiencyReports.
+     */
+    cursor?: ProtocolInefficiencyReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolInefficiencyReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolInefficiencyReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProtocolInefficiencyReports.
+     */
+    distinct?: ProtocolInefficiencyReportScalarFieldEnum | ProtocolInefficiencyReportScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolInefficiencyReport findFirstOrThrow
+   */
+  export type ProtocolInefficiencyReportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * Filter, which ProtocolInefficiencyReport to fetch.
+     */
+    where?: ProtocolInefficiencyReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolInefficiencyReports to fetch.
+     */
+    orderBy?: ProtocolInefficiencyReportOrderByWithRelationInput | ProtocolInefficiencyReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProtocolInefficiencyReports.
+     */
+    cursor?: ProtocolInefficiencyReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolInefficiencyReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolInefficiencyReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProtocolInefficiencyReports.
+     */
+    distinct?: ProtocolInefficiencyReportScalarFieldEnum | ProtocolInefficiencyReportScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolInefficiencyReport findMany
+   */
+  export type ProtocolInefficiencyReportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * Filter, which ProtocolInefficiencyReports to fetch.
+     */
+    where?: ProtocolInefficiencyReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolInefficiencyReports to fetch.
+     */
+    orderBy?: ProtocolInefficiencyReportOrderByWithRelationInput | ProtocolInefficiencyReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProtocolInefficiencyReports.
+     */
+    cursor?: ProtocolInefficiencyReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolInefficiencyReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolInefficiencyReports.
+     */
+    skip?: number
+    distinct?: ProtocolInefficiencyReportScalarFieldEnum | ProtocolInefficiencyReportScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolInefficiencyReport create
+   */
+  export type ProtocolInefficiencyReportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * The data needed to create a ProtocolInefficiencyReport.
+     */
+    data: XOR<ProtocolInefficiencyReportCreateInput, ProtocolInefficiencyReportUncheckedCreateInput>
+  }
+
+  /**
+   * ProtocolInefficiencyReport createMany
+   */
+  export type ProtocolInefficiencyReportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProtocolInefficiencyReports.
+     */
+    data: ProtocolInefficiencyReportCreateManyInput | ProtocolInefficiencyReportCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProtocolInefficiencyReport createManyAndReturn
+   */
+  export type ProtocolInefficiencyReportCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many ProtocolInefficiencyReports.
+     */
+    data: ProtocolInefficiencyReportCreateManyInput | ProtocolInefficiencyReportCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProtocolInefficiencyReport update
+   */
+  export type ProtocolInefficiencyReportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * The data needed to update a ProtocolInefficiencyReport.
+     */
+    data: XOR<ProtocolInefficiencyReportUpdateInput, ProtocolInefficiencyReportUncheckedUpdateInput>
+    /**
+     * Choose, which ProtocolInefficiencyReport to update.
+     */
+    where: ProtocolInefficiencyReportWhereUniqueInput
+  }
+
+  /**
+   * ProtocolInefficiencyReport updateMany
+   */
+  export type ProtocolInefficiencyReportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProtocolInefficiencyReports.
+     */
+    data: XOR<ProtocolInefficiencyReportUpdateManyMutationInput, ProtocolInefficiencyReportUncheckedUpdateManyInput>
+    /**
+     * Filter which ProtocolInefficiencyReports to update
+     */
+    where?: ProtocolInefficiencyReportWhereInput
+  }
+
+  /**
+   * ProtocolInefficiencyReport upsert
+   */
+  export type ProtocolInefficiencyReportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * The filter to search for the ProtocolInefficiencyReport to update in case it exists.
+     */
+    where: ProtocolInefficiencyReportWhereUniqueInput
+    /**
+     * In case the ProtocolInefficiencyReport found by the `where` argument doesn't exist, create a new ProtocolInefficiencyReport with this data.
+     */
+    create: XOR<ProtocolInefficiencyReportCreateInput, ProtocolInefficiencyReportUncheckedCreateInput>
+    /**
+     * In case the ProtocolInefficiencyReport was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProtocolInefficiencyReportUpdateInput, ProtocolInefficiencyReportUncheckedUpdateInput>
+  }
+
+  /**
+   * ProtocolInefficiencyReport delete
+   */
+  export type ProtocolInefficiencyReportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+    /**
+     * Filter which ProtocolInefficiencyReport to delete.
+     */
+    where: ProtocolInefficiencyReportWhereUniqueInput
+  }
+
+  /**
+   * ProtocolInefficiencyReport deleteMany
+   */
+  export type ProtocolInefficiencyReportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProtocolInefficiencyReports to delete
+     */
+    where?: ProtocolInefficiencyReportWhereInput
+  }
+
+  /**
+   * ProtocolInefficiencyReport without action
+   */
+  export type ProtocolInefficiencyReportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolInefficiencyReport
+     */
+    select?: ProtocolInefficiencyReportSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Model SplitLog
    */
 
@@ -29094,6 +31252,1042 @@ export namespace Prisma {
 
 
   /**
+   * Model MonitoredTransaction
+   */
+
+  export type AggregateMonitoredTransaction = {
+    _count: MonitoredTransactionCountAggregateOutputType | null
+    _avg: MonitoredTransactionAvgAggregateOutputType | null
+    _sum: MonitoredTransactionSumAggregateOutputType | null
+    _min: MonitoredTransactionMinAggregateOutputType | null
+    _max: MonitoredTransactionMaxAggregateOutputType | null
+  }
+
+  export type MonitoredTransactionAvgAggregateOutputType = {
+    bumpCount: number | null
+    maxBumps: number | null
+  }
+
+  export type MonitoredTransactionSumAggregateOutputType = {
+    bumpCount: number | null
+    maxBumps: number | null
+  }
+
+  export type MonitoredTransactionMinAggregateOutputType = {
+    id: string | null
+    txHash: string | null
+    txXdr: string | null
+    sourceAddress: string | null
+    originalFeeSt: string | null
+    currentFeeSt: string | null
+    bumpCount: number | null
+    maxBumps: number | null
+    status: string | null
+    submittedAt: Date | null
+    confirmedAt: Date | null
+    lastBumpAt: Date | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MonitoredTransactionMaxAggregateOutputType = {
+    id: string | null
+    txHash: string | null
+    txXdr: string | null
+    sourceAddress: string | null
+    originalFeeSt: string | null
+    currentFeeSt: string | null
+    bumpCount: number | null
+    maxBumps: number | null
+    status: string | null
+    submittedAt: Date | null
+    confirmedAt: Date | null
+    lastBumpAt: Date | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MonitoredTransactionCountAggregateOutputType = {
+    id: number
+    txHash: number
+    txXdr: number
+    sourceAddress: number
+    originalFeeSt: number
+    currentFeeSt: number
+    bumpCount: number
+    maxBumps: number
+    status: number
+    submittedAt: number
+    confirmedAt: number
+    lastBumpAt: number
+    errorMessage: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MonitoredTransactionAvgAggregateInputType = {
+    bumpCount?: true
+    maxBumps?: true
+  }
+
+  export type MonitoredTransactionSumAggregateInputType = {
+    bumpCount?: true
+    maxBumps?: true
+  }
+
+  export type MonitoredTransactionMinAggregateInputType = {
+    id?: true
+    txHash?: true
+    txXdr?: true
+    sourceAddress?: true
+    originalFeeSt?: true
+    currentFeeSt?: true
+    bumpCount?: true
+    maxBumps?: true
+    status?: true
+    submittedAt?: true
+    confirmedAt?: true
+    lastBumpAt?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MonitoredTransactionMaxAggregateInputType = {
+    id?: true
+    txHash?: true
+    txXdr?: true
+    sourceAddress?: true
+    originalFeeSt?: true
+    currentFeeSt?: true
+    bumpCount?: true
+    maxBumps?: true
+    status?: true
+    submittedAt?: true
+    confirmedAt?: true
+    lastBumpAt?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MonitoredTransactionCountAggregateInputType = {
+    id?: true
+    txHash?: true
+    txXdr?: true
+    sourceAddress?: true
+    originalFeeSt?: true
+    currentFeeSt?: true
+    bumpCount?: true
+    maxBumps?: true
+    status?: true
+    submittedAt?: true
+    confirmedAt?: true
+    lastBumpAt?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MonitoredTransactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MonitoredTransaction to aggregate.
+     */
+    where?: MonitoredTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MonitoredTransactions to fetch.
+     */
+    orderBy?: MonitoredTransactionOrderByWithRelationInput | MonitoredTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MonitoredTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MonitoredTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MonitoredTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MonitoredTransactions
+    **/
+    _count?: true | MonitoredTransactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MonitoredTransactionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MonitoredTransactionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MonitoredTransactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MonitoredTransactionMaxAggregateInputType
+  }
+
+  export type GetMonitoredTransactionAggregateType<T extends MonitoredTransactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateMonitoredTransaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMonitoredTransaction[P]>
+      : GetScalarType<T[P], AggregateMonitoredTransaction[P]>
+  }
+
+
+
+
+  export type MonitoredTransactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MonitoredTransactionWhereInput
+    orderBy?: MonitoredTransactionOrderByWithAggregationInput | MonitoredTransactionOrderByWithAggregationInput[]
+    by: MonitoredTransactionScalarFieldEnum[] | MonitoredTransactionScalarFieldEnum
+    having?: MonitoredTransactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MonitoredTransactionCountAggregateInputType | true
+    _avg?: MonitoredTransactionAvgAggregateInputType
+    _sum?: MonitoredTransactionSumAggregateInputType
+    _min?: MonitoredTransactionMinAggregateInputType
+    _max?: MonitoredTransactionMaxAggregateInputType
+  }
+
+  export type MonitoredTransactionGroupByOutputType = {
+    id: string
+    txHash: string
+    txXdr: string
+    sourceAddress: string
+    originalFeeSt: string
+    currentFeeSt: string
+    bumpCount: number
+    maxBumps: number
+    status: string
+    submittedAt: Date
+    confirmedAt: Date | null
+    lastBumpAt: Date | null
+    errorMessage: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MonitoredTransactionCountAggregateOutputType | null
+    _avg: MonitoredTransactionAvgAggregateOutputType | null
+    _sum: MonitoredTransactionSumAggregateOutputType | null
+    _min: MonitoredTransactionMinAggregateOutputType | null
+    _max: MonitoredTransactionMaxAggregateOutputType | null
+  }
+
+  type GetMonitoredTransactionGroupByPayload<T extends MonitoredTransactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MonitoredTransactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MonitoredTransactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MonitoredTransactionGroupByOutputType[P]>
+            : GetScalarType<T[P], MonitoredTransactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MonitoredTransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    txHash?: boolean
+    txXdr?: boolean
+    sourceAddress?: boolean
+    originalFeeSt?: boolean
+    currentFeeSt?: boolean
+    bumpCount?: boolean
+    maxBumps?: boolean
+    status?: boolean
+    submittedAt?: boolean
+    confirmedAt?: boolean
+    lastBumpAt?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["monitoredTransaction"]>
+
+  export type MonitoredTransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    txHash?: boolean
+    txXdr?: boolean
+    sourceAddress?: boolean
+    originalFeeSt?: boolean
+    currentFeeSt?: boolean
+    bumpCount?: boolean
+    maxBumps?: boolean
+    status?: boolean
+    submittedAt?: boolean
+    confirmedAt?: boolean
+    lastBumpAt?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["monitoredTransaction"]>
+
+  export type MonitoredTransactionSelectScalar = {
+    id?: boolean
+    txHash?: boolean
+    txXdr?: boolean
+    sourceAddress?: boolean
+    originalFeeSt?: boolean
+    currentFeeSt?: boolean
+    bumpCount?: boolean
+    maxBumps?: boolean
+    status?: boolean
+    submittedAt?: boolean
+    confirmedAt?: boolean
+    lastBumpAt?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $MonitoredTransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MonitoredTransaction"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      txHash: string
+      txXdr: string
+      sourceAddress: string
+      originalFeeSt: string
+      currentFeeSt: string
+      bumpCount: number
+      maxBumps: number
+      status: string
+      submittedAt: Date
+      confirmedAt: Date | null
+      lastBumpAt: Date | null
+      errorMessage: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["monitoredTransaction"]>
+    composites: {}
+  }
+
+  type MonitoredTransactionGetPayload<S extends boolean | null | undefined | MonitoredTransactionDefaultArgs> = $Result.GetResult<Prisma.$MonitoredTransactionPayload, S>
+
+  type MonitoredTransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MonitoredTransactionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MonitoredTransactionCountAggregateInputType | true
+    }
+
+  export interface MonitoredTransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MonitoredTransaction'], meta: { name: 'MonitoredTransaction' } }
+    /**
+     * Find zero or one MonitoredTransaction that matches the filter.
+     * @param {MonitoredTransactionFindUniqueArgs} args - Arguments to find a MonitoredTransaction
+     * @example
+     * // Get one MonitoredTransaction
+     * const monitoredTransaction = await prisma.monitoredTransaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MonitoredTransactionFindUniqueArgs>(args: SelectSubset<T, MonitoredTransactionFindUniqueArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one MonitoredTransaction that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {MonitoredTransactionFindUniqueOrThrowArgs} args - Arguments to find a MonitoredTransaction
+     * @example
+     * // Get one MonitoredTransaction
+     * const monitoredTransaction = await prisma.monitoredTransaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MonitoredTransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, MonitoredTransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first MonitoredTransaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MonitoredTransactionFindFirstArgs} args - Arguments to find a MonitoredTransaction
+     * @example
+     * // Get one MonitoredTransaction
+     * const monitoredTransaction = await prisma.monitoredTransaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MonitoredTransactionFindFirstArgs>(args?: SelectSubset<T, MonitoredTransactionFindFirstArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first MonitoredTransaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MonitoredTransactionFindFirstOrThrowArgs} args - Arguments to find a MonitoredTransaction
+     * @example
+     * // Get one MonitoredTransaction
+     * const monitoredTransaction = await prisma.monitoredTransaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MonitoredTransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, MonitoredTransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more MonitoredTransactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MonitoredTransactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MonitoredTransactions
+     * const monitoredTransactions = await prisma.monitoredTransaction.findMany()
+     * 
+     * // Get first 10 MonitoredTransactions
+     * const monitoredTransactions = await prisma.monitoredTransaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const monitoredTransactionWithIdOnly = await prisma.monitoredTransaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MonitoredTransactionFindManyArgs>(args?: SelectSubset<T, MonitoredTransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a MonitoredTransaction.
+     * @param {MonitoredTransactionCreateArgs} args - Arguments to create a MonitoredTransaction.
+     * @example
+     * // Create one MonitoredTransaction
+     * const MonitoredTransaction = await prisma.monitoredTransaction.create({
+     *   data: {
+     *     // ... data to create a MonitoredTransaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends MonitoredTransactionCreateArgs>(args: SelectSubset<T, MonitoredTransactionCreateArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many MonitoredTransactions.
+     * @param {MonitoredTransactionCreateManyArgs} args - Arguments to create many MonitoredTransactions.
+     * @example
+     * // Create many MonitoredTransactions
+     * const monitoredTransaction = await prisma.monitoredTransaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MonitoredTransactionCreateManyArgs>(args?: SelectSubset<T, MonitoredTransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MonitoredTransactions and returns the data saved in the database.
+     * @param {MonitoredTransactionCreateManyAndReturnArgs} args - Arguments to create many MonitoredTransactions.
+     * @example
+     * // Create many MonitoredTransactions
+     * const monitoredTransaction = await prisma.monitoredTransaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MonitoredTransactions and only return the `id`
+     * const monitoredTransactionWithIdOnly = await prisma.monitoredTransaction.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MonitoredTransactionCreateManyAndReturnArgs>(args?: SelectSubset<T, MonitoredTransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a MonitoredTransaction.
+     * @param {MonitoredTransactionDeleteArgs} args - Arguments to delete one MonitoredTransaction.
+     * @example
+     * // Delete one MonitoredTransaction
+     * const MonitoredTransaction = await prisma.monitoredTransaction.delete({
+     *   where: {
+     *     // ... filter to delete one MonitoredTransaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MonitoredTransactionDeleteArgs>(args: SelectSubset<T, MonitoredTransactionDeleteArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one MonitoredTransaction.
+     * @param {MonitoredTransactionUpdateArgs} args - Arguments to update one MonitoredTransaction.
+     * @example
+     * // Update one MonitoredTransaction
+     * const monitoredTransaction = await prisma.monitoredTransaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MonitoredTransactionUpdateArgs>(args: SelectSubset<T, MonitoredTransactionUpdateArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more MonitoredTransactions.
+     * @param {MonitoredTransactionDeleteManyArgs} args - Arguments to filter MonitoredTransactions to delete.
+     * @example
+     * // Delete a few MonitoredTransactions
+     * const { count } = await prisma.monitoredTransaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MonitoredTransactionDeleteManyArgs>(args?: SelectSubset<T, MonitoredTransactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MonitoredTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MonitoredTransactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MonitoredTransactions
+     * const monitoredTransaction = await prisma.monitoredTransaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MonitoredTransactionUpdateManyArgs>(args: SelectSubset<T, MonitoredTransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MonitoredTransaction.
+     * @param {MonitoredTransactionUpsertArgs} args - Arguments to update or create a MonitoredTransaction.
+     * @example
+     * // Update or create a MonitoredTransaction
+     * const monitoredTransaction = await prisma.monitoredTransaction.upsert({
+     *   create: {
+     *     // ... data to create a MonitoredTransaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MonitoredTransaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MonitoredTransactionUpsertArgs>(args: SelectSubset<T, MonitoredTransactionUpsertArgs<ExtArgs>>): Prisma__MonitoredTransactionClient<$Result.GetResult<Prisma.$MonitoredTransactionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of MonitoredTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MonitoredTransactionCountArgs} args - Arguments to filter MonitoredTransactions to count.
+     * @example
+     * // Count the number of MonitoredTransactions
+     * const count = await prisma.monitoredTransaction.count({
+     *   where: {
+     *     // ... the filter for the MonitoredTransactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends MonitoredTransactionCountArgs>(
+      args?: Subset<T, MonitoredTransactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MonitoredTransactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MonitoredTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MonitoredTransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MonitoredTransactionAggregateArgs>(args: Subset<T, MonitoredTransactionAggregateArgs>): Prisma.PrismaPromise<GetMonitoredTransactionAggregateType<T>>
+
+    /**
+     * Group by MonitoredTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MonitoredTransactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MonitoredTransactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MonitoredTransactionGroupByArgs['orderBy'] }
+        : { orderBy?: MonitoredTransactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MonitoredTransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMonitoredTransactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MonitoredTransaction model
+   */
+  readonly fields: MonitoredTransactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MonitoredTransaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MonitoredTransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MonitoredTransaction model
+   */ 
+  interface MonitoredTransactionFieldRefs {
+    readonly id: FieldRef<"MonitoredTransaction", 'String'>
+    readonly txHash: FieldRef<"MonitoredTransaction", 'String'>
+    readonly txXdr: FieldRef<"MonitoredTransaction", 'String'>
+    readonly sourceAddress: FieldRef<"MonitoredTransaction", 'String'>
+    readonly originalFeeSt: FieldRef<"MonitoredTransaction", 'String'>
+    readonly currentFeeSt: FieldRef<"MonitoredTransaction", 'String'>
+    readonly bumpCount: FieldRef<"MonitoredTransaction", 'Int'>
+    readonly maxBumps: FieldRef<"MonitoredTransaction", 'Int'>
+    readonly status: FieldRef<"MonitoredTransaction", 'String'>
+    readonly submittedAt: FieldRef<"MonitoredTransaction", 'DateTime'>
+    readonly confirmedAt: FieldRef<"MonitoredTransaction", 'DateTime'>
+    readonly lastBumpAt: FieldRef<"MonitoredTransaction", 'DateTime'>
+    readonly errorMessage: FieldRef<"MonitoredTransaction", 'String'>
+    readonly createdAt: FieldRef<"MonitoredTransaction", 'DateTime'>
+    readonly updatedAt: FieldRef<"MonitoredTransaction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MonitoredTransaction findUnique
+   */
+  export type MonitoredTransactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * Filter, which MonitoredTransaction to fetch.
+     */
+    where: MonitoredTransactionWhereUniqueInput
+  }
+
+  /**
+   * MonitoredTransaction findUniqueOrThrow
+   */
+  export type MonitoredTransactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * Filter, which MonitoredTransaction to fetch.
+     */
+    where: MonitoredTransactionWhereUniqueInput
+  }
+
+  /**
+   * MonitoredTransaction findFirst
+   */
+  export type MonitoredTransactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * Filter, which MonitoredTransaction to fetch.
+     */
+    where?: MonitoredTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MonitoredTransactions to fetch.
+     */
+    orderBy?: MonitoredTransactionOrderByWithRelationInput | MonitoredTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MonitoredTransactions.
+     */
+    cursor?: MonitoredTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MonitoredTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MonitoredTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MonitoredTransactions.
+     */
+    distinct?: MonitoredTransactionScalarFieldEnum | MonitoredTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * MonitoredTransaction findFirstOrThrow
+   */
+  export type MonitoredTransactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * Filter, which MonitoredTransaction to fetch.
+     */
+    where?: MonitoredTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MonitoredTransactions to fetch.
+     */
+    orderBy?: MonitoredTransactionOrderByWithRelationInput | MonitoredTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MonitoredTransactions.
+     */
+    cursor?: MonitoredTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MonitoredTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MonitoredTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MonitoredTransactions.
+     */
+    distinct?: MonitoredTransactionScalarFieldEnum | MonitoredTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * MonitoredTransaction findMany
+   */
+  export type MonitoredTransactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * Filter, which MonitoredTransactions to fetch.
+     */
+    where?: MonitoredTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MonitoredTransactions to fetch.
+     */
+    orderBy?: MonitoredTransactionOrderByWithRelationInput | MonitoredTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MonitoredTransactions.
+     */
+    cursor?: MonitoredTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MonitoredTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MonitoredTransactions.
+     */
+    skip?: number
+    distinct?: MonitoredTransactionScalarFieldEnum | MonitoredTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * MonitoredTransaction create
+   */
+  export type MonitoredTransactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * The data needed to create a MonitoredTransaction.
+     */
+    data: XOR<MonitoredTransactionCreateInput, MonitoredTransactionUncheckedCreateInput>
+  }
+
+  /**
+   * MonitoredTransaction createMany
+   */
+  export type MonitoredTransactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MonitoredTransactions.
+     */
+    data: MonitoredTransactionCreateManyInput | MonitoredTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MonitoredTransaction createManyAndReturn
+   */
+  export type MonitoredTransactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many MonitoredTransactions.
+     */
+    data: MonitoredTransactionCreateManyInput | MonitoredTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MonitoredTransaction update
+   */
+  export type MonitoredTransactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * The data needed to update a MonitoredTransaction.
+     */
+    data: XOR<MonitoredTransactionUpdateInput, MonitoredTransactionUncheckedUpdateInput>
+    /**
+     * Choose, which MonitoredTransaction to update.
+     */
+    where: MonitoredTransactionWhereUniqueInput
+  }
+
+  /**
+   * MonitoredTransaction updateMany
+   */
+  export type MonitoredTransactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MonitoredTransactions.
+     */
+    data: XOR<MonitoredTransactionUpdateManyMutationInput, MonitoredTransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which MonitoredTransactions to update
+     */
+    where?: MonitoredTransactionWhereInput
+  }
+
+  /**
+   * MonitoredTransaction upsert
+   */
+  export type MonitoredTransactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * The filter to search for the MonitoredTransaction to update in case it exists.
+     */
+    where: MonitoredTransactionWhereUniqueInput
+    /**
+     * In case the MonitoredTransaction found by the `where` argument doesn't exist, create a new MonitoredTransaction with this data.
+     */
+    create: XOR<MonitoredTransactionCreateInput, MonitoredTransactionUncheckedCreateInput>
+    /**
+     * In case the MonitoredTransaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MonitoredTransactionUpdateInput, MonitoredTransactionUncheckedUpdateInput>
+  }
+
+  /**
+   * MonitoredTransaction delete
+   */
+  export type MonitoredTransactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+    /**
+     * Filter which MonitoredTransaction to delete.
+     */
+    where: MonitoredTransactionWhereUniqueInput
+  }
+
+  /**
+   * MonitoredTransaction deleteMany
+   */
+  export type MonitoredTransactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MonitoredTransactions to delete
+     */
+    where?: MonitoredTransactionWhereInput
+  }
+
+  /**
+   * MonitoredTransaction without action
+   */
+  export type MonitoredTransactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MonitoredTransaction
+     */
+    select?: MonitoredTransactionSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -29390,6 +32584,18 @@ export namespace Prisma {
   export type GlobalStatsScalarFieldEnum = (typeof GlobalStatsScalarFieldEnum)[keyof typeof GlobalStatsScalarFieldEnum]
 
 
+  export const GlobalStats_V3ScalarFieldEnum: {
+    id: 'id',
+    totalVolumeUsd: 'totalVolumeUsd',
+    dailyVolumeUsd: 'dailyVolumeUsd',
+    totalSplits: 'totalSplits',
+    totalRecipients: 'totalRecipients',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GlobalStats_V3ScalarFieldEnum = (typeof GlobalStats_V3ScalarFieldEnum)[keyof typeof GlobalStats_V3ScalarFieldEnum]
+
+
   export const TvlSnapshotScalarFieldEnum: {
     id: 'id',
     tvlUsd: 'tvlUsd',
@@ -29504,6 +32710,21 @@ export namespace Prisma {
   export type PriceHistoryScalarFieldEnum = (typeof PriceHistoryScalarFieldEnum)[keyof typeof PriceHistoryScalarFieldEnum]
 
 
+  export const ProtocolInefficiencyReportScalarFieldEnum: {
+    id: 'id',
+    asset: 'asset',
+    protocolVersion: 'protocolVersion',
+    totalDustAmount: 'totalDustAmount',
+    eventCount: 'eventCount',
+    firstSeenLedger: 'firstSeenLedger',
+    lastSeenLedger: 'lastSeenLedger',
+    generatedAt: 'generatedAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProtocolInefficiencyReportScalarFieldEnum = (typeof ProtocolInefficiencyReportScalarFieldEnum)[keyof typeof ProtocolInefficiencyReportScalarFieldEnum]
+
+
   export const SplitLogScalarFieldEnum: {
     id: 'id',
     streamId: 'streamId',
@@ -29519,6 +32740,27 @@ export namespace Prisma {
   };
 
   export type SplitLogScalarFieldEnum = (typeof SplitLogScalarFieldEnum)[keyof typeof SplitLogScalarFieldEnum]
+
+
+  export const MonitoredTransactionScalarFieldEnum: {
+    id: 'id',
+    txHash: 'txHash',
+    txXdr: 'txXdr',
+    sourceAddress: 'sourceAddress',
+    originalFeeSt: 'originalFeeSt',
+    currentFeeSt: 'currentFeeSt',
+    bumpCount: 'bumpCount',
+    maxBumps: 'maxBumps',
+    status: 'status',
+    submittedAt: 'submittedAt',
+    confirmedAt: 'confirmedAt',
+    lastBumpAt: 'lastBumpAt',
+    errorMessage: 'errorMessage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MonitoredTransactionScalarFieldEnum = (typeof MonitoredTransactionScalarFieldEnum)[keyof typeof MonitoredTransactionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -31101,6 +34343,65 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"GlobalStats"> | Date | string
   }
 
+  export type GlobalStats_V3WhereInput = {
+    AND?: GlobalStats_V3WhereInput | GlobalStats_V3WhereInput[]
+    OR?: GlobalStats_V3WhereInput[]
+    NOT?: GlobalStats_V3WhereInput | GlobalStats_V3WhereInput[]
+    id?: StringFilter<"GlobalStats_V3"> | string
+    totalVolumeUsd?: StringFilter<"GlobalStats_V3"> | string
+    dailyVolumeUsd?: StringFilter<"GlobalStats_V3"> | string
+    totalSplits?: IntFilter<"GlobalStats_V3"> | number
+    totalRecipients?: IntFilter<"GlobalStats_V3"> | number
+    updatedAt?: DateTimeFilter<"GlobalStats_V3"> | Date | string
+  }
+
+  export type GlobalStats_V3OrderByWithRelationInput = {
+    id?: SortOrder
+    totalVolumeUsd?: SortOrder
+    dailyVolumeUsd?: SortOrder
+    totalSplits?: SortOrder
+    totalRecipients?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GlobalStats_V3WhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GlobalStats_V3WhereInput | GlobalStats_V3WhereInput[]
+    OR?: GlobalStats_V3WhereInput[]
+    NOT?: GlobalStats_V3WhereInput | GlobalStats_V3WhereInput[]
+    totalVolumeUsd?: StringFilter<"GlobalStats_V3"> | string
+    dailyVolumeUsd?: StringFilter<"GlobalStats_V3"> | string
+    totalSplits?: IntFilter<"GlobalStats_V3"> | number
+    totalRecipients?: IntFilter<"GlobalStats_V3"> | number
+    updatedAt?: DateTimeFilter<"GlobalStats_V3"> | Date | string
+  }, "id">
+
+  export type GlobalStats_V3OrderByWithAggregationInput = {
+    id?: SortOrder
+    totalVolumeUsd?: SortOrder
+    dailyVolumeUsd?: SortOrder
+    totalSplits?: SortOrder
+    totalRecipients?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GlobalStats_V3CountOrderByAggregateInput
+    _avg?: GlobalStats_V3AvgOrderByAggregateInput
+    _max?: GlobalStats_V3MaxOrderByAggregateInput
+    _min?: GlobalStats_V3MinOrderByAggregateInput
+    _sum?: GlobalStats_V3SumOrderByAggregateInput
+  }
+
+  export type GlobalStats_V3ScalarWhereWithAggregatesInput = {
+    AND?: GlobalStats_V3ScalarWhereWithAggregatesInput | GlobalStats_V3ScalarWhereWithAggregatesInput[]
+    OR?: GlobalStats_V3ScalarWhereWithAggregatesInput[]
+    NOT?: GlobalStats_V3ScalarWhereWithAggregatesInput | GlobalStats_V3ScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GlobalStats_V3"> | string
+    totalVolumeUsd?: StringWithAggregatesFilter<"GlobalStats_V3"> | string
+    dailyVolumeUsd?: StringWithAggregatesFilter<"GlobalStats_V3"> | string
+    totalSplits?: IntWithAggregatesFilter<"GlobalStats_V3"> | number
+    totalRecipients?: IntWithAggregatesFilter<"GlobalStats_V3"> | number
+    updatedAt?: DateTimeWithAggregatesFilter<"GlobalStats_V3"> | Date | string
+  }
+
   export type TvlSnapshotWhereInput = {
     AND?: TvlSnapshotWhereInput | TvlSnapshotWhereInput[]
     OR?: TvlSnapshotWhereInput[]
@@ -31663,6 +34964,81 @@ export namespace Prisma {
     recordedAt?: DateTimeWithAggregatesFilter<"PriceHistory"> | Date | string
   }
 
+  export type ProtocolInefficiencyReportWhereInput = {
+    AND?: ProtocolInefficiencyReportWhereInput | ProtocolInefficiencyReportWhereInput[]
+    OR?: ProtocolInefficiencyReportWhereInput[]
+    NOT?: ProtocolInefficiencyReportWhereInput | ProtocolInefficiencyReportWhereInput[]
+    id?: StringFilter<"ProtocolInefficiencyReport"> | string
+    asset?: StringFilter<"ProtocolInefficiencyReport"> | string
+    protocolVersion?: IntFilter<"ProtocolInefficiencyReport"> | number
+    totalDustAmount?: StringFilter<"ProtocolInefficiencyReport"> | string
+    eventCount?: IntFilter<"ProtocolInefficiencyReport"> | number
+    firstSeenLedger?: IntNullableFilter<"ProtocolInefficiencyReport"> | number | null
+    lastSeenLedger?: IntNullableFilter<"ProtocolInefficiencyReport"> | number | null
+    generatedAt?: DateTimeFilter<"ProtocolInefficiencyReport"> | Date | string
+    updatedAt?: DateTimeFilter<"ProtocolInefficiencyReport"> | Date | string
+  }
+
+  export type ProtocolInefficiencyReportOrderByWithRelationInput = {
+    id?: SortOrder
+    asset?: SortOrder
+    protocolVersion?: SortOrder
+    totalDustAmount?: SortOrder
+    eventCount?: SortOrder
+    firstSeenLedger?: SortOrderInput | SortOrder
+    lastSeenLedger?: SortOrderInput | SortOrder
+    generatedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProtocolInefficiencyReportWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    asset_protocolVersion?: ProtocolInefficiencyReportAssetProtocolVersionCompoundUniqueInput
+    AND?: ProtocolInefficiencyReportWhereInput | ProtocolInefficiencyReportWhereInput[]
+    OR?: ProtocolInefficiencyReportWhereInput[]
+    NOT?: ProtocolInefficiencyReportWhereInput | ProtocolInefficiencyReportWhereInput[]
+    asset?: StringFilter<"ProtocolInefficiencyReport"> | string
+    protocolVersion?: IntFilter<"ProtocolInefficiencyReport"> | number
+    totalDustAmount?: StringFilter<"ProtocolInefficiencyReport"> | string
+    eventCount?: IntFilter<"ProtocolInefficiencyReport"> | number
+    firstSeenLedger?: IntNullableFilter<"ProtocolInefficiencyReport"> | number | null
+    lastSeenLedger?: IntNullableFilter<"ProtocolInefficiencyReport"> | number | null
+    generatedAt?: DateTimeFilter<"ProtocolInefficiencyReport"> | Date | string
+    updatedAt?: DateTimeFilter<"ProtocolInefficiencyReport"> | Date | string
+  }, "id" | "asset_protocolVersion">
+
+  export type ProtocolInefficiencyReportOrderByWithAggregationInput = {
+    id?: SortOrder
+    asset?: SortOrder
+    protocolVersion?: SortOrder
+    totalDustAmount?: SortOrder
+    eventCount?: SortOrder
+    firstSeenLedger?: SortOrderInput | SortOrder
+    lastSeenLedger?: SortOrderInput | SortOrder
+    generatedAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProtocolInefficiencyReportCountOrderByAggregateInput
+    _avg?: ProtocolInefficiencyReportAvgOrderByAggregateInput
+    _max?: ProtocolInefficiencyReportMaxOrderByAggregateInput
+    _min?: ProtocolInefficiencyReportMinOrderByAggregateInput
+    _sum?: ProtocolInefficiencyReportSumOrderByAggregateInput
+  }
+
+  export type ProtocolInefficiencyReportScalarWhereWithAggregatesInput = {
+    AND?: ProtocolInefficiencyReportScalarWhereWithAggregatesInput | ProtocolInefficiencyReportScalarWhereWithAggregatesInput[]
+    OR?: ProtocolInefficiencyReportScalarWhereWithAggregatesInput[]
+    NOT?: ProtocolInefficiencyReportScalarWhereWithAggregatesInput | ProtocolInefficiencyReportScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProtocolInefficiencyReport"> | string
+    asset?: StringWithAggregatesFilter<"ProtocolInefficiencyReport"> | string
+    protocolVersion?: IntWithAggregatesFilter<"ProtocolInefficiencyReport"> | number
+    totalDustAmount?: StringWithAggregatesFilter<"ProtocolInefficiencyReport"> | string
+    eventCount?: IntWithAggregatesFilter<"ProtocolInefficiencyReport"> | number
+    firstSeenLedger?: IntNullableWithAggregatesFilter<"ProtocolInefficiencyReport"> | number | null
+    lastSeenLedger?: IntNullableWithAggregatesFilter<"ProtocolInefficiencyReport"> | number | null
+    generatedAt?: DateTimeWithAggregatesFilter<"ProtocolInefficiencyReport"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProtocolInefficiencyReport"> | Date | string
+  }
+
   export type SplitLogWhereInput = {
     AND?: SplitLogWhereInput | SplitLogWhereInput[]
     OR?: SplitLogWhereInput[]
@@ -31745,6 +35121,110 @@ export namespace Prisma {
     priceSource?: StringNullableWithAggregatesFilter<"SplitLog"> | string | null
     priceRecordedAt?: DateTimeNullableWithAggregatesFilter<"SplitLog"> | Date | string | null
     executedAt?: DateTimeWithAggregatesFilter<"SplitLog"> | Date | string
+  }
+
+  export type MonitoredTransactionWhereInput = {
+    AND?: MonitoredTransactionWhereInput | MonitoredTransactionWhereInput[]
+    OR?: MonitoredTransactionWhereInput[]
+    NOT?: MonitoredTransactionWhereInput | MonitoredTransactionWhereInput[]
+    id?: StringFilter<"MonitoredTransaction"> | string
+    txHash?: StringFilter<"MonitoredTransaction"> | string
+    txXdr?: StringFilter<"MonitoredTransaction"> | string
+    sourceAddress?: StringFilter<"MonitoredTransaction"> | string
+    originalFeeSt?: StringFilter<"MonitoredTransaction"> | string
+    currentFeeSt?: StringFilter<"MonitoredTransaction"> | string
+    bumpCount?: IntFilter<"MonitoredTransaction"> | number
+    maxBumps?: IntFilter<"MonitoredTransaction"> | number
+    status?: StringFilter<"MonitoredTransaction"> | string
+    submittedAt?: DateTimeFilter<"MonitoredTransaction"> | Date | string
+    confirmedAt?: DateTimeNullableFilter<"MonitoredTransaction"> | Date | string | null
+    lastBumpAt?: DateTimeNullableFilter<"MonitoredTransaction"> | Date | string | null
+    errorMessage?: StringNullableFilter<"MonitoredTransaction"> | string | null
+    createdAt?: DateTimeFilter<"MonitoredTransaction"> | Date | string
+    updatedAt?: DateTimeFilter<"MonitoredTransaction"> | Date | string
+  }
+
+  export type MonitoredTransactionOrderByWithRelationInput = {
+    id?: SortOrder
+    txHash?: SortOrder
+    txXdr?: SortOrder
+    sourceAddress?: SortOrder
+    originalFeeSt?: SortOrder
+    currentFeeSt?: SortOrder
+    bumpCount?: SortOrder
+    maxBumps?: SortOrder
+    status?: SortOrder
+    submittedAt?: SortOrder
+    confirmedAt?: SortOrderInput | SortOrder
+    lastBumpAt?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MonitoredTransactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    txHash?: string
+    AND?: MonitoredTransactionWhereInput | MonitoredTransactionWhereInput[]
+    OR?: MonitoredTransactionWhereInput[]
+    NOT?: MonitoredTransactionWhereInput | MonitoredTransactionWhereInput[]
+    txXdr?: StringFilter<"MonitoredTransaction"> | string
+    sourceAddress?: StringFilter<"MonitoredTransaction"> | string
+    originalFeeSt?: StringFilter<"MonitoredTransaction"> | string
+    currentFeeSt?: StringFilter<"MonitoredTransaction"> | string
+    bumpCount?: IntFilter<"MonitoredTransaction"> | number
+    maxBumps?: IntFilter<"MonitoredTransaction"> | number
+    status?: StringFilter<"MonitoredTransaction"> | string
+    submittedAt?: DateTimeFilter<"MonitoredTransaction"> | Date | string
+    confirmedAt?: DateTimeNullableFilter<"MonitoredTransaction"> | Date | string | null
+    lastBumpAt?: DateTimeNullableFilter<"MonitoredTransaction"> | Date | string | null
+    errorMessage?: StringNullableFilter<"MonitoredTransaction"> | string | null
+    createdAt?: DateTimeFilter<"MonitoredTransaction"> | Date | string
+    updatedAt?: DateTimeFilter<"MonitoredTransaction"> | Date | string
+  }, "id" | "txHash">
+
+  export type MonitoredTransactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    txHash?: SortOrder
+    txXdr?: SortOrder
+    sourceAddress?: SortOrder
+    originalFeeSt?: SortOrder
+    currentFeeSt?: SortOrder
+    bumpCount?: SortOrder
+    maxBumps?: SortOrder
+    status?: SortOrder
+    submittedAt?: SortOrder
+    confirmedAt?: SortOrderInput | SortOrder
+    lastBumpAt?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MonitoredTransactionCountOrderByAggregateInput
+    _avg?: MonitoredTransactionAvgOrderByAggregateInput
+    _max?: MonitoredTransactionMaxOrderByAggregateInput
+    _min?: MonitoredTransactionMinOrderByAggregateInput
+    _sum?: MonitoredTransactionSumOrderByAggregateInput
+  }
+
+  export type MonitoredTransactionScalarWhereWithAggregatesInput = {
+    AND?: MonitoredTransactionScalarWhereWithAggregatesInput | MonitoredTransactionScalarWhereWithAggregatesInput[]
+    OR?: MonitoredTransactionScalarWhereWithAggregatesInput[]
+    NOT?: MonitoredTransactionScalarWhereWithAggregatesInput | MonitoredTransactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MonitoredTransaction"> | string
+    txHash?: StringWithAggregatesFilter<"MonitoredTransaction"> | string
+    txXdr?: StringWithAggregatesFilter<"MonitoredTransaction"> | string
+    sourceAddress?: StringWithAggregatesFilter<"MonitoredTransaction"> | string
+    originalFeeSt?: StringWithAggregatesFilter<"MonitoredTransaction"> | string
+    currentFeeSt?: StringWithAggregatesFilter<"MonitoredTransaction"> | string
+    bumpCount?: IntWithAggregatesFilter<"MonitoredTransaction"> | number
+    maxBumps?: IntWithAggregatesFilter<"MonitoredTransaction"> | number
+    status?: StringWithAggregatesFilter<"MonitoredTransaction"> | string
+    submittedAt?: DateTimeWithAggregatesFilter<"MonitoredTransaction"> | Date | string
+    confirmedAt?: DateTimeNullableWithAggregatesFilter<"MonitoredTransaction"> | Date | string | null
+    lastBumpAt?: DateTimeNullableWithAggregatesFilter<"MonitoredTransaction"> | Date | string | null
+    errorMessage?: StringNullableWithAggregatesFilter<"MonitoredTransaction"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MonitoredTransaction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MonitoredTransaction"> | Date | string
   }
 
   export type StreamCreateInput = {
@@ -33350,6 +36830,69 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GlobalStats_V3CreateInput = {
+    id?: string
+    totalVolumeUsd?: string
+    dailyVolumeUsd?: string
+    totalSplits?: number
+    totalRecipients?: number
+    updatedAt?: Date | string
+  }
+
+  export type GlobalStats_V3UncheckedCreateInput = {
+    id?: string
+    totalVolumeUsd?: string
+    dailyVolumeUsd?: string
+    totalSplits?: number
+    totalRecipients?: number
+    updatedAt?: Date | string
+  }
+
+  export type GlobalStats_V3UpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalVolumeUsd?: StringFieldUpdateOperationsInput | string
+    dailyVolumeUsd?: StringFieldUpdateOperationsInput | string
+    totalSplits?: IntFieldUpdateOperationsInput | number
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GlobalStats_V3UncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalVolumeUsd?: StringFieldUpdateOperationsInput | string
+    dailyVolumeUsd?: StringFieldUpdateOperationsInput | string
+    totalSplits?: IntFieldUpdateOperationsInput | number
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GlobalStats_V3CreateManyInput = {
+    id?: string
+    totalVolumeUsd?: string
+    dailyVolumeUsd?: string
+    totalSplits?: number
+    totalRecipients?: number
+    updatedAt?: Date | string
+  }
+
+  export type GlobalStats_V3UpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalVolumeUsd?: StringFieldUpdateOperationsInput | string
+    dailyVolumeUsd?: StringFieldUpdateOperationsInput | string
+    totalSplits?: IntFieldUpdateOperationsInput | number
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GlobalStats_V3UncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalVolumeUsd?: StringFieldUpdateOperationsInput | string
+    dailyVolumeUsd?: StringFieldUpdateOperationsInput | string
+    totalSplits?: IntFieldUpdateOperationsInput | number
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TvlSnapshotCreateInput = {
     id?: string
     tvlUsd: string
@@ -33983,6 +37526,90 @@ export namespace Prisma {
     recordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProtocolInefficiencyReportCreateInput = {
+    id?: string
+    asset: string
+    protocolVersion: number
+    totalDustAmount: string
+    eventCount?: number
+    firstSeenLedger?: number | null
+    lastSeenLedger?: number | null
+    generatedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProtocolInefficiencyReportUncheckedCreateInput = {
+    id?: string
+    asset: string
+    protocolVersion: number
+    totalDustAmount: string
+    eventCount?: number
+    firstSeenLedger?: number | null
+    lastSeenLedger?: number | null
+    generatedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProtocolInefficiencyReportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    asset?: StringFieldUpdateOperationsInput | string
+    protocolVersion?: IntFieldUpdateOperationsInput | number
+    totalDustAmount?: StringFieldUpdateOperationsInput | string
+    eventCount?: IntFieldUpdateOperationsInput | number
+    firstSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProtocolInefficiencyReportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    asset?: StringFieldUpdateOperationsInput | string
+    protocolVersion?: IntFieldUpdateOperationsInput | number
+    totalDustAmount?: StringFieldUpdateOperationsInput | string
+    eventCount?: IntFieldUpdateOperationsInput | number
+    firstSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProtocolInefficiencyReportCreateManyInput = {
+    id?: string
+    asset: string
+    protocolVersion: number
+    totalDustAmount: string
+    eventCount?: number
+    firstSeenLedger?: number | null
+    lastSeenLedger?: number | null
+    generatedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProtocolInefficiencyReportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    asset?: StringFieldUpdateOperationsInput | string
+    protocolVersion?: IntFieldUpdateOperationsInput | number
+    totalDustAmount?: StringFieldUpdateOperationsInput | string
+    eventCount?: IntFieldUpdateOperationsInput | number
+    firstSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProtocolInefficiencyReportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    asset?: StringFieldUpdateOperationsInput | string
+    protocolVersion?: IntFieldUpdateOperationsInput | number
+    totalDustAmount?: StringFieldUpdateOperationsInput | string
+    eventCount?: IntFieldUpdateOperationsInput | number
+    firstSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    lastSeenLedger?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SplitLogCreateInput = {
     id?: string
     streamId: string
@@ -34079,6 +37706,132 @@ export namespace Prisma {
     priceSource?: NullableStringFieldUpdateOperationsInput | string | null
     priceRecordedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MonitoredTransactionCreateInput = {
+    id?: string
+    txHash: string
+    txXdr: string
+    sourceAddress: string
+    originalFeeSt: string
+    currentFeeSt: string
+    bumpCount?: number
+    maxBumps?: number
+    status?: string
+    submittedAt?: Date | string
+    confirmedAt?: Date | string | null
+    lastBumpAt?: Date | string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MonitoredTransactionUncheckedCreateInput = {
+    id?: string
+    txHash: string
+    txXdr: string
+    sourceAddress: string
+    originalFeeSt: string
+    currentFeeSt: string
+    bumpCount?: number
+    maxBumps?: number
+    status?: string
+    submittedAt?: Date | string
+    confirmedAt?: Date | string | null
+    lastBumpAt?: Date | string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MonitoredTransactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    txXdr?: StringFieldUpdateOperationsInput | string
+    sourceAddress?: StringFieldUpdateOperationsInput | string
+    originalFeeSt?: StringFieldUpdateOperationsInput | string
+    currentFeeSt?: StringFieldUpdateOperationsInput | string
+    bumpCount?: IntFieldUpdateOperationsInput | number
+    maxBumps?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastBumpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MonitoredTransactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    txXdr?: StringFieldUpdateOperationsInput | string
+    sourceAddress?: StringFieldUpdateOperationsInput | string
+    originalFeeSt?: StringFieldUpdateOperationsInput | string
+    currentFeeSt?: StringFieldUpdateOperationsInput | string
+    bumpCount?: IntFieldUpdateOperationsInput | number
+    maxBumps?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastBumpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MonitoredTransactionCreateManyInput = {
+    id?: string
+    txHash: string
+    txXdr: string
+    sourceAddress: string
+    originalFeeSt: string
+    currentFeeSt: string
+    bumpCount?: number
+    maxBumps?: number
+    status?: string
+    submittedAt?: Date | string
+    confirmedAt?: Date | string | null
+    lastBumpAt?: Date | string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MonitoredTransactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    txXdr?: StringFieldUpdateOperationsInput | string
+    sourceAddress?: StringFieldUpdateOperationsInput | string
+    originalFeeSt?: StringFieldUpdateOperationsInput | string
+    currentFeeSt?: StringFieldUpdateOperationsInput | string
+    bumpCount?: IntFieldUpdateOperationsInput | number
+    maxBumps?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastBumpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MonitoredTransactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    txXdr?: StringFieldUpdateOperationsInput | string
+    sourceAddress?: StringFieldUpdateOperationsInput | string
+    originalFeeSt?: StringFieldUpdateOperationsInput | string
+    currentFeeSt?: StringFieldUpdateOperationsInput | string
+    bumpCount?: IntFieldUpdateOperationsInput | number
+    maxBumps?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastBumpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -35290,6 +39043,43 @@ export namespace Prisma {
     totalStreams?: SortOrder
   }
 
+  export type GlobalStats_V3CountOrderByAggregateInput = {
+    id?: SortOrder
+    totalVolumeUsd?: SortOrder
+    dailyVolumeUsd?: SortOrder
+    totalSplits?: SortOrder
+    totalRecipients?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GlobalStats_V3AvgOrderByAggregateInput = {
+    totalSplits?: SortOrder
+    totalRecipients?: SortOrder
+  }
+
+  export type GlobalStats_V3MaxOrderByAggregateInput = {
+    id?: SortOrder
+    totalVolumeUsd?: SortOrder
+    dailyVolumeUsd?: SortOrder
+    totalSplits?: SortOrder
+    totalRecipients?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GlobalStats_V3MinOrderByAggregateInput = {
+    id?: SortOrder
+    totalVolumeUsd?: SortOrder
+    dailyVolumeUsd?: SortOrder
+    totalSplits?: SortOrder
+    totalRecipients?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GlobalStats_V3SumOrderByAggregateInput = {
+    totalSplits?: SortOrder
+    totalRecipients?: SortOrder
+  }
+
   export type TvlSnapshotCountOrderByAggregateInput = {
     id?: SortOrder
     tvlUsd?: SortOrder
@@ -35632,6 +39422,61 @@ export namespace Prisma {
     priceUsd?: SortOrder
   }
 
+  export type ProtocolInefficiencyReportAssetProtocolVersionCompoundUniqueInput = {
+    asset: string
+    protocolVersion: number
+  }
+
+  export type ProtocolInefficiencyReportCountOrderByAggregateInput = {
+    id?: SortOrder
+    asset?: SortOrder
+    protocolVersion?: SortOrder
+    totalDustAmount?: SortOrder
+    eventCount?: SortOrder
+    firstSeenLedger?: SortOrder
+    lastSeenLedger?: SortOrder
+    generatedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProtocolInefficiencyReportAvgOrderByAggregateInput = {
+    protocolVersion?: SortOrder
+    eventCount?: SortOrder
+    firstSeenLedger?: SortOrder
+    lastSeenLedger?: SortOrder
+  }
+
+  export type ProtocolInefficiencyReportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    asset?: SortOrder
+    protocolVersion?: SortOrder
+    totalDustAmount?: SortOrder
+    eventCount?: SortOrder
+    firstSeenLedger?: SortOrder
+    lastSeenLedger?: SortOrder
+    generatedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProtocolInefficiencyReportMinOrderByAggregateInput = {
+    id?: SortOrder
+    asset?: SortOrder
+    protocolVersion?: SortOrder
+    totalDustAmount?: SortOrder
+    eventCount?: SortOrder
+    firstSeenLedger?: SortOrder
+    lastSeenLedger?: SortOrder
+    generatedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProtocolInefficiencyReportSumOrderByAggregateInput = {
+    protocolVersion?: SortOrder
+    eventCount?: SortOrder
+    firstSeenLedger?: SortOrder
+    lastSeenLedger?: SortOrder
+  }
+
   export type FloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -35707,6 +39552,70 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type MonitoredTransactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    txHash?: SortOrder
+    txXdr?: SortOrder
+    sourceAddress?: SortOrder
+    originalFeeSt?: SortOrder
+    currentFeeSt?: SortOrder
+    bumpCount?: SortOrder
+    maxBumps?: SortOrder
+    status?: SortOrder
+    submittedAt?: SortOrder
+    confirmedAt?: SortOrder
+    lastBumpAt?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MonitoredTransactionAvgOrderByAggregateInput = {
+    bumpCount?: SortOrder
+    maxBumps?: SortOrder
+  }
+
+  export type MonitoredTransactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    txHash?: SortOrder
+    txXdr?: SortOrder
+    sourceAddress?: SortOrder
+    originalFeeSt?: SortOrder
+    currentFeeSt?: SortOrder
+    bumpCount?: SortOrder
+    maxBumps?: SortOrder
+    status?: SortOrder
+    submittedAt?: SortOrder
+    confirmedAt?: SortOrder
+    lastBumpAt?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MonitoredTransactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    txHash?: SortOrder
+    txXdr?: SortOrder
+    sourceAddress?: SortOrder
+    originalFeeSt?: SortOrder
+    currentFeeSt?: SortOrder
+    bumpCount?: SortOrder
+    maxBumps?: SortOrder
+    status?: SortOrder
+    submittedAt?: SortOrder
+    confirmedAt?: SortOrder
+    lastBumpAt?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MonitoredTransactionSumOrderByAggregateInput = {
+    bumpCount?: SortOrder
+    maxBumps?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -36448,6 +40357,10 @@ export namespace Prisma {
      */
     export type GlobalStatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = GlobalStatsDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use GlobalStats_V3DefaultArgs instead
+     */
+    export type GlobalStats_V3Args<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = GlobalStats_V3DefaultArgs<ExtArgs>
+    /**
      * @deprecated Use TvlSnapshotDefaultArgs instead
      */
     export type TvlSnapshotArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TvlSnapshotDefaultArgs<ExtArgs>
@@ -36480,9 +40393,17 @@ export namespace Prisma {
      */
     export type PriceHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PriceHistoryDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use ProtocolInefficiencyReportDefaultArgs instead
+     */
+    export type ProtocolInefficiencyReportArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ProtocolInefficiencyReportDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use SplitLogDefaultArgs instead
      */
     export type SplitLogArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SplitLogDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MonitoredTransactionDefaultArgs instead
+     */
+    export type MonitoredTransactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MonitoredTransactionDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
