@@ -13,6 +13,7 @@ import exportRouter from "./export.routes.js";
 import splitAnalyzeRouter from "./split-analyze.routes.js";
 import splitExpandRouter from "./split-expand.routes.js";
 import webhooksRouter from "./webhooks.routes.js";
+import draftVersionsRouter from "./draft-versions.routes.js";
 
 const router = Router();
 
@@ -38,5 +39,6 @@ router.use(exportRouter);
 router.use(splitAnalyzeRouter);
 router.use(splitExpandRouter);
 router.use(webhooksRouter);
+router.use(draftVersionsRouter);
 
 export default router;
