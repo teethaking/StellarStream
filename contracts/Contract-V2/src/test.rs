@@ -1,11 +1,11 @@
 #![cfg(test)]
 
 use super::*;
-use crate::types::{PermitArgs, StreamArgs};
+use crate::types::{PermitArgs, PendingRateUpdate, SimulationReport, StreamArgs, SwapStreamArgs};
 use soroban_sdk::{
     testutils::{Address as _, Ledger},
     token::TokenClient,
-    Address, Env, vec,
+    vec, Address, Env, String,
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -34,6 +34,74 @@ fn setup_v2<'a>(env: &'a Env, admin: &'a Address) -> (Address, ContractClient<'a
     (id, client)
 }
 
+fn stream_args(sender: &Address, receiver: &Address, token: &Address, total_amount: i128) -> StreamArgs {
+    StreamArgs {
+        sender: sender.clone(),
+        receiver: receiver.clone(),
+        token: token.clone(),
+        total_amount,
+        start_time: 0,
+        cliff_time: 0,
+        end_time: 100,
+        step_duration: 0,
+        multiplier_bps: 0,
+        vault_address: None,
+        yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
+    }
+}
+
+#[test]
+fn test_packed_stream_metadata_round_trip() {
+    let env = Env::default();
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token = Address::generate(&env);
+
+    let stream = StreamV2 {
+        sender,
+        receiver: receiver.clone(),
+        beneficiary: receiver,
+        token,
+        total_amount: 123,
+        start_time: 1,
+        end_time: 2,
+        cliff_time: 1,
+        withdrawn_amount: 3,
+        cancelled: false,
+        migrated_from_v1: true,
+        v1_stream_id: 9,
+        step_duration: 0,
+        multiplier_bps: 0,
+        vault_address: None,
+        yield_enabled: true,
+        is_pending: true,
+        is_recurrent: true,
+        cycle_duration: 10,
+        cancellation_type: 7,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
+    };
+    let packed = crate::storage::pack_stream_metadata(&stream);
+    let (status, penalty_bps, curve_type, migrated_from_v1, yield_enabled, is_recurrent, cancellation_type) =
+        crate::storage::unpack_stream_metadata(packed);
+
+    assert_eq!(status, 2);
+    assert_eq!(penalty_bps, 0);
+    assert_eq!(curve_type, 0);
+    assert!(migrated_from_v1);
+    assert!(yield_enabled);
+    assert!(is_recurrent);
+    assert_eq!(cancellation_type, 7);
+}
+
 // ── Init tests ───────────────────────────────────────────────────────────────
 
 #[test]
@@ -57,6 +125,30 @@ fn test_init_cannot_be_called_twice() {
 
     let result = client.try_init(&admin);
     assert!(result.is_err());
+}
+
+#[test]
+fn test_version_returns_v2() {
+    let env = Env::default();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    assert_eq!(client.version(), 2);
+}
+
+#[test]
+fn test_metadata_returns_official_spec_uri() {
+    let env = Env::default();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    assert_eq!(
+        client.metadata(),
+        String::from_str(
+            &env,
+            "https://raw.githubusercontent.com/Emmyt24/StellarStream/main/contracts/Contract-V2/contract-metadata.json",
+        )
+    );
 }
 
 // ── Migration bridge tests ────────────────────────────────────────────────────
@@ -364,6 +456,7 @@ fn test_permit_stream_fails_with_wrong_nonce() {
     let token_admin = Address::generate(&env);
     let (token_id, _, _) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     // Generate a dummy keypair (32-byte pubkey, 64-byte sig)
     let pubkey = soroban_sdk::BytesN::from_array(&env, &[1u8; 32]);
@@ -402,6 +495,7 @@ fn test_permit_stream_fails_if_deadline_passed() {
     let token_admin = Address::generate(&env);
     let (token_id, _, _) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     let pubkey = soroban_sdk::BytesN::from_array(&env, &[1u8; 32]);
     let bad_sig = soroban_sdk::BytesN::from_array(&env, &[0u8; 64]);
@@ -531,6 +625,7 @@ fn test_bump_active_streams_ttl_returns_count_of_existing() {
     let token_admin = Address::generate(&env);
     let (token_id, _, _) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     // Mint and approve tokens so migrate_stream can pull them
     let v1_id = {
@@ -597,10 +692,10 @@ fn test_set_admins_replaces_list_and_threshold() {
     let op = crate::types::Operation::SetAdmins(new_admins, 2);
 
     client.schedule_op(&op);
-    
+
     // Advance time by 48 hours and 1 second
     env.ledger().set_timestamp(48 * 60 * 60 + 1);
-    
+
     client.execute_op(&op);
 
     assert_eq!(client.get_threshold(), 2u32);
@@ -664,6 +759,41 @@ fn test_get_min_value_returns_default() {
     assert_eq!(v2_client.get_min_value(&token), 100_000_000i128);
 }
 
+#[test]
+fn test_admin_can_manage_asset_whitelist() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let token = Address::generate(&env);
+    let (_, v2_client) = setup_v2(&env, &admin);
+
+    assert!(!v2_client.is_asset_whitelisted(&token));
+
+    v2_client.add_to_whitelist(&token);
+    assert!(v2_client.is_asset_whitelisted(&token));
+
+    v2_client.remove_from_whitelist(&token);
+    assert!(!v2_client.is_asset_whitelisted(&token));
+}
+
+#[test]
+fn test_create_stream_fails_for_non_whitelisted_asset() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, asset_client) = create_token(&env, &token_admin);
+    let (_, v2_client) = setup_v2(&env, &admin);
+
+    asset_client.mint(&sender, &100_000_000);
+
+    let result = v2_client.try_create_stream(&stream_args(&sender, &receiver, &token_id, 100_000_000));
+    assert_eq!(result, Err(Ok(Error::AssetNotWhitelisted)));
+}
+
 // ── Analytics / Protocol Health tests ────────────────────────────────────────
 
 #[test]
@@ -712,6 +842,7 @@ fn test_cliff_period_locks_funds() {
     let token_admin = Address::generate(&env);
     let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     // Mint tokens to sender
     asset_client.mint(&sender, &100_000_000);
@@ -733,8 +864,16 @@ fn test_cliff_period_locks_funds() {
         end_time,
         step_duration: 0,
         multiplier_bps: 0,
+        penalty_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // 1. Before cliff (t=140): unlocked should be zero
@@ -767,6 +906,7 @@ fn test_v2_cancel_splits_funds() {
     let token_admin = Address::generate(&env);
     let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &100_000_000);
 
@@ -781,8 +921,16 @@ fn test_v2_cancel_splits_funds() {
         end_time: 100,
         step_duration: 0,
         multiplier_bps: 0,
+        penalty_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Cancel at t=30.
@@ -808,6 +956,7 @@ fn test_geometric_rate_unlock_math() {
     let token_admin = Address::generate(&env);
     let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &100_000_000);
 
@@ -845,8 +994,16 @@ fn test_geometric_rate_unlock_math() {
         end_time: 100,
         step_duration: 50,
         multiplier_bps: 10000,
+        penalty_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // t=25
@@ -886,6 +1043,7 @@ fn test_create_batch_streams_success() {
     asset_client.mint(&sender, &1_000_000_000);
 
     let (v2_address, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     // Create batch of 2 streams
     let streams = soroban_sdk::vec![
@@ -900,8 +1058,16 @@ fn test_create_batch_streams_success() {
             end_time: 100,
             step_duration: 0,
             multiplier_bps: 0,
+            penalty_bps: 0,
             vault_address: None,
             yield_enabled: false,
+            is_recurrent: false,
+            cycle_duration: 0,
+            cancellation_type: 0,
+            affiliate: None,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
         },
         StreamArgs {
             sender: sender.clone(),
@@ -913,8 +1079,16 @@ fn test_create_batch_streams_success() {
             end_time: 200,
             step_duration: 0,
             multiplier_bps: 0,
+            penalty_bps: 0,
             vault_address: None,
             yield_enabled: false,
+            is_recurrent: false,
+            cycle_duration: 0,
+            cancellation_type: 0,
+            affiliate: None,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
         },
     ];
 
@@ -953,6 +1127,7 @@ fn test_create_batch_streams_max_limit() {
     let (token_id, _, _) = create_token(&env, &token_admin);
 
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     // Create 11 streams (exceeds limit)
     let mut streams = Vec::new(&env);
@@ -967,8 +1142,16 @@ fn test_create_batch_streams_max_limit() {
             end_time: 100,
             step_duration: 0,
             multiplier_bps: 0,
+            penalty_bps: 0,
             vault_address: None,
             yield_enabled: false,
+            is_recurrent: false,
+            cycle_duration: 0,
+            cancellation_type: 0,
+            affiliate: None,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
         });
     }
 
@@ -991,6 +1174,7 @@ fn test_create_batch_streams_atomic_failure() {
     asset_client.mint(&sender, &200_000_000);
 
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     // Create batch with total amount exceeding balance (100M + 110M = 210M > 200M)
     let streams = soroban_sdk::vec![
@@ -1005,8 +1189,16 @@ fn test_create_batch_streams_atomic_failure() {
             end_time: 100,
             step_duration: 0,
             multiplier_bps: 0,
+            penalty_bps: 0,
             vault_address: None,
             yield_enabled: false,
+            is_recurrent: false,
+            cycle_duration: 0,
+            cancellation_type: 0,
+            affiliate: None,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
         },
         StreamArgs {
             sender: sender.clone(),
@@ -1018,8 +1210,16 @@ fn test_create_batch_streams_atomic_failure() {
             end_time: 100,
             step_duration: 0,
             multiplier_bps: 0,
+            penalty_bps: 0,
             vault_address: None,
             yield_enabled: false,
+            is_recurrent: false,
+            cycle_duration: 0,
+            cancellation_type: 0,
+            affiliate: None,
+            yield_recipient: 0,
+            split_address: None,
+            split_bps: 0,
         },
     ];
 
@@ -1032,7 +1232,305 @@ fn test_create_batch_streams_atomic_failure() {
     assert!(v2_client.get_stream(&1).is_none());
 
     // Balance should be unchanged
-    assert_eq!(token_client.balance(&sender), 100_000_000);
+    assert_eq!(token_client.balance(&sender), 200_000_000);
+}
+
+#[test]
+fn test_create_stream_deducts_protocol_fee_to_treasury() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let treasury = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &1_000_000_000);
+
+    let (contract_id, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_treasury(&treasury);
+    v2_client.set_fee_bps(&10u32);
+
+    let sid = v2_client.create_stream(&stream_args(&sender, &receiver, &token_id, 100_000_000));
+
+    let stream = v2_client.get_stream(&sid).unwrap();
+    assert_eq!(stream.total_amount, 99_900_000);
+    assert_eq!(v2_client.get_pending_fees(&treasury, &token_id), 100_000);
+    assert_eq!(token_client.balance(&sender), 900_000_000);
+    assert_eq!(token_client.balance(&contract_id), 100_000_000);
+}
+
+#[test]
+fn test_create_stream_with_fee_requires_treasury() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &1_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_bps(&10u32);
+
+    let result =
+        v2_client.try_create_stream(&stream_args(&sender, &receiver, &token_id, 100_000_000));
+    assert_eq!(result, Err(Ok(Error::NoTreasury)));
+}
+
+#[test]
+fn test_gas_buffer_deposit_withdraw_and_query() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let beneficiary = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&admin, &1_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    // Initial buffer is empty.
+    assert_eq!(v2_client.get_gas_buffer_balance(&admin), 0);
+
+    // Deposit 100M stroops into sender's buffer.
+    let deposit_amount = 100_000_000;
+    v2_client.deposit_gas_buffer(&admin, &deposit_amount).unwrap();
+    assert_eq!(v2_client.get_gas_buffer_balance(&admin), deposit_amount);
+
+    // Withdraw 40M to beneficiary.
+    v2_client
+        .withdraw_gas_buffer(&admin, &40_000_000, &beneficiary)
+        .unwrap();
+    assert_eq!(v2_client.get_gas_buffer_balance(&admin), 60_000_000);
+    assert_eq!(token_client.balance(&beneficiary), 40_000_000);
+}
+
+#[test]
+fn test_split_multi_asset_requires_gas_buffer() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver1 = Address::generate(&env);
+    let receiver2 = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &1_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    let recipients = soroban_sdk::vec![
+        &env,
+        crate::types::MultiAssetRecipient {
+            address: receiver1.clone(),
+            asset: token_id.clone(),
+            amount: 100_000_000,
+        },
+        crate::types::MultiAssetRecipient {
+            address: receiver2.clone(),
+            asset: token_id.clone(),
+            amount: 100_000_000,
+        },
+    ];
+
+    // Without gas buffer, split should fail.
+    let result = v2_client.try_split_multi_asset(&sender, &recipients);
+    assert_eq!(result, Err(Ok(Error::InsufficientGasBuffer)));
+
+    // Fund sender buffer and retry.
+    asset_client.mint(&sender, &100_000_000);
+    v2_client.deposit_gas_buffer(&sender, &GAS_FEE_PER_SPLIT_STROOPS).unwrap();
+
+    v2_client.split_multi_asset(&sender, &recipients).unwrap();
+
+    assert_eq!(token_client.balance(&receiver1), 100_000_000);
+    assert_eq!(token_client.balance(&receiver2), 100_000_000);
+    assert_eq!(v2_client.get_gas_buffer_balance(&sender), 0);
+}
+
+#[test]
+fn test_split_funds_success() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver1 = Address::generate(&env);
+    let receiver2 = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &1_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    // Deposit exactly one execution's gas buffer fee.
+    v2_client
+        .deposit_gas_buffer(&sender, &GAS_FEE_PER_SPLIT_STROOPS)
+        .unwrap();
+
+    let recipients = soroban_sdk::vec![
+        &env,
+        crate::types::Recipient {
+            address: receiver1.clone(),
+            amount: 100_000_000,
+        },
+        crate::types::Recipient {
+            address: receiver2.clone(),
+            amount: 100_000_000,
+        },
+    ];
+
+    v2_client
+        .split_funds(&sender, &token_id, &recipients)
+        .unwrap();
+
+    assert_eq!(token_client.balance(&receiver1), 100_000_000);
+    assert_eq!(token_client.balance(&receiver2), 100_000_000);
+    assert_eq!(v2_client.get_gas_buffer_balance(&sender), 0);
+}
+
+#[test]
+fn test_split_funds_fails_atomically_on_insufficient_balance() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver1 = Address::generate(&env);
+    let receiver2 = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    // Mint only enough for the gas-buffer deposit + the first recipient.
+    asset_client.mint(&sender, &(GAS_FEE_PER_SPLIT_STROOPS + 100_000_000));
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    // Deposit exactly one execution's gas buffer fee.
+    v2_client
+        .deposit_gas_buffer(&sender, &GAS_FEE_PER_SPLIT_STROOPS)
+        .unwrap();
+
+    let recipients = soroban_sdk::vec![
+        &env,
+        crate::types::Recipient {
+            address: receiver1.clone(),
+            amount: 100_000_000,
+        },
+        crate::types::Recipient {
+            address: receiver2.clone(),
+            amount: 1,
+        },
+    ];
+
+    let sender_balance_before = token_client.balance(&sender);
+
+    // Should fail atomically (insufficient balance on second transfer).
+    let result = v2_client.try_split_funds(&sender, &token_id, &recipients);
+    assert!(result.is_err());
+
+    // No recipients should receive tokens.
+    assert_eq!(token_client.balance(&receiver1), 0);
+    assert_eq!(token_client.balance(&receiver2), 0);
+
+    // Sender balance should be unchanged from immediately before the call.
+    assert_eq!(token_client.balance(&sender), sender_balance_before);
+}
+
+#[test]
+fn test_split_multi_asset_fails_on_non_token_asset() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &1_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    let bad_asset = Address::generate(&env); // not an asset contract
+
+    let recipients = soroban_sdk::vec![
+        &env,
+        crate::types::MultiAssetRecipient { address: receiver.clone(), asset: bad_asset, amount: 100_000_000 },
+    ];
+
+    let result = v2_client.try_split_multi_asset(&sender, &recipients);
+    assert_eq!(result, Err(Ok(Error::AssetInterfaceNotSupported)));
+}
+
+#[test]
+fn test_split_multi_asset_fails_on_too_many_recipients() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, _, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &10_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_fee_token(&token_id);
+
+    let mut recipients = soroban_sdk::vec!(&env);
+    for i in 0..121 {
+        recipients.push_back(crate::types::MultiAssetRecipient {
+            address: Address::generate(&env),
+            asset: token_id.clone(),
+            amount: 1_000_000,
+        });
+    }
+
+    let result = v2_client.try_split_multi_asset(&sender, &recipients);
+    assert_eq!(result, Err(Ok(Error::BatchTooLarge)));
+}
+
+#[test]
+fn test_withdraw_treasury_transfers_pending_fees() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let sender = Address::generate(&env);
+    let receiver = Address::generate(&env);
+    let treasury = Address::generate(&env);
+    let token_admin = Address::generate(&env);
+    let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
+
+    asset_client.mint(&sender, &1_000_000_000);
+
+    let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.set_treasury(&treasury);
+    v2_client.set_fee_bps(&10u32);
+    v2_client.create_stream(&stream_args(&sender, &receiver, &token_id, 200_000_000));
+
+    let withdrawn = v2_client.withdraw_treasury(&token_id);
+    assert_eq!(withdrawn, 200_000);
+    assert_eq!(v2_client.get_pending_fees(&treasury, &token_id), 0);
+    assert_eq!(token_client.balance(&treasury), 200_000);
 }
 
 // ── Governance: Stream-Weighted Voting Power tests ───────────────────────────
@@ -1048,6 +1546,7 @@ fn test_get_active_volume_single_stream_as_receiver() {
     let token_admin = Address::generate(&env);
     let (token_id, _, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &100_000_000);
 
@@ -1064,6 +1563,13 @@ fn test_get_active_volume_single_stream_as_receiver() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Receiver should have 100M locked
@@ -1082,6 +1588,7 @@ fn test_get_active_volume_single_stream_as_sender() {
     let token_admin = Address::generate(&env);
     let (token_id, _, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &100_000_000);
 
@@ -1097,6 +1604,13 @@ fn test_get_active_volume_single_stream_as_sender() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Sender should also have 100M locked (their commitment)
@@ -1115,6 +1629,7 @@ fn test_get_active_volume_multiple_streams() {
     let token_admin = Address::generate(&env);
     let (token_id, _, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &600_000_000);
 
@@ -1131,6 +1646,13 @@ fn test_get_active_volume_multiple_streams() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     let _sid2 = v2_client.create_stream(&StreamArgs {
@@ -1145,6 +1667,13 @@ fn test_get_active_volume_multiple_streams() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     let _sid3 = v2_client.create_stream(&StreamArgs {
@@ -1159,6 +1688,13 @@ fn test_get_active_volume_multiple_streams() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Receiver should have total of 600M locked
@@ -1177,6 +1713,7 @@ fn test_get_active_volume_after_partial_withdrawal() {
     let token_admin = Address::generate(&env);
     let (token_id, _, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &100_000_000);
 
@@ -1193,6 +1730,13 @@ fn test_get_active_volume_after_partial_withdrawal() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // At t=50, 50M unlocked
@@ -1215,6 +1759,7 @@ fn test_get_active_volume_excludes_cancelled_streams() {
     let token_admin = Address::generate(&env);
     let (token_id, _, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &200_000_000);
 
@@ -1231,6 +1776,13 @@ fn test_get_active_volume_excludes_cancelled_streams() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     let sid2 = v2_client.create_stream(&StreamArgs {
@@ -1245,6 +1797,13 @@ fn test_get_active_volume_excludes_cancelled_streams() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Cancel first stream
@@ -1268,6 +1827,7 @@ fn test_get_active_volume_unrelated_user_returns_zero() {
     let token_admin = Address::generate(&env);
     let (token_id, _, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &100_000_000);
 
@@ -1283,6 +1843,13 @@ fn test_get_active_volume_unrelated_user_returns_zero() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Stranger has no involvement in the stream
@@ -1316,6 +1883,7 @@ fn test_get_active_volume_mixed_roles() {
     let token_admin = Address::generate(&env);
     let (token_id, _, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&user, &200_000_000);
     asset_client.mint(&other1, &200_000_000);
@@ -1333,6 +1901,13 @@ fn test_get_active_volume_mixed_roles() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // User as receiver
@@ -1348,6 +1923,13 @@ fn test_get_active_volume_mixed_roles() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // User should have both streams counted: 200M + 200M = 400M
@@ -1367,6 +1949,7 @@ fn test_rebalance_after_clawback() {
     let token_admin = Address::generate(&env);
     let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     asset_client.mint(&sender, &1000_000_000);
 
@@ -1383,6 +1966,13 @@ fn test_rebalance_after_clawback() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     let _sid2 = v2_client.create_stream(&StreamArgs {
@@ -1397,6 +1987,13 @@ fn test_rebalance_after_clawback() {
         multiplier_bps: 0,
         vault_address: None,
         yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Verify integrity before clawback
@@ -1442,7 +2039,11 @@ impl MockVault {
     }
 
     pub fn withdraw(env: Env, amount: i128) -> i128 {
-        let is_paused = env.storage().instance().get::<Symbol, bool>(&symbol_short!("paused")).unwrap_or(false);
+        let is_paused = env
+            .storage()
+            .instance()
+            .get::<Symbol, bool>(&symbol_short!("paused"))
+            .unwrap_or(false);
         if is_paused {
             panic!("Vault is paused");
         }
@@ -1450,7 +2051,14 @@ impl MockVault {
     }
 
     pub fn set_paused(env: Env, paused: bool) {
-        env.storage().instance().set(&symbol_short!("paused"), &paused);
+        env.storage()
+            .instance()
+            .set(&symbol_short!("paused"), &paused);
+    }
+
+    /// Returns a fixed 10% simulated yield on the principal.
+    pub fn get_accrued_interest(_env: Env, principal: i128) -> i128 {
+        principal / 10
     }
 }
 
@@ -1465,6 +2073,7 @@ fn test_yield_bearing_stream() {
     let token_admin = Address::generate(&env);
     let (token_id, token_client, asset_client) = create_token(&env, &token_admin);
     let (_, v2_client) = setup_v2(&env, &admin);
+    v2_client.add_to_whitelist(&token_id);
 
     // Register Mock Vault
     let vault_id = env.register_contract(None, MockVault);
@@ -1485,6 +2094,13 @@ fn test_yield_bearing_stream() {
         multiplier_bps: 0,
         vault_address: Some(vault_id.clone()),
         yield_enabled: true,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
+        yield_recipient: 0,
+        split_address: None,
+        split_bps: 0,
     });
 
     // Advance time to t=500 (50% unlocked)
@@ -1492,7 +2108,7 @@ fn test_yield_bearing_stream() {
 
     // Withdraw. Should call vault.
     v2_client.withdraw(&0, &receiver);
-    
+
     // Check balance
     assert_eq!(token_client.balance(&receiver), 250_000_000);
 
@@ -1502,7 +2118,7 @@ fn test_yield_bearing_stream() {
     // Try to withdraw remaining 250M. Should return 0 and set is_pending.
     env.ledger().set_timestamp(1000);
     let result = v2_client.withdraw(&0, &receiver);
-    
+
     assert_eq!(result, 0);
 
     // Verify stream is pending
@@ -1512,7 +2128,7 @@ fn test_yield_bearing_stream() {
     // Unpause and retry
     vault_client.set_paused(&false);
     v2_client.withdraw(&0, &receiver);
-    
+
     assert_eq!(token_client.balance(&receiver), 500_000_000);
 }
 

@@ -1,6 +1,8 @@
 "use client";
 
 import SecurityPrivacyPage from "@/components/settings/SecurityPrivacyPage";
+import GasManagementTile from "@/components/settings/GasManagementTile";
+import { OrganizationAvatarBrandingCard } from "@/components/settings/OrganizationAvatarBrandingCard";
 
 export default function SettingsPage() {
   return (
@@ -18,6 +20,12 @@ export default function SettingsPage() {
           Manage wallet profile, notifications, and governance-related defaults.
         </p>
       </section>
+
+      {/* ── Organization Branding (#797) ── */}
+      <OrganizationAvatarBrandingCard />
+
+      {/* ── Gas Management (#683) ── */}
+      <GasManagementTile />
 
       {/* ── Security & Privacy Suite (#157) ── */}
       <SecurityPrivacyPage />

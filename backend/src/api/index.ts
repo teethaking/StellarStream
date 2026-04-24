@@ -12,6 +12,13 @@ import gasTankRouter from "./gas-tank.routes.js";
 import analyticsRouter from "./analytics.routes.js";
 import walletAuthRouter from "./wallet-auth.routes.js";
 import notificationRouter from "./notification-subscription.routes.js";
+import invoiceLinkRouter from "./invoice-link.routes.js";
+import webhooksRouter from "./webhooks.routes.js";
+import cachedStatsRouter from "./cached-stats.routes.js";
+
+import orgMemberRouter from "./org-member.routes.js";
+import assetMappingRouter from "./asset-mapping.routes.js";
+import dustAuditRouter from "./dust-audit.routes.js";
 
 const router = Router();
 
@@ -24,6 +31,12 @@ router.use("/", gasTankRouter);
 router.use("/analytics", analyticsRouter);
 router.use("/auth", walletAuthRouter);
 router.use("/notifications", notificationRouter);
+router.use("/invoice-links", invoiceLinkRouter);
+router.use("/webhooks", webhooksRouter);
+router.use("/stats", cachedStatsRouter);
+router.use("/", orgMemberRouter);
+router.use("/asset-mapping", assetMappingRouter);
+router.use("/dust-audit", dustAuditRouter);
 
 const auditLogService = new AuditLogService();
 
