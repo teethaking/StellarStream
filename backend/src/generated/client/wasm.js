@@ -478,6 +478,46 @@ exports.Prisma.SplitLogScalarFieldEnum = {
   executedAt: 'executedAt'
 };
 
+exports.Prisma.MonitoredTransactionScalarFieldEnum = {
+  id: 'id',
+  txHash: 'txHash',
+  txXdr: 'txXdr',
+  sourceAddress: 'sourceAddress',
+  originalFeeSt: 'originalFeeSt',
+  currentFeeSt: 'currentFeeSt',
+  bumpCount: 'bumpCount',
+  maxBumps: 'maxBumps',
+  status: 'status',
+  submittedAt: 'submittedAt',
+  confirmedAt: 'confirmedAt',
+  lastBumpAt: 'lastBumpAt',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DisbursementDraftScalarFieldEnum = {
+  id: 'id',
+  senderAddress: 'senderAddress',
+  name: 'name',
+  asset: 'asset',
+  currentVersion: 'currentVersion',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DisbursementDraftVersionScalarFieldEnum = {
+  id: 'id',
+  draftId: 'draftId',
+  version: 'version',
+  totalAmount: 'totalAmount',
+  recipients: 'recipients',
+  changeNote: 'changeNote',
+  changedBy: 'changedBy',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -556,7 +596,10 @@ exports.Prisma.ModelName = {
   AssetMapping: 'AssetMapping',
   PriceHistory: 'PriceHistory',
   ProtocolInefficiencyReport: 'ProtocolInefficiencyReport',
-  SplitLog: 'SplitLog'
+  SplitLog: 'SplitLog',
+  MonitoredTransaction: 'MonitoredTransaction',
+  DisbursementDraft: 'DisbursementDraft',
+  DisbursementDraftVersion: 'DisbursementDraftVersion'
 };
 
 /**

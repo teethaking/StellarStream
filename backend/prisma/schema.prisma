@@ -525,3 +525,62 @@ model SplitLog {
   @@index([executedAt])
   @@index([txHash])
 }
+
+model MonitoredTransaction {
+  id            String    @id @default(cuid())
+  txHash        String    @unique @map("tx_hash")
+  txXdr         String    @map("tx_xdr")
+  sourceAddress String    @map("source_address")
+  originalFeeSt String    @map("original_fee_stroops")
+  currentFeeSt  String    @map("current_fee_stroops")
+  bumpCount     Int       @default(0) @map("bump_count")
+  maxBumps      Int       @default(3) @map("max_bumps")
+  status        String    @default("PENDING")
+  submittedAt   DateTime  @default(now()) @map("submitted_at")
+  confirmedAt   DateTime? @map("confirmed_at")
+  lastBumpAt    DateTime? @map("last_bump_at")
+  errorMessage  String?   @map("error_message")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([submittedAt])
+  @@map("MonitoredTransaction")
+}
+
+// Split-draft version control (#961)
+// Header record for a draft that can have multiple versions
+model DisbursementDraft {
+  id              String                    @id @default(cuid())
+  senderAddress   String                    @map("sender_address")
+  name            String?
+  asset           String
+  currentVersion  Int                       @default(1) @map("current_version")
+  status          String                    @default("DRAFT")
+  createdAt       DateTime                  @default(now()) @map("created_at")
+  updatedAt       DateTime                  @updatedAt @map("updated_at")
+
+  versions        DisbursementDraftVersion[]
+
+  @@index([senderAddress])
+  @@index([status])
+  @@map("DisbursementDraft")
+}
+
+// Individual version snapshot of a draft
+model DisbursementDraftVersion {
+  id              String                @id @default(cuid())
+  draftId         String                @map("draft_id")
+  version         Int
+  totalAmount     String                @map("total_amount")
+  recipients      Json
+  changeNote      String?               @map("change_note")
+  changedBy       String                @map("changed_by")
+  createdAt       DateTime              @default(now()) @map("created_at")
+
+  draft           DisbursementDraft     @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@unique([draftId, version])
+  @@index([draftId])
+  @@map("DisbursementDraftVersion")
+}
