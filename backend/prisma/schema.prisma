@@ -131,6 +131,8 @@ model EventLog {
   receiver       String?
   amount         BigInt?
   metadata       String?  // JSON string
+  parentHash     String?  @map("parent_hash") // SHA-256 hash of the previous log entry
+  entryHash      String?  @map("entry_hash") // SHA-256(canonical(this_entry) + parentHash)
   createdAt      DateTime @default(now())
 
   @@unique([txHash, eventIndex])

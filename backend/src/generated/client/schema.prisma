@@ -40,6 +40,7 @@ model Stream {
 
   @@index([sender])
   @@index([receiver])
+  @@index([status])
   @@index([streamId])
   @@index([contractId])
   @@index([legacy])
@@ -130,6 +131,8 @@ model EventLog {
   receiver       String?
   amount         BigInt?
   metadata       String? // JSON string
+  parentHash     String?  @map("parent_hash") // SHA-256 hash of the previous log entry
+  entryHash      String?  @map("entry_hash") // SHA-256(canonical(this_entry) + parentHash)
   createdAt      DateTime @default(now())
 
   @@unique([txHash, eventIndex])
@@ -342,6 +345,18 @@ model GlobalStats {
   updatedAt     DateTime @updatedAt
 }
 
+// V3 Splitter protocol statistics (#649)
+model GlobalStats_V3 {
+  id              String   @id @default("v3_global")
+  totalVolumeUsd  String   @default("0") // Cumulative USD volume through V3 splitter
+  dailyVolumeUsd  String   @default("0") // Last 24h volume
+  totalSplits     Int      @default(0) // Total disbursements
+  totalRecipients Int      @default(0) // Total unique recipients
+  updatedAt       DateTime @updatedAt
+
+  @@map("GlobalStats_V3")
+}
+
 // Daily TVL snapshots for growth charts
 model TvlSnapshot {
   id        String   @id @default(cuid())
@@ -473,6 +488,24 @@ model PriceHistory {
 
   @@index([asset, recordedAt])
   @@index([recordedAt])
+}
+
+// Aggregated dust-loss report per asset across all protocol versions (Issue #179)
+model ProtocolInefficiencyReport {
+  id              String   @id @default(cuid())
+  asset           String // Token address / asset identifier
+  protocolVersion Int      @map("protocol_version") // 1, 2, 3…
+  totalDustAmount String   @map("total_dust_amount") // Cumulative dust (stroops)
+  eventCount      Int      @default(0) @map("event_count")
+  firstSeenLedger Int?     @map("first_seen_ledger")
+  lastSeenLedger  Int?     @map("last_seen_ledger")
+  generatedAt     DateTime @default(now()) @map("generated_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([asset, protocolVersion])
+  @@index([asset])
+  @@index([protocolVersion])
+  @@map("protocol_inefficiency_report")
 }
 
 // Log of payment splits with linked USD price at time of split
